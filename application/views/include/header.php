@@ -59,7 +59,6 @@
 					
 					
 					<!-- LOGIN USER -->
-					<?php $login_sess = $this->session->userdata('logged_in'); ?>
 					<?php if ($login_sess['status'] == 'user') :?>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
