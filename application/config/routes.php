@@ -38,13 +38,20 @@
 |
 */
 
-$route['default_controller'] = "login_controller";
+/* INDEX ROUTE */ 
+$route['default_controller'] = "login_controller"; // INDEX PAGE
 $route['404_override'] = '';
 
-$route['login'] = "login_controller";
-$route['logout'] = "logout_controller/logout";
+/* LOGIN ROUTE */ 
+$route['login'] = "login_controller"; // LOGIN
+$route['logout'] = "logout_controller/logout"; // LOGOUT
 
-$route['admin'] = "admin_controller";
+/* ADMIN ROUTE */ 
+$route['admin'] = "admin_controller"; // HOME ADMIN
+
+/* USER ROUTE */ 
+$route['user'] = "user_controller"; // HOME USER
+
 
 
 /* End of file routes.php */
