@@ -25,6 +25,7 @@
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					<!-- Brand and toggle get grouped for better mobile display -->
+
 				    <div class="navbar-header">
 				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 				        <span class="sr-only">Toggle navigation</span>
@@ -34,12 +35,11 @@
 				      </button>
 				      <a class="navbar-brand" href="#">Stepping Stone</a>
 				    </div>
-					
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					
-					<!-- LOGIN -->
+					<!-- LOGIN ADMIN -->
 					<?php $login_sess = $this->session->userdata('logged_in'); ?>
-					<?php if ($login_sess) : ?>
+					<?php if ($login_sess['status'] == 'admin') :?>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
@@ -47,6 +47,27 @@
 							</li>
 							<li>
 								<a href="#">อนุมัติรายงาน</a>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href=<?php echo site_url("logout");?>>ออกจากระบบ</a>
+							</li>
+						</ul>
+					</div><!-- /.navbar-collapse -->
+					<?php endif; ?>
+					
+					
+					<!-- LOGIN USER -->
+					<?php $login_sess = $this->session->userdata('logged_in'); ?>
+					<?php if ($login_sess['status'] == 'user') :?>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="#">จัดการต้นทาง</a>
+							</li>
+							<li>
+								<a href="#">จัดการปลายทาง</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
