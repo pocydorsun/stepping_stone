@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2015 at 10:57 AM
+-- Generation Time: Feb 27, 2015 at 01:04 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -28,17 +28,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `users` (
 `id` tinyint(4) NOT NULL,
-  `username` varchar(10) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `status` enum('admin','user','','') NOT NULL DEFAULT 'user'
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `username` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `password` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `status` enum('admin','user','','') CHARACTER SET utf8 NOT NULL DEFAULT 'user'
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `status`) VALUES
-(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin');
+(2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
+(3, 'user', '21232f297a57a5a743894a0e4a801fc3', 'user');
 
 --
 -- Indexes for dumped tables
@@ -58,7 +59,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
