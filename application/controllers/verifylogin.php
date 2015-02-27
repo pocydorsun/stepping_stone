@@ -15,8 +15,8 @@ class VerifyLogin extends CI_Controller {
 			redirect($user_session['status'], 'refesh');
 		} else {
 			$this -> load -> library('form_validation');
-			$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|xss_clean');
-			$this -> form_validation -> set_rules('txtPassword', 'Password', 'trim|required|xss_clean|callback_check_database');
+			$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|alpha_numeric|xss_clean');
+			$this -> form_validation -> set_rules('txtPassword', 'Password', 'trim|required|alpha_numeric|xss_clean|callback_check_database');
 
 			if ($this -> form_validation -> run() == FALSE) {
 
@@ -28,7 +28,6 @@ class VerifyLogin extends CI_Controller {
 				redirect($user_session['status'], 'refesh');
 			}
 		}
-
 	}
 
 	function check_database($password) {
