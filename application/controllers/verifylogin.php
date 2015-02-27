@@ -16,15 +16,15 @@ class VerifyLogin extends CI_Controller {
 		} else {
 			$this -> load -> library('form_validation');
 			$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|alpha_numeric|xss_clean');
-			$this -> form_validation -> set_rules('txtPassword', 'Password', 'trim|required|alpha_numeric|xss_clean|callback_check_database');
+			$this -> form_validation -> set_rules('txtPassword', 'Password', 'trim|required|xss_clean|callback_check_database');
 
 			if ($this -> form_validation -> run() == FALSE) {
-
-				$this -> load -> view('include/header');
-				$this -> load -> view('login/login_view');
-				$this -> load -> view('include/footer');
+				$this->session->set_flashdata('error_msg', 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง');
+				redirect('login', 'refesh');
 			} else {
 				$user_session = $this -> session -> userdata('logged_in');
+				$this->session->set_flashdata('success_msg', 'เข้าสู่ระบบสำเร็จ');
+				
 				redirect($user_session['status'], 'refesh');
 			}
 		}
@@ -45,7 +45,7 @@ class VerifyLogin extends CI_Controller {
 			}
 			return TRUE;
 		} else {
-			$this -> form_validation -> set_message('check_database', 'Invalid username or password');
+			$this -> form_validation -> set_message('check_database', 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง');
 			return false;
 		}
 	}

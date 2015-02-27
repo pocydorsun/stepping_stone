@@ -33,12 +33,24 @@
 				        <span class="icon-bar"></span>
 				        <span class="icon-bar"></span>
 				      </button>
-				      <a class="navbar-brand" href="#">Stepping Stone</a>
+				      
+				      <?php $login_sess = $this->session->userdata('logged_in'); ?>
+				      
+				      <?php if ($login_sess['status'] == 'admin') :?>
+				      <a class="navbar-brand" href=<?php echo site_url("admin");?>>Stepping Stone</a>
+				      
+				      <?php elseif ($login_sess['status'] == 'user') :?>
+				      <a class="navbar-brand" href=<?php echo site_url("user");?>>Stepping Stone</a>
+				      
+				      <?php else : ?>
+				      <a class="navbar-brand" href=<?php echo base_url();?>>Stepping Stone</a>
+				      <?php endif; ?>
+				      
 				    </div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					
 					<!-- LOGIN ADMIN -->
-					<?php $login_sess = $this->session->userdata('logged_in'); ?>
+					
 					<?php if ($login_sess['status'] == 'admin') :?>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
@@ -86,3 +98,25 @@
 				</div><!-- /.container-fluid -->
 			</nav>
 		</div>
+		
+		<!-- ALERT ERROR MESSAGE -->
+		<?php if ($this->session->flashdata('error_msg')) : ?>
+		<div class="container">
+			<div class="alert alert-warning" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  				<span aria-hidden="true">&times;</span>
+				</button><?php echo $this->session->flashdata('error_msg'); ?>
+			</div>	
+		</div>
+		<?php endif; ?>
+		
+		<!-- ALERT SUCCESS MESSAGE -->
+		<?php if ($this->session->flashdata('success_msg')) : ?>
+		<div class="container">
+			<div class="alert alert-success" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  				<span aria-hidden="true">&times;</span>
+				</button><?php echo $this->session->flashdata('success_msg'); ?>
+			</div>	
+		</div>
+		<?php endif; ?>
