@@ -51,7 +51,7 @@
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a href=<?php echo site_url("admin/logout");?>>ออกจากระบบ</a>
+								<a href=<?php echo site_url("logout");?>>ออกจากระบบ</a>
 							</li>
 						</ul>
 					</div><!-- /.navbar-collapse -->
