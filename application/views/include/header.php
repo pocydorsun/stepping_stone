@@ -68,6 +68,12 @@
 							<li>
 								<a href="#">จัดการปลายทาง</a>
 							</li>
+							<li>
+								<a href="#">กำหนดค่าขนส่ง</a>
+							</li>
+							<li>
+								<a href="#">จัดแผนการขนส่ง</a>
+							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li>
