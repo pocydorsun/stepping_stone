@@ -13,9 +13,16 @@
 	<div class="col-lg-6">
 		<a href="#" class="list-group-item active">รายชื่อ </a>
 		<ul class="list-group ">
+			
+			<?php foreach($users as $user) { ?>
 			<li class="list-group-item">
-				Cras justo odio <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+				<?php echo $user->username; ?> <?php echo $user->id; ?>
+				<span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span> 
 			</li>
+			<?php } ?>
+			
 		</ul>
 	</div>
 </div>
+
+<?php print_r($users); ?>

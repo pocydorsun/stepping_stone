@@ -1,5 +1,6 @@
 <?php
 Class User_model extends CI_Model {
+	
 	function login($username, $password) {
 		$this -> db -> select('id, username, password,status');
 		$this -> db -> from('users');
@@ -14,6 +15,13 @@ Class User_model extends CI_Model {
 		} else {
 			return false;
 		}
+	}
+
+	function getAllUser() {
+		$this -> db ->select('id, username');
+		$query = $this -> db -> get('users');
+
+		return $query -> result();
 	}
 
 }
