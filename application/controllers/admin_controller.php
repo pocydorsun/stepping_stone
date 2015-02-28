@@ -11,7 +11,7 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function index() {
-		
+
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
@@ -19,10 +19,9 @@ class Admin_controller extends CI_Controller {
 				redirect('user', 'refresh');
 				break;
 			case "admin" :
-				
 				$data['users'] = $this -> user_model -> getAllUser();
-				
-				
+
+				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('admin/home_view', $data);
 				$this -> load -> view('include/footer');
@@ -31,8 +30,67 @@ class Admin_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
+
+	function add_user() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_username_exit');
+
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('admin');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'เพิ่มผู้ใช้สำเร็จ');
+
+					redirect('admin');
+				}
+
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+
+	}
+
+	function check_username_exit($username) {
+
+		$result = $this -> user_model -> addUser($username);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว ';
+			$this -> form_validation -> set_message('check_username_exit', $message);
+			return FALSE;
+		}
+	}
+
+	function remove_user($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$this -> user_model -> removeUser($id);
+
+				$this -> session -> set_flashdata('success_msg', 'ลบผู้ใช้สำเร็จ');
+
+				redirect('admin');
+
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
 
 }
-
 ?>

@@ -48,6 +48,8 @@ $route['logout'] = "logout_controller/logout"; // LOGOUT
 
 /* ADMIN ROUTE */ 
 $route['admin'] = "admin_controller"; // HOME ADMIN
+$route['admin/add_user'] = "admin_controller/add_user"; //HOME ADMIN : ADD USER
+$route['admin/remove_user/(:num)'] = "admin_controller/remove_user/$1"; //HOME ADMIN : REMOVE USER
 
 /* USER ROUTE */ 
 $route['user'] = "user_controller"; // HOME USER

@@ -13,15 +13,47 @@ Class User_model extends CI_Model {
 		if ($query -> num_rows() == 1) {
 			return $query -> result();
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
 	function getAllUser() {
 		$this -> db ->select('id, username');
-		$query = $this -> db -> get('users');
+		$this -> db -> from('users');
+		$this -> db -> where('status', 'user');
+		$query = $this -> db -> get();
 
 		return $query -> result();
+	}
+	
+	function addUser($username) {
+		
+		$this -> db -> from('users');
+		$this -> db -> where('username', $username);
+		$this -> db -> limit(1);
+		
+		$query = $this -> db -> get();
+		$rows = $query -> num_rows();
+		
+		if (!$rows) {
+			$data = array('username' => $username, 'password' => md5('12345678'));
+			$query = $this->db->insert('users', $data);
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+		
+	}
+	
+	function removeUser($id) {
+		$this -> db -> where('id', $id);
+		$query = $this -> db -> delete('users'); 
+		
+		if($query) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 
 }
