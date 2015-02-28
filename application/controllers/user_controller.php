@@ -6,6 +6,7 @@ class User_controller extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
+		$this -> load -> model('source_model', '', TRUE);
 	}
 
 	function index() {
@@ -13,8 +14,11 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
+				$data['sources'] = $this -> source_model -> getAllSource();
+
+				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/user_view');
+				$this -> load -> view('user/user_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
