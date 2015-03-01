@@ -56,7 +56,7 @@ $route['admin/check_password'] = "admin_controller/check_password"; // CHECK FOR
 /* USER ROUTE */ 
 $route['user'] = "user_controller"; // HOME USER
 $route['user/add_source'] = "user_controller/add_source";  //HOME USER : ADD SOURCE
-$route['user/remove_source/(:num)'] = "user_controller/remove_source/$1" //HOME USER : REMOVE SOURCE
+$route['user/remove_source/(:num)'] = "user_controller/remove_source/$1"; //HOME USER : REMOVE SOURCE
 
 
 /* End of file routes.php */
