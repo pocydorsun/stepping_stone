@@ -16,6 +16,7 @@
 
 	</div>
 
+
 	<br>
 
 	<div class="container" >
@@ -72,3 +73,27 @@
 				$(".modal-footer #userId").attr("href", userId);
 			});
 		</script>
+=======
+<div class="container" >
+	<div class="col-sm-6">
+		<a href="#" class="list-group-item active"><strong>รายชื่อ </strong></a>
+		<ul class="list-group ">
+			
+			<?php foreach($users as $user) { ?>
+			<li class="list-group-item">
+				<?php echo $user->username; ?>
+				
+				<!-- link remove user for admin (CONFIRM by MODAL) -->
+				<div class="pull-right">
+					<a data-toggle="modal" data-msg="ยืนยันการลบผู้ใช้" data-id=<?php echo site_url("admin/remove_user/$user->id"); ?> data-toggle="modal" title="Add this item" style="color: red" data-target=".bs-example-modal-sm" href="#">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</a>
+				</div>
+				
+			</li>
+			<?php } ?>
+			
+		</ul>
+	</div>
+</div>
+>>>>>>> origin/master
