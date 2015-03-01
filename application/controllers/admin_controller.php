@@ -94,7 +94,7 @@ class Admin_controller extends CI_Controller {
 
 	function change_password() {
 		$user_session = $this -> session -> userdata('logged_in');
-
+	
 		switch ($user_session['status']) {
 			case "user" :
 				redirect('user', 'refresh');
@@ -104,7 +104,6 @@ class Admin_controller extends CI_Controller {
 				$this -> load -> view('include/header');
 				$this -> load -> view('admin/change_password_view');
 				$this -> load -> view('include/footer');
-				redirect('user', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
@@ -113,8 +112,8 @@ class Admin_controller extends CI_Controller {
 
 	function check_password() {
 		$this -> load -> library('form_validation');
-		$this -> form_validation -> set_rules('txtNewPassword', 'รหัสผ่าน', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
-		$this -> form_validation -> set_rules('txtReNewPassword', 'รหัสผ่าน', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_new_password');
+		$this -> form_validation -> set_rules('txtNewPassword', 'รหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
+		$this -> form_validation -> set_rules('txtReNewPassword', 'ยืนยันรหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_new_password');
 		$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_admin_password');
 		
 		if ($this -> form_validation -> run() == FALSE) {
