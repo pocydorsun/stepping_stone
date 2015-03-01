@@ -2,6 +2,7 @@
 	<?php print_r($this -> session -> all_userdata()); ?>
 </div>
 
+<!-- CONFIRM MODAL -->
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
@@ -12,9 +13,7 @@
 					</button>
 					<h4 class="modal-title" id="myModalLabel">คำเตือน</h4>
 				</div>
-				<div class="modal-body">
-					ยืนยันการลบผู้ใช้
-				</div>
+				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">
 						ยกเลิก
