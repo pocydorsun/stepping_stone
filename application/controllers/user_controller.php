@@ -8,6 +8,7 @@ class User_controller extends CI_Controller {
 		parent::__construct();
 		$this -> load -> model('user_model', '', TRUE);
 		$this -> load -> model('source_model', '', TRUE);
+		$this -> load -> model('destination_model', '', TRUE);
 	}
 
 	function index() {
@@ -20,6 +21,86 @@ class User_controller extends CI_Controller {
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('user/user_view', $data);
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refesh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	function source_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['sources'] = $this -> source_model -> getAllSource();
+
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/source_view', $data);
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refesh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	function source_add() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['sources'] = $this -> source_model -> getAllSource();
+
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/source_add', $data);
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refesh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	function destination_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['destinations'] = $this -> destination_model -> getAllDestination();
+
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/destination_view', $data);
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refesh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	function destination_add() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['destinations'] = $this -> destination_model -> getAllDestination();
+
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/destination_add', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
