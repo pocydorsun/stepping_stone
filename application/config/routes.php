@@ -55,9 +55,15 @@ $route['admin/check_password'] = "admin_controller/check_password"; // CHECK FOR
 
 /* USER ROUTE */ 
 $route['user'] = "user_controller"; // HOME USER
-$route['user/source'] = "user_controller/source_manager"; // HOME SOURCE
 $route['user/profile'] = "user_controller/edit_profile"; //HOME USER : EDIT USER PROFILE
 $route['user/check_password'] = "user_controller/check_password"; // CHECK FOR CHANGE PASSWORD
+
+$route['user/source'] = "user_controller/source_manager"; // HOME SOURCE
+
+
+$route['user/destination'] = "user_controller/destination_manager"; // HOME DESTINATION
+
+
 
 
 

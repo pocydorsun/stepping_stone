@@ -81,7 +81,7 @@
 								<a href="<?php echo site_url("user/source");?>">จัดการต้นทาง</a>
 							</li>
 							<li>
-								<a href="#">จัดการปลายทาง</a>
+								<a href="<?php echo site_url("user/destination");?>">จัดการปลายทาง</a>
 							</li>
 							<li>
 								<a href="#">กำหนดค่าขนส่ง</a>
