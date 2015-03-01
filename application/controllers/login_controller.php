@@ -16,7 +16,7 @@ class Login_controller extends CI_Controller {
 				redirect('user','refesh');
 				break;
 			case "admin" :
-				redirect('admin','refesh');
+				redirect('admin', 'refesh');
 				break;
 			default :
 				$this -> load -> helper('form');
@@ -28,3 +28,5 @@ class Login_controller extends CI_Controller {
 	}
 
 }
+
+?>

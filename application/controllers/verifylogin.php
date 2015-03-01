@@ -15,8 +15,8 @@ class VerifyLogin extends CI_Controller {
 			redirect($user_session['status'], 'refesh');
 		} else {
 			$this -> load -> library('form_validation');
-			$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|alpha_numeric|xss_clean');
-			$this -> form_validation -> set_rules('txtPassword', 'Password', 'trim|required|xss_clean|callback_check_database');
+			$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|xss_clean');
+			$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_database');
 
 			if ($this -> form_validation -> run() == FALSE) {
 				$this->session->set_flashdata('error_msg', 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง');

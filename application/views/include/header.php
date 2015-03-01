@@ -63,6 +63,9 @@
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li>
+								<a href=<?php echo site_url("admin/change_password");?>>แก้ไขรหัสผ่าน</a>
+							</li>
+							<li>
 								<a href=<?php echo site_url("logout");?>>ออกจากระบบ</a>
 							</li>
 						</ul>
