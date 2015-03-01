@@ -14,26 +14,34 @@
 	
 </div>
 
+
 <br>
+
+Search: <input ng-model="searchText">
+
+<br>
+
+
 
 <div class="container" >
 	<div class="col-sm-6">
 		<a href="#" class="list-group-item active"><strong>รายชื่อ </strong></a>
-		<ul class="list-group ">
+		<?php $users_json = json_encode($users);?>
+		<ul class="list-group" <?php echo "ng-init='users = $users_json'"; ?>>
 			
-			<?php foreach($users as $user) { ?>
-			<li class="list-group-item">
-				<?php echo $user->username; ?>
+			<li class="list-group-item" ng-repeat="user in filtered = (users | filter:searchText)">
+				{{user.username}}
 				
 				<!-- link remove user for admin (CONFIRM by MODAL) -->
 				<div class="pull-right">
-					<a data-toggle="modal" data-msg="ยืนยันการลบผู้ใช้" data-id=<?php echo site_url("admin/remove_user/$user->id"); ?> data-toggle="modal" title="Add this item" style="color: red" data-target=".bs-example-modal-sm" href="#">
+					<a data-toggle="modal" data-msg="ยืนยันการลบผู้ใช้" data-id=<?php echo site_url("admin/remove_user/"); ?>{{"/"+user.id}} data-toggle="modal" title="Add this item" style="color: red" data-target=".bs-example-modal-sm" href="#">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 					</a>
 				</div>
 				
 			</li>
-			<?php } ?>
+			<li ng-hide="users.length">ไม่มีชื่อผู้ใช้อยู่ในระบบ</li>
+			<li ng-show="filtered == 0">ไม่มีชื่อผู้ใช้อยู่นี้ในระบบ</li>
 			
 		</ul>
 	</div>
