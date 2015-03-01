@@ -92,6 +92,9 @@
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li>
+								<a href=<?php echo site_url("user/profile");?>>แก้ไขข้อมูลส่วนตัว</a>
+							</li>
+							<li>
 								<a href=<?php echo site_url("logout");?>>ออกจากระบบ</a>
 							</li>
 						</ul>

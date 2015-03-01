@@ -104,6 +104,7 @@ class Admin_controller extends CI_Controller {
 				$this -> load -> view('include/header');
 				$this -> load -> view('admin/change_password_view');
 				$this -> load -> view('include/footer');
+				redirect('user', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
