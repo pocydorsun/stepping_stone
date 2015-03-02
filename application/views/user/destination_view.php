@@ -8,7 +8,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<!-- <label for="txtUsername">ชื่อผู้ใช้</label> -->
-				<input type="text" class="form-control" name="txtUsername" id="txtUsername" placeholder="กรอกชื่อผู้ใช้">
+				<input type="text" class="form-control" name="txtDestination" id="txtDestination" placeholder="กรอกชื่อผู้ใช้">
 			</div>
 			<button type="submit" class="btn btn-success">
 				เพิ่ม
