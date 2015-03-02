@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2015 at 09:22 AM
+-- Generation Time: Mar 02, 2015 at 10:56 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -31,19 +31,6 @@ CREATE TABLE IF NOT EXISTS `target` (
   `target_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `target`
---
-
-INSERT INTO `target` (`id`, `target_name`) VALUES
-(1, 'บ้านโพ'),
-(2, 'บ้านเพื่อน'),
-(3, 'บ้านนอก'),
-(4, 'บ้านใน'),
-(5, 'aaaaaa'),
-(6, 'bbbbbb'),
-(7, 'cccccc');
-
 -- --------------------------------------------------------
 
 --
@@ -54,17 +41,19 @@ CREATE TABLE IF NOT EXISTS `users` (
 `id` tinyint(4) NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 NOT NULL,
   `password` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `status` enum('admin','user','','') CHARACTER SET utf8 NOT NULL DEFAULT 'user'
+  `status` enum('admin','user','','') CHARACTER SET utf8 NOT NULL DEFAULT 'user',
+  `firstname` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `lastname` varchar(255) CHARACTER SET utf8 DEFAULT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `status`) VALUES
-(2, 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', 'admin'),
-(24, 'userid', '5cc32e366c87c4cb49e4309b75f57d64', 'user'),
-(23, 'adminadmin', '25d55ad283aa400af464c76d713c07ad', 'user');
+INSERT INTO `users` (`id`, `username`, `password`, `status`, `firstname`, `lastname`) VALUES
+(2, 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', 'admin', '', ''),
+(24, 'userid', '5cc32e366c87c4cb49e4309b75f57d64', 'user', 'สุธี', 'กลิ่นคง'),
+(23, 'adminadmin', '25d55ad283aa400af464c76d713c07ad', 'user', '', '');
 
 --
 -- Indexes for dumped tables
