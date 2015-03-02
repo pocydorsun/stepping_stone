@@ -30,7 +30,7 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
+
 	function source_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -50,18 +50,24 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
-	function source_add() {
+
+	function add_source() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['sources'] = $this -> source_model -> getAllSource();
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtSource', 'Source', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_source_exit');
 
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/source_add', $data);
-				$this -> load -> view('include/footer');
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('user/source');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'เพิ่มต้นทางสำเร็จ');
+
+					redirect('user/source');
+				}
 				break;
 			case "admin" :
 				redirect('admin', 'refesh');
@@ -70,7 +76,20 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
+
+function check_source_exit($sourcename) {
+
+		$result = $this -> source_model -> addSource($sourcename);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว ';
+			$this -> form_validation -> set_message('check_source_exit', $message);
+			return FALSE;
+		}
+	}
+
 	function destination_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -90,7 +109,7 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
+
 	function destination_add() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -116,11 +135,10 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['sources'] = $this -> source_model -> getAllSource();
 
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/user_profile_view', $data);
+				$this -> load -> view('user/user_profile_view');
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
