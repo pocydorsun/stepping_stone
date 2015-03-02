@@ -69,6 +69,21 @@ Class User_model extends CI_Model {
 		}
 	}
 
+	function getName($user_id) {
+		$this -> db -> select('firstname, lastname');
+		$this -> db -> from('users');
+		$this -> db -> where('id', $user_id);
+		$this -> db -> limit(1);
+		
+		$query = $this -> db -> get();
+		
+		if ($query -> num_rows() == 1) {
+			return $query -> result_array();
+		} else {
+			return FALSE;
+		}
+	}
+
 	function updateName($user_id, $firstname, $lastname) {
 		$data = array(
 					'firstname' => $firstname,

@@ -135,10 +135,15 @@ function check_source_exit($sourcename) {
 
 		switch ($user_session['status']) {
 			case "user" :
-
+				$user_session = $this -> session -> userdata('logged_in');
+		
+				$user_id = $user_session['id'];
+				
+				$data['name'] = $this -> user_model -> getName($user_id);
+				
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/user_profile_view');
+				$this -> load -> view('user/user_profile_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :

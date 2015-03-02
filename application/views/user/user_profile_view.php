@@ -23,19 +23,21 @@
 <br><br>
 
 <div class="container">
+	<?php 
+		$firstname = $name[0]['firstname'];
+		$lastname = $name[0]['lastname'];
+	?>
 	<?php echo form_open('user/change_name'); ?>
 	 	<div class="col-md-6">
 	 		<div class="form-group">
 				<label for="txtFirstname">ชื่อ</label>
-				<input type="text" class="form-control" name="txtFirstname" id="txtFirstname" placeholder="ชื่อ">
+				<input type="text" class="form-control" name="txtFirstname" id="txtFirstname" placeholder="ชื่อ" value=<?php echo $firstname; ?>>
 			</div>
 			<div class="form-group">
 				<label for="txtLastname">นามสกุล</label>
-				<input type="text" class="form-control" name="txtLastname" id="txtLastname" placeholder="นามสกุล">
+				<input type="text" class="form-control" name="txtLastname" id="txtLastname" placeholder="นามสกุล" value=<?php echo $lastname; ?>>
 			</div>
 			<button type="submit" class="btn btn-success">บันทึกการเปลี่ยนแปลง</button>
 	 	</div>
 	</form>
 </div>
-
-<?php print_r($sources) ?>
