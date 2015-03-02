@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2015 at 05:59 AM
+-- Generation Time: Mar 02, 2015 at 09:22 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -23,46 +23,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `destination`
+-- Table structure for table `target`
 --
 
-CREATE TABLE IF NOT EXISTS `destination` (
+CREATE TABLE IF NOT EXISTS `target` (
 `id` int(11) NOT NULL,
-  `destination_name` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `target_name` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `destination`
+-- Dumping data for table `target`
 --
 
-INSERT INTO `destination` (`id`, `destination_name`) VALUES
-(1, 'โกดังใคร'),
-(2, 'โกดังมัน'),
-(3, 'โกดังกุ'),
-(4, 'โกดังมึง'),
-(5, 'bbbbbb');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `source`
---
-
-CREATE TABLE IF NOT EXISTS `source` (
-`id` int(11) NOT NULL,
-  `source_name` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `source`
---
-
-INSERT INTO `source` (`id`, `source_name`) VALUES
+INSERT INTO `target` (`id`, `target_name`) VALUES
 (1, 'บ้านโพ'),
 (2, 'บ้านเพื่อน'),
 (3, 'บ้านนอก'),
 (4, 'บ้านใน'),
-(5, 'aaaaaa');
+(5, 'aaaaaa'),
+(6, 'bbbbbb'),
+(7, 'cccccc');
 
 -- --------------------------------------------------------
 
@@ -91,15 +71,9 @@ INSERT INTO `users` (`id`, `username`, `password`, `status`) VALUES
 --
 
 --
--- Indexes for table `destination`
+-- Indexes for table `target`
 --
-ALTER TABLE `destination`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `source`
---
-ALTER TABLE `source`
+ALTER TABLE `target`
  ADD PRIMARY KEY (`id`);
 
 --
@@ -113,15 +87,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `destination`
+-- AUTO_INCREMENT for table `target`
 --
-ALTER TABLE `destination`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `source`
---
-ALTER TABLE `source`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+ALTER TABLE `target`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `users`
 --

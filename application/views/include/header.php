@@ -79,10 +79,7 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="<?php echo site_url("user/source");?>">จัดการต้นทาง</a>
-							</li>
-							<li>
-								<a href="<?php echo site_url("user/destination");?>">จัดการปลายทาง</a>
+								<a href="<?php echo site_url("user/target");?>">จัดการเป้าหมาย</a>
 							</li>
 							<li>
 								<a href="#">กำหนดค่าขนส่ง</a>

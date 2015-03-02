@@ -7,8 +7,7 @@ class User_controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this -> load -> model('user_model', '', TRUE);
-		$this -> load -> model('source_model', '', TRUE);
-		$this -> load -> model('destination_model', '', TRUE);
+		$this -> load -> model('target_model', '', TRUE);
 	}
 
 	function index() {
@@ -16,7 +15,7 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['sources'] = $this -> source_model -> getAllSource();
+				$data['targets'] = $this -> target_model -> getAllTarget();
 
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
@@ -31,16 +30,16 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function source_manager() {
+	function target_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['sources'] = $this -> source_model -> getAllSource();
+				$data['targets'] = $this -> target_model -> getAllTarget();
 
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/source_view', $data);
+				$this -> load -> view('user/target_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
@@ -51,22 +50,22 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function add_source() {
+	function add_target() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
 				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtSource', 'Source', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_source_exit');
+				$this -> form_validation -> set_rules('txtTarget', 'Target', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_target_exit');
 
 				if ($this -> form_validation -> run() == FALSE) {
 					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/source');
+					redirect('user/target');
 				} else {
 
-					$this -> session -> set_flashdata('success_msg', 'เพิ่มต้นทางสำเร็จ');
+					$this -> session -> set_flashdata('success_msg', 'เพิ่มเป้าหมายสำเร็จ');
 
-					redirect('user/source');
+					redirect('user/target');
 				}
 				break;
 			case "admin" :
@@ -77,78 +76,22 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function check_source_exit($sourcename) {
+	function check_target_exit($targetname) {
 
-		$result = $this -> source_model -> addSource($sourcename);
-
-		if ($result) {
-			return TRUE;
-		} else {
-			$message = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว ';
-			$this -> form_validation -> set_message('check_source_exit', $message);
-			return FALSE;
-		}
-	}
-
-	function destination_manager() {
-		$user_session = $this -> session -> userdata('logged_in');
-
-		switch ($user_session['status']) {
-			case "user" :
-				$data['destinations'] = $this -> destination_model -> getAllDestination();
-
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/destination_view', $data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refesh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
-	}
-
-	function add_destination() {
-		$user_session = $this -> session -> userdata('logged_in');
-
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtDestination', 'Destination', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_destination_exit');
-
-				if ($this -> form_validation -> run() == FALSE) {
-					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/destination');
-				} else {
-
-					$this -> session -> set_flashdata('success_msg', 'เพิ่มต้นทางสำเร็จ');
-
-					redirect('user/destination');
-				}
-				break;
-			case "admin" :
-				redirect('admin', 'refesh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
-	}
-
-	function check_destination_exit($destinationname) {
-
-		$result = $this -> destination_model -> addDestination($destinationname);
+		$result = $this -> target_model -> addTarget($targetname);
 
 		if ($result) {
 			return TRUE;
 		} else {
-			$message = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว ';
-			$this -> form_validation -> set_message('check_destination_exit', $message);
+			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
+			$this -> form_validation -> set_message('check_target_exit', $message);
 			return FALSE;
 		}
 	}
 
+
+
+	
 	function edit_profile() {
 		$user_session = $this -> session -> userdata('logged_in');
 
