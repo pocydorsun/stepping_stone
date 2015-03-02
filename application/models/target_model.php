@@ -27,5 +27,16 @@ Class Target_Model extends CI_Model {
 		}
 
 	}
+	
+	function removeTarget($id) {
+		$this -> db -> where('id', $id);
+		$query = $this -> db -> delete('target');
+
+		if ($query) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 }
 ?>

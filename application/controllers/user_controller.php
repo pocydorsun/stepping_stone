@@ -89,9 +89,27 @@ class User_controller extends CI_Controller {
 		}
 	}
 
+	function remove_target($id) {
+		
+		$user_session = $this -> session -> userdata('logged_in');
 
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> target_model -> removeTarget($id);
 
-	
+				$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
+
+				redirect('user/target');
+				break;
+				
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
 	function edit_profile() {
 		$user_session = $this -> session -> userdata('logged_in');
 

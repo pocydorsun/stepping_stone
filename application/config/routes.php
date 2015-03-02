@@ -58,8 +58,9 @@ $route['user'] = "user_controller"; // HOME USER
 $route['user/profile'] = "user_controller/edit_profile"; //HOME USER : EDIT USER PROFILE
 $route['user/check_password'] = "user_controller/check_password"; // CHECK FOR CHANGE PASSWORD
 
-$route['user/target'] = "user_controller/target_manager"; // HOME SOURCE
+$route['user/target'] = "user_controller/target_manager"; // HOME target
 $route['user/add_target'] = "user_controller/add_target"; //ADD target
+$route['user/remove_target/(:num)'] = "user_controller/remove_target/$1"; //REMOVE target
 
 $route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAME AND LAST NAME
 

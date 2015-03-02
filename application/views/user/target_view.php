@@ -21,25 +21,22 @@
 
 <div class="container" >
 	<div class="col-sm-6">
-		<a href="#" class="list-group-item active"><strong>รายชื่อเป้าหมาย </strong></a>
-		<ul class="list-group ">
 
-			<style>
-				.x_user {
-					color: red;
-				}
-			</style>
+		<?php $targets_json = json_encode($targets); ?>
+		<ul class="list-group" <?php echo "ng-init='targets = $targets_json'"; ?>>
 
-			<?php foreach($targets as $target) {
-			?>
-			<li class="list-group-item">
-				<?php echo $target -> target_name; ?>
-				<div class="pull-right">
-					<a data-toggle="modal" data-id="" data-toggle="modal" title="Add this item" class="open-ConfirmDialog x_user" data-target=".bs-example-modal-sm" href="#addBookDialog"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a>
-				</div>
+			<a href="#" class="list-group-item active"><strong>รายชื่อเป้าหมาย </strong></a>
+			<ul class="list-group ">
 
-			</li>
-			<?php } ?>
-		</ul>
+				<li class="list-group-item" ng-repeat="target in targets">
+					{{target.target_name}} 
+
+					<div class="pull-right">
+						<a href="" data-toggle="modal" data-msg="ยืนยันการลบเป้าหมาย" data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}} data-toggle="modal" class="open-ConfirmDialog" title="Add this item" style="color: red" data-target=".bs-example-modal-sm"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a>
+					</div>
+
+				</li>
+
+			</ul>
 	</div>
 </div><?php print_r($targets); ?>
