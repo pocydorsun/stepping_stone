@@ -56,7 +56,7 @@ class User_controller extends CI_Controller {
 		switch ($user_session['status']) {
 			case "user" :
 				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtTarget', 'Target', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_target_exit');
+				$this -> form_validation -> set_rules('txtTarget', 'Target', 'trim|required|callback_check_target_exit');
 
 				if ($this -> form_validation -> run() == FALSE) {
 					$this -> session -> set_flashdata('error_msg', validation_errors());
