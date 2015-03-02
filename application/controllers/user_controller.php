@@ -198,6 +198,39 @@ function check_source_exit($sourcename) {
 			return FALSE;
 		}
 	}
+	
+	function change_name() {
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('txtFirstname', 'ชื่อ', 'trim|required|xss_clean');
+		$this -> form_validation -> set_rules('txtLastname', 'นามสกุล', 'trim|required|xss_clean|callback_update_name');
+
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/profile');
+		} else {
+			
+			$this -> session -> set_flashdata('success_msg', 'บันทึกสำเร็จ');
+
+			redirect('user/profile');
+		}
+	}
+	
+	function update_name($lastname){
+		$user_session = $this -> session -> userdata('logged_in');
+		
+		$user_id = $user_session['id'];
+		
+		$firstname = $this -> input -> post('txtFirstname');
+		
+		$result = $this -> user_model -> updateName($user_id, $firstname, $lastname);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$this -> form_validation -> set_message('check_update_namae', 'ระบบทำการบันทึกล้มเหลว กรุณาลองใหม่อีกครั้ง');
+			return FALSE;
+		}
+	}
 
 }
 ?>

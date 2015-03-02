@@ -1,9 +1,7 @@
 <div class="container">
 	<h2>USER PROFILE</h2>
 	
-	<?php 
-		echo form_open('user/check_password');
-	 ?>
+	<?php echo form_open('user/check_password'); ?>
 	 	<div class="col-md-6">
 	 		<div class="form-group">
 				<label for="txtPassword">รหัสผ่าน</label>
@@ -21,3 +19,23 @@
 	 	</div>
 	</form>
 </div>
+
+<br><br>
+
+<div class="container">
+	<?php echo form_open('user/change_name'); ?>
+	 	<div class="col-md-6">
+	 		<div class="form-group">
+				<label for="txtFirstname">ชื่อ</label>
+				<input type="text" class="form-control" name="txtFirstname" id="txtFirstname" placeholder="ชื่อ">
+			</div>
+			<div class="form-group">
+				<label for="txtLastname">นามสกุล</label>
+				<input type="text" class="form-control" name="txtLastname" id="txtLastname" placeholder="นามสกุล">
+			</div>
+			<button type="submit" class="btn btn-success">บันทึกการเปลี่ยนแปลง</button>
+	 	</div>
+	</form>
+</div>
+
+<?php print_r($sources) ?>
