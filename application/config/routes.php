@@ -63,7 +63,7 @@ $route['user/add_source'] = "user_controller/add_source"; //ADD SOURCE
 
 
 $route['user/destination'] = "user_controller/destination_manager"; // HOME DESTINATION
-$route['user/add_source'] = "user_controller/add_source"; //ADD DESTINATION
+$route['user/add_destination'] = "user_controller/add_destination"; //ADD DESTINATION
 
 $route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAME AND LAST NAME
 

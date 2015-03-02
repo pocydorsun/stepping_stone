@@ -77,7 +77,7 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-function check_source_exit($sourcename) {
+	function check_source_exit($sourcename) {
 
 		$result = $this -> source_model -> addSource($sourcename);
 
@@ -110,17 +110,23 @@ function check_source_exit($sourcename) {
 		}
 	}
 
-	function destination_add() {
+	function add_destination() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['destinations'] = $this -> destination_model -> getAllDestination();
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtDestination', 'Destination', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_destination_exit');
 
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/destination_add', $data);
-				$this -> load -> view('include/footer');
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('user/destination');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'เพิ่มต้นทางสำเร็จ');
+
+					redirect('user/destination');
+				}
 				break;
 			case "admin" :
 				redirect('admin', 'refesh');
@@ -129,13 +135,25 @@ function check_source_exit($sourcename) {
 				redirect('login', 'refresh');
 		}
 	}
+	
+	function check_destination_exit($destinationname) {
+
+		$result = $this -> destination_model -> addDestination($destinationname);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'ชื่อผู้ใช้นี้ถูกใช้แล้ว ';
+			$this -> form_validation -> set_message('check_destination_exit', $message);
+			return FALSE;
+		}
+	}
 
 	function edit_profile() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('user/user_profile_view');
