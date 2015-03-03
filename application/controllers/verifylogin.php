@@ -19,13 +19,22 @@ class VerifyLogin extends CI_Controller {
 			$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_database');
 
 			if ($this -> form_validation -> run() == FALSE) {
-				$this->session->set_flashdata('error_msg', 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง');
+				$this -> session -> set_flashdata('error_msg', 'ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง');
 				redirect('login', 'refesh');
 			} else {
 				$user_session = $this -> session -> userdata('logged_in');
-				$this->session->set_flashdata('success_msg', 'เข้าสู่ระบบสำเร็จ');
-				
-				redirect($user_session['status'], 'refesh');
+				$this -> session -> set_flashdata('success_msg', 'เข้าสู่ระบบสำเร็จ');
+
+				switch ($user_session['status']) {
+					case "user" :
+						redirect('user/plan', 'refesh');
+						break;
+					case "admin" :
+						redirect('admin', 'refesh');
+						break;
+					default :
+						redirect('login', 'refresh');
+				}
 			}
 		}
 	}

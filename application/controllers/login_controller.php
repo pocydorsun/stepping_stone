@@ -13,7 +13,7 @@ class Login_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
-				redirect('user','refesh');
+				redirect('user/plan','refesh');
 				break;
 			case "admin" :
 				redirect('admin', 'refesh');
