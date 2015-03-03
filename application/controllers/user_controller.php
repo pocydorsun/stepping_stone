@@ -8,6 +8,7 @@ class User_controller extends CI_Controller {
 		parent::__construct();
 		$this -> load -> model('user_model', '', TRUE);
 		$this -> load -> model('target_model', '', TRUE);
+		$this -> load -> model('cost_model', '', TRUE);
 	}
 
 	function index() {
@@ -141,6 +142,26 @@ class User_controller extends CI_Controller {
 
 			case "admin" :
 				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	function cost_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['costs'] = $this -> cost_model -> getAllCost();
+
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/cost_view', $data);
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refesh');
 				break;
 			default :
 				redirect('login', 'refresh');
