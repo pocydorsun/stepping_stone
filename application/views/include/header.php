@@ -41,7 +41,7 @@
 				      <a class="navbar-brand" href=<?php echo site_url("admin");?>>Stepping Stone</a>
 				      
 				      <?php elseif ($login_sess['status'] == 'user') :?>
-				      <a class="navbar-brand" href=<?php echo site_url("user");?>>Stepping Stone</a>
+				      <a class="navbar-brand" href=<?php echo site_url("user/plan");?>>Stepping Stone</a>
 				      
 				      <?php else : ?>
 				      <a class="navbar-brand" href=<?php echo base_url();?>>Stepping Stone</a>
@@ -79,13 +79,13 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
+								<a href="<?php echo site_url("user/plan");?>">จัดการแผนการขนส่ง</a>
+							</li>
+							<li>
 								<a href="<?php echo site_url("user/target");?>">จัดการเป้าหมาย</a>
 							</li>
 							<li>
-								<a href="#">กำหนดค่าขนส่ง</a>
-							</li>
-							<li>
-								<a href="#">จัดแผนการขนส่ง</a>
+								<a href="<?php echo site_url("user/cost");?>">กำหนดค่าขนส่ง</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
