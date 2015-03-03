@@ -7,7 +7,6 @@
 		?>
 		<div class="col-sm-6">
 			<div class="form-group">
-				<!-- <label for="txtTarget">ชื่อเป้าหมาย</label> -->
 				<input type="text" class="form-control" name="txtTarget" id="txtTarget" placeholder="กรอกชื่อเป้าหมาย">
 			</div>
 			<button type="submit" class="btn btn-success">
@@ -36,11 +35,31 @@
 			</li>
 
 			<li class="list-group-item" ng-repeat="target in filtered = (targets | filter:searchText)">
+				
 				{{target.target_name}}
-
-				<div class="pull-right">
-					<a href="" data-toggle="modal" data-msg="ยืนยันการลบเป้าหมาย" data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}} data-toggle="modal" class="open-ConfirmDialog" title="Add this item" style="color: red" data-target=".bs-example-modal-sm"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a>
-				</div>
+				
+				<span class="pull-right">
+					<button data-toggle="modal"
+							data-title="แก้ไข" 
+							data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.target_name}}'>"
+							data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
+							class="open-ConfirmDialog btn btn-xs btn-default"
+							data-target=".my-modal">
+							
+						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 
+					</button>
+					
+					<button data-toggle="modal"
+							data-title="คำเตือน" 
+							data-msg="ยืนยันการลบ" 
+							data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}}
+							class="open-ConfirmDialog btn btn-xs btn-default"
+							data-target=".my-modal">
+						
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+				</span>
+				
 
 			</li>
 			<li class="list-group-item" ng-show="filtered == 0">

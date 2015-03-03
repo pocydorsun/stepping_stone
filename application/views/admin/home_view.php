@@ -44,7 +44,14 @@
 
 				<!-- link remove user for admin (CONFIRM by MODAL) -->
 				<div class="pull-right">
-					<a href="" data-toggle="modal" data-msg="ยืนยันการลบผู้ใช้" data-id=<?php echo site_url("admin/remove_user/"); ?>{{"/"+user.id}} data-toggle="modal" class="open-ConfirmDialog" title="Add this item" style="color: red" data-target=".bs-example-modal-sm"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a>
+					<button data-toggle="modal"
+							data-title="คำเตือน"
+							data-msg="ยืนยันการลบผู้ใช้"
+							data-id=<?php echo site_url("admin/remove_user/"); ?>{{"/"+user.id}}
+							class="open-ConfirmDialog btn btn-xs btn-default"
+							data-target=".remove-confirm-moal"> 
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
 				</div>
 
 			</li>

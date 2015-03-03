@@ -89,8 +89,45 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function remove_target($id) {
+	function edit_target($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtTargetName', 'เป้าหมาย', 'trim|required|callback_update_target[' . $id . ']');
+
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('user/target');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+
+					redirect('user/target');
+				}
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function update_target($target_name, $id) {
+		$result = $this -> target_model -> editTarget($id, $target_name);
 		
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
+			$this -> form_validation -> set_message('update_target', $message);
+			return FALSE;
+		}
+	}
+
+	function remove_target($id) {
+
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
@@ -101,7 +138,7 @@ class User_controller extends CI_Controller {
 
 				redirect('user/target');
 				break;
-				
+
 			case "admin" :
 				redirect('admin', 'refresh');
 				break;

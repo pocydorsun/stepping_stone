@@ -28,6 +28,26 @@ Class Target_Model extends CI_Model {
 
 	}
 	
+	function editTarget($id, $target_name) {
+		
+		$this -> db -> from('target');
+		$this -> db -> where('target_name', $target_name);
+		$this -> db -> limit(1);
+
+		$query = $this -> db -> get();
+		$rows = $query -> num_rows();
+		
+		if (!$rows) {
+			$data = array('target_name' => $target_name);
+			$this -> db -> where('id', $id);
+			$this -> db -> update('target', $data);
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+		
+	}
+	
 	function removeTarget($id) {
 		$this -> db -> where('id', $id);
 		$query = $this -> db -> delete('target');
