@@ -20,7 +20,7 @@ class User_controller extends CI_Controller {
 
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/user_view', $data);
+				$this -> load -> view('user/plan_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
@@ -31,6 +31,7 @@ class User_controller extends CI_Controller {
 		}
 	}
 
+	// TARGET
 	function target_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -148,6 +149,7 @@ class User_controller extends CI_Controller {
 		}
 	}
 	
+	// COST 	
 	function cost_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -168,6 +170,7 @@ class User_controller extends CI_Controller {
 		}
 	}
 
+	// USER PROFILE
 	function edit_profile() {
 		$user_session = $this -> session -> userdata('logged_in');
 
