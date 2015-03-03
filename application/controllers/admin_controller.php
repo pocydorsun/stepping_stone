@@ -40,7 +40,7 @@ class Admin_controller extends CI_Controller {
 				break;
 			case "admin" :
 				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtUsername', 'Username', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_username_exit');
+				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_username_exit');
 
 				if ($this -> form_validation -> run() == FALSE) {
 					$this -> session -> set_flashdata('error_msg', validation_errors());
