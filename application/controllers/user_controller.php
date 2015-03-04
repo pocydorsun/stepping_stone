@@ -16,6 +16,22 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
+				redirect('user/plan', 'refresh');
+				break;
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+	// PLAN
+	function plan() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
 				$data['targets'] = $this -> target_model -> getAllTarget();
 
 				$this -> load -> helper('form');
@@ -24,7 +40,7 @@ class User_controller extends CI_Controller {
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
-				redirect('admin', 'refesh');
+				redirect('admin', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
@@ -45,7 +61,7 @@ class User_controller extends CI_Controller {
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
-				redirect('admin', 'refesh');
+				redirect('admin', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
@@ -71,7 +87,7 @@ class User_controller extends CI_Controller {
 				}
 				break;
 			case "admin" :
-				redirect('admin', 'refesh');
+				redirect('admin', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
@@ -118,7 +134,7 @@ class User_controller extends CI_Controller {
 
 	function update_target($target_name, $id) {
 		$result = $this -> target_model -> editTarget($id, $target_name);
-		
+
 		if ($result) {
 			return TRUE;
 		} else {
@@ -148,26 +164,64 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
-	// COST 	
+
+	// COST
 	function cost_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
 				$data['costs'] = $this -> cost_model -> getAllCost();
-
+				$data['targets'] = $this -> targetId_to_targetId();
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('user/cost_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
-				redirect('admin', 'refesh');
+				redirect('admin', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
 		}
+	}
+
+	function targetId_to_targetId() {
+
+		// 		STEP 1
+		echo "<h3>Step 1</h3><br>";
+		$targets = $this -> target_model -> getAllTarget();
+		print_r($targets);
+		echo "<br><br>";
+
+		// 		STEP 2
+		echo "<h3>Step 2</h3><br>";
+		$input_data = array();
+		foreach ($targets as $key => $value) {
+			array_push($input_data, $value->id);
+		}
+	
+		print_r($input_data);
+
+		// 		STEP 3
+		echo "<h3>Step 3</h3><br>";
+		
+		$output_data = array();
+		while (count($input_data) != 1) {
+			$first_value = $input_data[0];
+			$backup_data = array();
+			foreach ($input_data as $key => $value) {
+				if ($key != 0) {
+					$str = $first_value.'-'.$value;
+					array_push($output_data, $str);
+					array_push($backup_data, $value);
+				}
+			$input_data = $backup_data;
+			}
+		}
+	
+		print_r($output_data);
+		exit ;
 	}
 
 	// USER PROFILE
@@ -188,7 +242,7 @@ class User_controller extends CI_Controller {
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :
-				redirect('admin', 'refesh');
+				redirect('admin', 'refresh');
 				break;
 			default :
 				redirect('login', 'refresh');
