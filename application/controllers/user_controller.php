@@ -171,8 +171,18 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
+				$arr = $this -> target_model -> getAllTarget();
+				$data['targets'] = $arr;
 				$data['costs'] = $this -> cost_model -> getAllCost();
-				$data['targets'] = $this -> targetId_to_targetId();
+				
+				$arr2 = array();
+				foreach ($arr as $item){
+					$arr2[$item->id] = $item->target_name;
+				}
+				
+				$data['targets_r'] = $arr2;
+				
+				$data['costs'] = $this -> cost_model -> getAllCost();
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('user/cost_view', $data);
@@ -186,42 +196,40 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function targetId_to_targetId() {
+	function save_cost() {
 
-		// 		STEP 1
-		echo "<h3>Step 1</h3><br>";
-		$targets = $this -> target_model -> getAllTarget();
-		print_r($targets);
-		echo "<br><br>";
-
-		// 		STEP 2
-		echo "<h3>Step 2</h3><br>";
-		$input_data = array();
-		foreach ($targets as $key => $value) {
-			array_push($input_data, $value->id);
-		}
-	
-		print_r($input_data);
-
-		// 		STEP 3
-		echo "<h3>Step 3</h3><br>";
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('selectSource', 'ต้นทาง', 'trim|required|xss_clean');
+		$this -> form_validation -> set_rules('selectDestination', 'ปลายทาง', 'trim|required|xss_clean');
+		$this -> form_validation -> set_rules('inputCost', 'ค่าขนส่ง', 'trim|required|integer|xss_clean|callback_verify_cost');
 		
-		$output_data = array();
-		while (count($input_data) != 1) {
-			$first_value = $input_data[0];
-			$backup_data = array();
-			foreach ($input_data as $key => $value) {
-				if ($key != 0) {
-					$str = $first_value.'-'.$value;
-					array_push($output_data, $str);
-					array_push($backup_data, $value);
-				}
-			$input_data = $backup_data;
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/cost');
+		} else {
+			$this -> session -> set_flashdata('success_msg', "บันทึกสำเร็จ");
+			redirect('user/cost');
+		}
+		
+	}
+	
+	function verify_cost($inputCost) {
+		$id1 = $this->input->post('selectSource');
+		$id2 = $this->input->post('selectDestination');
+		
+		if ($id1 == $id2) {
+			$this -> form_validation -> set_message('verify_cost', 'ต้นทางปลายทางต้องไม่ซ้ำกัน');
+			return FALSE;
+		} else {
+			$result = $this -> cost_model -> addCost($id1, $id2, $inputCost);
+	
+			if ($result) {
+				return TRUE;
+			} else {
+				$this -> form_validation -> set_message('verify_cost', 'ต้นทางปลายทางนี้ถูกบันทึกไปแล้ว');
+				return FALSE;
 			}
 		}
-	
-		print_r($output_data);
-		exit ;
 	}
 
 	// USER PROFILE

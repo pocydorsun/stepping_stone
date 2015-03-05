@@ -64,7 +64,8 @@ $route['user/add_target'] = "user_controller/add_target"; //ADD target
 $route['user/edit_target/(:num)'] = "user_controller/edit_target/$1"; //EDIT target
 $route['user/remove_target/(:num)'] = "user_controller/remove_target/$1"; //REMOVE target
 
-$route['user/cost'] = "user_controller/cost_manager"; // HOME target
+$route['user/cost'] = "user_controller/cost_manager"; // HOME COST
+$route['user/save_cost'] = "user_controller/save_cost"; // HOME COST
 
 $route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAME AND LAST NAME
 
