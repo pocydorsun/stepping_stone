@@ -36,12 +36,14 @@
 
 			<li class="list-group-item" ng-repeat="target in filtered = (targets | filter:searchText)">
 				
-				{{target.target_name}}
+				{{target.source_name}}
 				
 				<span class="pull-right">
 					<button data-toggle="modal"
 							data-title="แก้ไข" 
-							data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.target_name}}'>"
+							data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.source_name}}'>"
+							data-button="บันทึก"
+							data-class="btn btn-success"
 							data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
 							class="open-ConfirmDialog btn btn-xs btn-default"
 							data-target=".my-modal">
@@ -51,7 +53,9 @@
 					
 					<button data-toggle="modal"
 							data-title="คำเตือน" 
-							data-msg="ยืนยันการลบ" 
+							data-msg="ยืนยันการลบ"
+							data-button="ยืนยัน"
+							data-class="btn btn-danger"
 							data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}}
 							class="open-ConfirmDialog btn btn-xs btn-default"
 							data-target=".my-modal">

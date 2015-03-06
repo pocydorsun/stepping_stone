@@ -94,9 +94,9 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function check_target_exit($targetname) {
+	function check_target_exit($target) {
 
-		$result = $this -> target_model -> addTarget($targetname);
+		$result = $this -> target_model -> addTarget($target);
 
 		if ($result) {
 			return TRUE;

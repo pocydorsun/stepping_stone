@@ -24,8 +24,8 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">
 						ยกเลิก
 					</button>
-					<button type="submit" class="btn btn-success">
-						บันทึก
+					<button type="submit" class="btn btn-success" id="buttonSubmit">
+						
 					</button>
 				</div>
 			</form>
@@ -38,9 +38,13 @@
 		var urlId = $(this).data('id');
 		var bodyMsg = $(this).data('msg');
 		var bodyTitle = $(this).data('title');
+		var button = $(this).data('button');
+		var buttonClass = $(this).data('class');
 		$(".modal-content #link").attr("action", urlId);
 		$(".modal-body").html(bodyMsg);
 		$(".modal-title").html(bodyTitle);
+		$(".modal-footer #buttonSubmit").attr("class", buttonClass);
+		$(".modal-footer #buttonSubmit").html(button);
 	}); 
 </script>
 </body>
