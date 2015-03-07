@@ -35,41 +35,36 @@
 			</li>
 
 			<li class="list-group-item" ng-repeat="target in filtered = (targets | filter:searchText)">
-				
+
 				{{target.source_name}}
-				
+
 				<span class="pull-right">
 					<button data-toggle="modal"
-							data-title="แก้ไข" 
-							data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.source_name}}'>"
-							data-button="บันทึก"
-							data-class="btn btn-success"
-							data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".my-modal">
-							
-						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 
-					</button>
-					
-					<button data-toggle="modal"
-							data-title="คำเตือน" 
-							data-msg="ยืนยันการลบ"
-							data-button="ยืนยัน"
-							data-class="btn btn-danger"
-							data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".my-modal">
-						
-						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					</button>
-				</span>
-				
+					data-title="แก้ไข"
+					data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.source_name}}'>"
+					data-button="บันทึก"
+					data-class="btn btn-success"
+					data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
 
+						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					</button>
+					<button data-toggle="modal"
+					data-title="คำเตือน"
+					data-msg="ยืนยันการลบ"
+					data-button="ยืนยัน"
+					data-class="btn btn-danger"
+					data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
+
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button> </span>
 			</li>
 			<li class="list-group-item" ng-show="filtered == 0">
 				ไม่พบข้อมูล
 			</li>
-
 		</ul>
 	</div>
 </div>

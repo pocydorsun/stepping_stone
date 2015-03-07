@@ -55,9 +55,9 @@ $route['admin/check_password'] = "admin_controller/check_password"; // CHECK FOR
 
 /* USER ROUTE */ 
 $route['user'] = "user_controller"; // HOME USER
-$route['user/plan'] = "user_controller/plan"; // HOME USER
 $route['user/profile'] = "user_controller/edit_profile"; //HOME USER : EDIT USER PROFILE
 $route['user/check_password'] = "user_controller/check_password"; // CHECK FOR CHANGE PASSWORD
+$route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAME AND LAST NAME
 
 $route['user/target'] = "user_controller/target_manager"; // HOME target
 $route['user/add_target'] = "user_controller/add_target"; //ADD target
@@ -66,10 +66,11 @@ $route['user/remove_target/(:num)'] = "user_controller/remove_target/$1"; //REMO
 
 $route['user/cost'] = "user_controller/cost_manager"; // HOME COST
 $route['user/save_cost'] = "user_controller/save_cost"; // HOME COST
+$route['user/edit_cost/(:num)'] = "user_controller/edit_cost/$1"; //EDIT cost
+$route['user/remove_cost/(:num)'] = "user_controller/remove_cost/$1"; //REMOVE cost
 
-$route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAME AND LAST NAME
-
-
+$route['user/plan'] = "user_controller/plan_manager"; // HOME plan
+$route['user/add_plan'] = "user_controller/add_plan"; //ADD plan
 
 
 /* End of file routes.php */

@@ -9,6 +9,7 @@ class User_controller extends CI_Controller {
 		$this -> load -> model('user_model', '', TRUE);
 		$this -> load -> model('target_model', '', TRUE);
 		$this -> load -> model('cost_model', '', TRUE);
+		$this -> load -> model('plan_model', '', TRUE);
 	}
 
 	function index() {
@@ -25,14 +26,14 @@ class User_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
+
 	// PLAN
-	function plan() {
+	function plan_manager() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-				$data['targets'] = $this -> target_model -> getAllTarget();
+				$data['plans'] = $this -> plan_model -> getAllplan();
 
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
@@ -44,6 +45,45 @@ class User_controller extends CI_Controller {
 				break;
 			default :
 				redirect('login', 'refresh');
+		}
+	}
+
+	function add_plan() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
+
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('user/plan');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
+
+					redirect('user/plan');
+				}
+				break;
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function check_plan_exit($plan) {
+
+		$result = $this -> plan_model -> addPlan($plan);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีชื่อนี้แล้ว ';
+			$this -> form_validation -> set_message('check_plan_exit', $message);
+			return FALSE;
 		}
 	}
 
@@ -171,17 +211,9 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
-				$arr = $this -> target_model -> getAllTarget();
-				$data['targets'] = $arr;
+				$data['targets'] = $this -> target_model -> getAllTarget();
 				$data['costs'] = $this -> cost_model -> getAllCost();
-				
-				$arr2 = array();
-				foreach ($arr as $item){
-					$arr2[$item->id] = $item->target_name;
-				}
-				
-				$data['targets_r'] = $arr2;
-				
+
 				$data['costs'] = $this -> cost_model -> getAllCost();
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
@@ -202,7 +234,7 @@ class User_controller extends CI_Controller {
 		$this -> form_validation -> set_rules('selectSource', 'ต้นทาง', 'trim|required|xss_clean');
 		$this -> form_validation -> set_rules('selectDestination', 'ปลายทาง', 'trim|required|xss_clean');
 		$this -> form_validation -> set_rules('inputCost', 'ค่าขนส่ง', 'trim|required|integer|xss_clean|callback_verify_cost');
-		
+
 		if ($this -> form_validation -> run() == FALSE) {
 			$this -> session -> set_flashdata('error_msg', validation_errors());
 			redirect('user/cost');
@@ -210,25 +242,76 @@ class User_controller extends CI_Controller {
 			$this -> session -> set_flashdata('success_msg', "บันทึกสำเร็จ");
 			redirect('user/cost');
 		}
-		
+
 	}
-	
+
 	function verify_cost($inputCost) {
-		$id1 = $this->input->post('selectSource');
-		$id2 = $this->input->post('selectDestination');
-		
+		$id1 = $this -> input -> post('selectSource');
+		$id2 = $this -> input -> post('selectDestination');
+
 		if ($id1 == $id2) {
 			$this -> form_validation -> set_message('verify_cost', 'ต้นทางปลายทางต้องไม่ซ้ำกัน');
 			return FALSE;
 		} else {
 			$result = $this -> cost_model -> addCost($id1, $id2, $inputCost);
-	
+
 			if ($result) {
 				return TRUE;
 			} else {
 				$this -> form_validation -> set_message('verify_cost', 'ต้นทางปลายทางนี้ถูกบันทึกไปแล้ว');
 				return FALSE;
 			}
+		}
+	}
+
+	function edit_cost($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtCost', 'ค่าขนส่ง', 'trim|required|numeric|callback_update_cost[' . $id . ']');
+
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('user/cost');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+
+					redirect('user/cost');
+				}
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function update_cost($cost, $id) {
+		$this -> cost_model -> editCost($id, $cost);
+
+	}
+
+	function remove_cost($id) {
+
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> cost_model -> removeCost($id);
+
+				$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
+
+				redirect('user/cost');
+				break;
+
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
 		}
 	}
 
