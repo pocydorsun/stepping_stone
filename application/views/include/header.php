@@ -59,7 +59,7 @@
 								<a href=<?php echo site_url("admin");?>>จัดการผู้ใช้</a>
 							</li>
 							<li>
-								<a href="#">อนุมัติรายงาน</a>
+								<a href=<?php echo site_url("admin/approve");?>>อนุมัติรายงาน</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">

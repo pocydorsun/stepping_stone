@@ -8,6 +8,8 @@ class Admin_controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this -> load -> model('user_model', '', TRUE);
+		$this -> load -> model('plan_model', '', TRUE);
+
 	}
 
 	function index() {
@@ -94,7 +96,7 @@ class Admin_controller extends CI_Controller {
 
 	function change_password() {
 		$user_session = $this -> session -> userdata('logged_in');
-	
+
 		switch ($user_session['status']) {
 			case "user" :
 				redirect('user', 'refresh');
@@ -115,16 +117,16 @@ class Admin_controller extends CI_Controller {
 		$this -> form_validation -> set_rules('txtNewPassword', 'รหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
 		$this -> form_validation -> set_rules('txtReNewPassword', 'ยืนยันรหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_new_password');
 		$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_admin_password');
-		
+
 		if ($this -> form_validation -> run() == FALSE) {
 			$this -> session -> set_flashdata('error_msg', validation_errors());
 			redirect('admin/change_password');
 		} else {
 			$user_session = $this -> session -> userdata('logged_in');
 			$new_password = $this -> input -> post('txtNewPassword');
-			
+
 			$this -> user_model -> updatePassword($user_session['username'], $new_password);
-			
+
 			$this -> session -> set_flashdata('success_msg', 'บันทึกรหัสผ่านใหม่สำเร็จ');
 
 			redirect('admin/change_password');
@@ -143,12 +145,12 @@ class Admin_controller extends CI_Controller {
 			return FALSE;
 		}
 	}
-	
-	function check_new_password($re_new_password){
+
+	function check_new_password($re_new_password) {
 		$password = $this -> input -> post('txtPassword');
 		$new_password = $this -> input -> post('txtNewPassword');
 		if ($re_new_password == $new_password) {
-			if($new_password == $password) {
+			if ($new_password == $password) {
 				$this -> form_validation -> set_message('check_new_password', 'รหัสผ่านใหม่ต้องไม่ตรงกับรหัสผ่านเดิม');
 				return FALSE;
 			} else {
@@ -157,6 +159,26 @@ class Admin_controller extends CI_Controller {
 		} else {
 			$this -> form_validation -> set_message('check_new_password', 'รหัสผ่านใหม่ไม่ตรงกัน');
 			return FALSE;
+		}
+	}
+
+	function approve() {
+
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$data['plans'] = $this -> plan_model -> getAllPlanSend();
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('admin/approve_view',$data);
+				$this -> load -> view('include/footer');
+				break;
+			default :
+				redirect('login', 'refresh');
 		}
 	}
 

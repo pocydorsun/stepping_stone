@@ -48,6 +48,43 @@ class User_controller extends CI_Controller {
 		}
 	}
 
+	function plan_send($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$data['plans'] = $this -> plan_model -> statusSend($id);
+
+				$this -> session -> set_flashdata('success_msg', 'ส่งแผนแผนสำเร็จ');
+				redirect('user/plan');
+
+				break;
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function create_plan() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('user/plan_create');
+				$this -> load -> view('include/footer');
+				break;
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
 	function add_plan() {
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -84,6 +121,27 @@ class User_controller extends CI_Controller {
 			$message = 'มีชื่อนี้แล้ว ';
 			$this -> form_validation -> set_message('check_plan_exit', $message);
 			return FALSE;
+		}
+	}
+
+	function remove_plan($id) {
+
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				$this -> plan_model -> removePlan($id);
+
+				$this -> session -> set_flashdata('success_msg', 'ลบแผนสำเร็จ');
+
+				redirect('user/plan');
+				break;
+
+			case "admin" :
+				redirect('admin', 'refresh');
+				break;
+			default :
+				redirect('login', 'refresh');
 		}
 	}
 

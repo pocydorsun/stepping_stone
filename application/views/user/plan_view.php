@@ -1,20 +1,6 @@
 <div class="container">
 	<h1>PLAN PAGE</h1>
-	<div>
-		<?php
-		$attributes = array('class' => 'form-inline');
-		echo form_open('user/add_plan', $attributes);
-		?>
-		<div class="col-sm-6">
-			<div class="form-group">
-				<input type="text" class="form-control" name="txtPlan" id="txtPlan" placeholder="กรอกชื่อแผน">
-			</div>
-			<button type="submit" class="btn btn-success">
-				เพิ่ม
-			</button>
-		</div>
-		</form>
-	</div>
+	<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
 </div>
 <br>
 
@@ -39,6 +25,18 @@
 				{{plan.plan_name}}
 
 				<span class="pull-right">
+
+					<button data-toggle="modal"
+					data-title="คำเตือน"
+					data-msg="ยืนยันการส่งแผน"
+					data-button="ยืนยัน"
+					data-class="btn btn-success"
+					data-id=<?php echo site_url("user/plan_send/"); ?>{{"/"+plan.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
+						<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+					</button>
+					
 					<button data-toggle="modal"
 					data-title="แก้ไข"
 					data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.source_name}}'>"
@@ -47,20 +45,21 @@
 					data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
 					class="open-ConfirmDialog btn btn-xs btn-default"
 					data-target=".my-modal">
-
 						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</button>
+					
 					<button data-toggle="modal"
 					data-title="คำเตือน"
 					data-msg="ยืนยันการลบ"
 					data-button="ยืนยัน"
 					data-class="btn btn-danger"
-					data-id=<?php echo site_url("user/remove_target/"); ?>{{"/"+target.id}}
+					data-id=<?php echo site_url("user/remove_plan/"); ?>{{"/"+plan.id}}
 					class="open-ConfirmDialog btn btn-xs btn-default"
 					data-target=".my-modal">
-
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					</button> </span>
+					</button> 
+					
+				</span>
 			</li>
 			<li class="list-group-item" ng-show="filtered == 0">
 				ไม่พบข้อมูล

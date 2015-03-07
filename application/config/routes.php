@@ -52,6 +52,7 @@ $route['admin/add_user'] = "admin_controller/add_user"; //HOME ADMIN : ADD USER
 $route['admin/remove_user/(:num)'] = "admin_controller/remove_user/$1"; //HOME ADMIN : REMOVE USER
 $route['admin/change_password'] = "admin_controller/change_password"; // CHANGE PASSWORD VIEW
 $route['admin/check_password'] = "admin_controller/check_password"; // CHECK FOR CHANGE PASSWORD
+$route['admin/approve'] = "admin_controller/approve"; //HOME ADMIN APPROVE
 
 /* USER ROUTE */ 
 $route['user'] = "user_controller"; // HOME USER
@@ -70,7 +71,10 @@ $route['user/edit_cost/(:num)'] = "user_controller/edit_cost/$1"; //EDIT cost
 $route['user/remove_cost/(:num)'] = "user_controller/remove_cost/$1"; //REMOVE cost
 
 $route['user/plan'] = "user_controller/plan_manager"; // HOME plan
+$route['user/plan_send/(:num)'] = "user_controller/plan_send/$1"; //REMOVE target
+$route['user/create'] = "user_controller/create_plan"; // HOME plan
 $route['user/add_plan'] = "user_controller/add_plan"; //ADD plan
+$route['user/remove_plan/(:num)'] = "user_controller/remove_plan/$1"; //REMOVE target
 
 
 /* End of file routes.php */

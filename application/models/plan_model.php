@@ -8,7 +8,15 @@ Class Plan_Model extends CI_Model {
 
 		return $query -> result();
 	}
-	
+
+	function statusSend($id) {
+
+		$data = array('plan_status' => 1);
+		$this -> db -> where('id', $id);
+		$this -> db -> update('plan', $data);
+
+	}
+
 	function addPlan($planname) {
 
 		$this -> db -> from('plan');
@@ -27,5 +35,26 @@ Class Plan_Model extends CI_Model {
 		}
 
 	}
+
+	function removePlan($id) {
+		$this -> db -> where('id', $id);
+		$query = $this -> db -> delete('plan');
+
+		if ($query) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	function getAllPlanSend() {
+		$this -> db -> select('*');
+		$this -> db -> from('plan');
+		$this -> db -> where('plan_status', 1);
+		$query = $this -> db -> get();
+
+		return $query -> result();
+	}
+
 }
 ?>
