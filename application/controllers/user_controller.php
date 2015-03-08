@@ -72,9 +72,11 @@ class User_controller extends CI_Controller {
 
 		switch ($user_session['status']) {
 			case "user" :
+				$data['targets'] = $this -> target_model -> getAllTarget();
+				
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('user/plan_create');
+				$this -> load -> view('user/plan_create',$data);
 				$this -> load -> view('include/footer');
 				break;
 			case "admin" :

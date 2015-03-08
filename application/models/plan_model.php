@@ -56,5 +56,21 @@ Class Plan_Model extends CI_Model {
 		return $query -> result();
 	}
 
+	function statusNotApprove($id) {
+
+		$data = array('plan_status' => 2);
+		$this -> db -> where('id', $id);
+		$this -> db -> update('plan', $data);
+
+	}
+
+	function statusApprove($id) {
+
+		$data = array('plan_status' => 3);
+		$this -> db -> where('id', $id);
+		$this -> db -> update('plan', $data);
+
+	}
+
 }
 ?>

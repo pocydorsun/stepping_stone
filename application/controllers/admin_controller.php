@@ -174,8 +174,44 @@ class Admin_controller extends CI_Controller {
 				$data['plans'] = $this -> plan_model -> getAllPlanSend();
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('admin/approve_view',$data);
+				$this -> load -> view('admin/approve_view', $data);
 				$this -> load -> view('include/footer');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function plan_approve($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$data['plans'] = $this -> plan_model -> statusApprove($id);
+
+				$this -> session -> set_flashdata('success_msg', 'อนุมัติแผน');
+				redirect('admin/approve');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+	
+		function plan_not_approve($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$data['plans'] = $this -> plan_model -> statusNotApprove($id);
+
+				$this -> session -> set_flashdata('success_msg', 'ไม่อนุมัติแผน');
+				redirect('admin/approve');
 				break;
 			default :
 				redirect('login', 'refresh');
