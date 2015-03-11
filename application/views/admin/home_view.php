@@ -43,16 +43,18 @@
 				{{user.username}}
 
 				<!-- link remove user for admin (CONFIRM by MODAL) -->
-				<div class="pull-right">
+				<span class="pull-right">
 					<button data-toggle="modal"
-							data-title="คำเตือน"
-							data-msg="ยืนยันการลบผู้ใช้"
-							data-id=<?php echo site_url("admin/remove_user/"); ?>{{"/"+user.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".remove-confirm-moal"> 
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					</button>
-				</div>
+					data-title="คำเตือน"
+					data-msg="ยืนยันการลบ"
+					data-button="ยืนยัน"
+					data-class="btn btn-danger"
+					data-id=<?php echo site_url("admin/remove_user/"); ?>{{"/"+user.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
+
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button> </span>
 
 			</li>
 

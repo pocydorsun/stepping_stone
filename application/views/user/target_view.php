@@ -47,9 +47,9 @@
 					data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
 					class="open-ConfirmDialog btn btn-xs btn-default"
 					data-target=".my-modal">
-
 						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</button>
+					
 					<button data-toggle="modal"
 					data-title="คำเตือน"
 					data-msg="ยืนยันการลบ"

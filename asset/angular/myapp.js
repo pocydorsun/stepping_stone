@@ -6,7 +6,6 @@ function($scope) {
 	
 	$scope.mainDataTable = [];
 
-	// ข้อมูลตั้งต้นไว้ใช้ทดสอบตาราง
 	$scope.dataTable = [];
 
 	$scope.dataList = function(targets) {
