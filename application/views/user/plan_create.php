@@ -47,7 +47,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="list in dataTable">
-						<td>{{list.source_name}}</td>
+						<td>{{list.name}}</td>
 						<td>
 						<center>
 							{{list.capacity}}
@@ -98,7 +98,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="list in dataTable2">
-						<td>{{list.source_name}}</td>
+						<td>{{list.name}}</td>
 						<td>
 						<center>
 							{{list.capacity}}

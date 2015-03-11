@@ -7,15 +7,7 @@ function($scope) {
 	$scope.mainDataTable = [];
 
 	// ข้อมูลตั้งต้นไว้ใช้ทดสอบตาราง
-	$scope.dataTable = [{
-		id : "1",
-		source_name : "โรงงาน A",
-		capacity : '20'
-	}, {
-		id : "2",
-		source_name : "โรงงาน B",
-		capacity : '15'
-	} ];
+	$scope.dataTable = [];
 
 	$scope.dataList = function(targets) {
 		$scope.mainDataTable = $scope.dataTable.concat($scope.dataTable2);
@@ -39,7 +31,7 @@ function($scope) {
 			
 			$scope.dataTable.push({
 				id : json.id,
-				source_name : json.source_name,
+				name : json.source_name,
 				capacity : $scope.capacity
 			});
 			
@@ -66,11 +58,7 @@ function($scope) {
 		});
 	};
 	
-	$scope.dataTable2 = [{
-		id : "3",
-		source_name : "โรงงาน C",
-		capacity : '30'
-	} ];
+	$scope.dataTable2 = [];
 	
 	$scope.addList2 = function() {
 		if (($scope.name2 !== undefined) && ($scope.capacity2 !== undefined)) {
@@ -79,7 +67,7 @@ function($scope) {
 			
 			$scope.dataTable2.push({
 				id : json2.id,
-				source_name : json2.source_name,
+				name : json2.source_name,
 				capacity : $scope.capacity2
 			});
 			
