@@ -22,7 +22,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	</head>
-	<body>
+	<body ng-controller="listTableCtrl">
 		<div class="container">
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">

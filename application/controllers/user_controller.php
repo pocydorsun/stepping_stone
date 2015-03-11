@@ -96,8 +96,11 @@ class User_controller extends CI_Controller {
 				$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
 
 				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('dataTable', $this -> input -> post('txtDataTable'));
+					$this -> session -> set_flashdata('dataTable2', $this -> input -> post('txtDataTable2'));
+					$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/plan');
+					redirect('user/create');
 				} else {
 
 					$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
@@ -114,8 +117,10 @@ class User_controller extends CI_Controller {
 	}
 
 	function check_plan_exit($plan) {
-
-		$result = $this -> plan_model -> addPlan($plan);
+		$dataTable = $this -> input -> post('txtDataTable');
+		$dataTable2 = $this -> input -> post('txtDataTable2');
+	
+		$result = $this -> plan_model -> addPlan($plan, $dataTable, $dataTable2);
 
 		if ($result) {
 			return TRUE;
