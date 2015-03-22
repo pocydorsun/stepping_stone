@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2015 at 10:20 AM
+-- Generation Time: Mar 22, 2015 at 06:34 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -27,40 +27,84 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `cost` (
-  `target_id1` int(11) NOT NULL,
-  `target_id2` int(11) NOT NULL,
+`cost_id` int(11) NOT NULL,
+  `source_id` int(11) NOT NULL,
+  `destination_id` int(11) NOT NULL,
   `cost` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cost`
 --
 
-INSERT INTO `cost` (`target_id1`, `target_id2`, `cost`) VALUES
-(8, 9, 5),
-(8, 10, 2);
+INSERT INTO `cost` (`cost_id`, `source_id`, `destination_id`, `cost`) VALUES
+(3, 1, 3, 0),
+(4, 1, 2, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `target`
+-- Table structure for table `destination`
 --
 
-CREATE TABLE IF NOT EXISTS `target` (
+CREATE TABLE IF NOT EXISTS `destination` (
 `id` int(11) NOT NULL,
-  `target_name` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+  `destination_name` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `target`
+-- Dumping data for table `destination`
 --
 
-INSERT INTO `target` (`id`, `target_name`) VALUES
-(8, 'โรงงาน A'),
-(9, 'โรงงาน B'),
-(10, 'โกดัง A'),
-(11, 'โกดัง B'),
-(12, 'ทดสอบ');
+INSERT INTO `destination` (`id`, `destination_name`) VALUES
+(1, 'โรงงาน A'),
+(2, 'โรงงาน B'),
+(3, 'โรงงาน C'),
+(4, 'โรงงาน D');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plan`
+--
+
+CREATE TABLE IF NOT EXISTS `plan` (
+`id` int(11) NOT NULL,
+  `plan_name` varchar(255) NOT NULL,
+  `plan_source` text,
+  `plan_destination` text,
+  `plan_status` int(11) NOT NULL DEFAULT '0',
+  `plan_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `plan`
+--
+
+INSERT INTO `plan` (`id`, `plan_name`, `plan_source`, `plan_destination`, `plan_status`, `plan_date`) VALUES
+(16, 'แผน A', '[{"id":"1","name":"โรงงาน A","capacity":5},{"id":"2","name":"โรงงาน B","capacity":10}]', '[{"id":"3","name":"โรงงาน C","capacity":7},{"id":"4","name":"โรงงาน D","capacity":12}]', 0, '2015-03-11 21:20:43'),
+(17, 'sssss', '[{"id":"1","name":"โรงงาน A","capacity":5},{"id":"2","name":"โรงงาน B","capacity":10}]', '[{"id":"3","name":"โรงงาน C","capacity":10},{"id":"4","name":"โรงงาน D","capacity":5}]', 0, '2015-03-12 13:15:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `source`
+--
+
+CREATE TABLE IF NOT EXISTS `source` (
+`id` int(11) NOT NULL,
+  `source_name` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `source`
+--
+
+INSERT INTO `source` (`id`, `source_name`) VALUES
+(1, 'โรงงาน A'),
+(2, 'โรงงาน B'),
+(3, 'โรงงาน C'),
+(4, 'โรงงาน D');
 
 -- --------------------------------------------------------
 
@@ -82,9 +126,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `status`, `firstname`, `lastname`) VALUES
-(2, 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', 'admin', '', ''),
-(24, 'userid', '5cc32e366c87c4cb49e4309b75f57d64', 'user', 'สุธี', 'กลิ่นคง'),
-(26, 'testtest', '25d55ad283aa400af464c76d713c07ad', 'user', NULL, NULL);
+(2, 'admin', '25d55ad283aa400af464c76d713c07ad', 'admin', '', ''),
+(24, 'userid', '25d55ad283aa400af464c76d713c07ad', 'user', 'สุธี', 'กลิ่นคง');
 
 --
 -- Indexes for dumped tables
@@ -94,12 +137,24 @@ INSERT INTO `users` (`id`, `username`, `password`, `status`, `firstname`, `lastn
 -- Indexes for table `cost`
 --
 ALTER TABLE `cost`
- ADD KEY `target_id1` (`target_id1`,`target_id2`);
+ ADD PRIMARY KEY (`cost_id`), ADD KEY `target_id1` (`source_id`,`destination_id`);
 
 --
--- Indexes for table `target`
+-- Indexes for table `destination`
 --
-ALTER TABLE `target`
+ALTER TABLE `destination`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `plan`
+--
+ALTER TABLE `plan`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `source`
+--
+ALTER TABLE `source`
  ADD PRIMARY KEY (`id`);
 
 --
@@ -113,10 +168,25 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `target`
+-- AUTO_INCREMENT for table `cost`
 --
-ALTER TABLE `target`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+ALTER TABLE `cost`
+MODIFY `cost_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `destination`
+--
+ALTER TABLE `destination`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `plan`
+--
+ALTER TABLE `plan`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `source`
+--
+ALTER TABLE `source`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `users`
 --
