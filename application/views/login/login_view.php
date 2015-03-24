@@ -1,8 +1,8 @@
 <div class="container">
-	
-	<?php echo form_open('VerifyLogin'); ?>
+	<div class="well well-white">
+		<?php echo form_open('VerifyLogin'); ?>
 		<div class="row">
-			<div class="col-lg-4 col-lg-offset-4">
+			<div class="col-sm-4 col-sm-offset-4 well">
 				<br>
 				<h3>เข้าสู่ระบบ</h3>
 				<input type="username" class="form-control" name="txtUsername" placeholder="ชื่อผู้ใช้">
@@ -14,6 +14,7 @@
 				</button>
 			</div>
 		</div>
-	</form>
-	<br><br>
+		</form>
+		<br>
+	</div>
 </div>
