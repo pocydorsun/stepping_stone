@@ -28,11 +28,12 @@
 <br>
 <?php if ($this->session->flashdata('dataTable') && $this->session->flashdata('dataTable2') && $this->session->flashdata('myStep')) : ?>
 	<div ng-init='myStep=<?php echo $this->session->flashdata("myStep"); ?>; dataTable=<?php echo $this->session->flashdata("dataTable"); ?>; dataTable2=<?php echo $this->session->flashdata("dataTable2"); ?>;'>
-<?php else : ?>	
+<?php else : ?>
 	<div ng-init="myStep=1">
 <?php endif ?>
 	<div class="container" ng-show="myStep===1">
 		<?php $targets_json = json_encode($targets); ?>
+		<?php $costs_json = json_encode($costs); ?>
 		<h2>ต้นทาง</h2>
 		<div class="col-sm-6 well well-lg" >
 			<!-- เรียกใช้ listTableCtrl ด้วยแท็ก div -->
@@ -52,7 +53,7 @@
 						<center>
 							{{list.capacity}}
 						</center></td>
-						<td><a ng-click="deleteList($index, list.id, list.source_name);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+						<td><a ng-click="deleteList($index, list.id, list.name);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -103,7 +104,7 @@
 						<center>
 							{{list.capacity}}
 						</center></td>
-						<td><a ng-click="deleteList2($index, list.id, list.source_name);"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a></td>
+						<td><a ng-click="deleteList2($index, list.id, list.name);"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a></td>
 
 					</tr>
 				</tbody>
@@ -132,50 +133,42 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="container" ng-show="myStep===2">
-		<table class="table">
+		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th></th>
-					<th>Store1</th>
-					<th>Store2</th>
-					<th>Store3</th>
-					<th>Store4</th>
+					<th ng-repeat="list in dataTable">{{list.name}}</th>
+					<th></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<th>Fac1</th>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
+			<tbody <?php echo "ng-init='costs = $costs_json'"; ?>>
+				<tr ng-repeat="list2 in dataTable2">
+					<th>{{list2.name}}</th>
+					<td ng-repeat="list in dataTable">
+						<input type="number" value="{{checkCost(list.id, list2.id)}}" class="form-control">
+					</td>
+					<th>{{list2.capacity}}</th>
 				</tr>
 				<tr>
-					<th>Fac2</th>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-				</tr>
-				<tr>
-					<th>Fac3</th>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
-					<td><input type="number" value="0" class="form-control"></td>
+					<td></td>
+					<td ng-repeat="list in dataTable">
+						{{list.capacity}}
+					</td>
+					<td></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div class="container" ng-show="myStep===1">
 		<button class="btn btn-success" ng-click="changeStep(2)">ต่อไป</button>
 	</div>
-	
+
 	<div class="container" ng-show="myStep===2">
 		<button class="btn btn-success" ng-click="changeStep(1)">กลับ</button>
 	</div>
+
 </div>
 <!-- ปิดแท็ก div ของการเรียกใช้ listTableCtrl -->
