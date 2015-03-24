@@ -41,27 +41,6 @@ class Admin_controller extends CI_Controller {
 				redirect('user', 'refresh');
 				break;
 			case "admin" :
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('admin/add_user');
-				$this -> load -> view('include/footer');
-
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
-
-	}
-	
-		function add_new_user() {
-		$user_session = $this -> session -> userdata('logged_in');
-
-		switch ($user_session['status']) {
-			case "user" :
-				redirect('user', 'refresh');
-				break;
-			case "admin" :
-
 				$this -> load -> library('form_validation');
 				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_username_exit');
 

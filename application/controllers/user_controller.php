@@ -73,7 +73,8 @@ class User_controller extends CI_Controller {
 		switch ($user_session['status']) {
 			case "user" :
 				$data['targets'] = $this -> target_model -> getAllTarget();
-				
+				$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
+
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('user/plan_create',$data);
@@ -119,7 +120,7 @@ class User_controller extends CI_Controller {
 	function check_plan_exit($plan) {
 		$dataTable = $this -> input -> post('txtDataTable');
 		$dataTable2 = $this -> input -> post('txtDataTable2');
-	
+
 		$result = $this -> plan_model -> addPlan($plan, $dataTable, $dataTable2);
 
 		if ($result) {
