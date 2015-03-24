@@ -26,8 +26,7 @@ function($scope) {
 					return cost.cost;
 			}
 		}
-
-
+		
 		return 0;
 	};
 
