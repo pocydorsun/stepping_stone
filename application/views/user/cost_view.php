@@ -72,26 +72,26 @@
 				</td>
 				<td>
 					<button data-toggle="modal"
-							data-title="แก้ไขค่าขนส่ง"
+							data-title="แก้ไขค่าขนส่ง" 
 							data-msg="<input type='text' class='form-control' name='txtCost' value='{{cost.cost}}'>"
 							data-button="บันทึก"
 							data-class="btn btn-success"
-							data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.cost_id}}
+							data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.id}}
 							class="open-ConfirmDialog btn btn-xs btn-default"
 							data-target=".my-modal">
-
-						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+							
+						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 
 					</button>
-
+					
 					<button data-toggle="modal"
-							data-title="คำเตือน"
+							data-title="คำเตือน" 
 							data-msg="ยืนยันการลบ"
 							data-button="ยืนยัน"
 							data-class="btn btn-danger"
 							data-id=<?php echo site_url("user/remove_cost/"); ?>{{"/"+cost.cost_id}}
 							class="open-ConfirmDialog btn btn-xs btn-default"
 							data-target=".my-modal">
-
+						
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 					</button>
 				</td>
@@ -106,7 +106,7 @@
 				<td>
 				ไม่พบข้อมูล
 				</td>
-			</tr>
+			</tr>	
 		</tbody>
 	</table>
 </div>
