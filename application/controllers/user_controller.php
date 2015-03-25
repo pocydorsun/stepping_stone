@@ -6,18 +6,15 @@ class User_controller extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-		$this -> load -> model('user_model', '', TRUE);
-		$this -> load -> model('target_model', '', TRUE);
-		$this -> load -> model('cost_model', '', TRUE);
-		$this -> load -> model('plan_model', '', TRUE);
-	}
-
-	function index() {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {
 			case "user" :
-				redirect('user/plan', 'refresh');
+				$this -> load -> model('user_model', '', TRUE);
+				$this -> load -> model('source_model', '', TRUE);
+				$this -> load -> model('destination_model', '', TRUE);
+				$this -> load -> model('cost_model', '', TRUE);
+				$this -> load -> model('plan_model', '', TRUE);
 				break;
 			case "admin" :
 				redirect('admin', 'refresh');
@@ -25,99 +22,65 @@ class User_controller extends CI_Controller {
 			default :
 				redirect('login', 'refresh');
 		}
+	}
+
+	function index() {
+
+		redirect('user/plan', 'refresh');
+		break;
 	}
 
 	// PLAN
 	function plan_manager() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$data['plans'] = $this -> plan_model -> getAllplan();
+		$data['plans'] = $this -> plan_model -> getAllplan();
 
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/plan_view', $data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/plan_view', $data);
+		$this -> load -> view('include/footer');
 	}
 
 	function plan_send($id) {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$data['plans'] = $this -> plan_model -> statusSend($id);
+		$data['plans'] = $this -> plan_model -> statusSend($id);
 
-				$this -> session -> set_flashdata('success_msg', 'ส่งแผนแผนสำเร็จ');
-				redirect('user/plan');
-
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> session -> set_flashdata('success_msg', 'ส่งแผนแผนสำเร็จ');
+		redirect('user/plan');
 	}
 
 	function create_plan() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$data['targets'] = $this -> target_model -> getAllTarget();
-				$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
+		$data['targets'] = $this -> target_model -> getAllTarget();
+		$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
 
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/plan_create',$data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/plan_create',$data);
+		$this -> load -> view('include/footer');
 	}
 
 	function add_plan() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
 
-				if ($this -> form_validation -> run() == FALSE) {
-					$this -> session -> set_flashdata('dataTable', $this -> input -> post('txtDataTable'));
-					$this -> session -> set_flashdata('dataTable2', $this -> input -> post('txtDataTable2'));
-					$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
-					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/create');
-				} else {
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('dataTable', $this -> input -> post('txtDataTable'));
+			$this -> session -> set_flashdata('dataTable2', $this -> input -> post('txtDataTable2'));
+			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/create');
+		} else {
 
-					$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
+			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
 
-					redirect('user/plan');
-				}
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
+			redirect('user/plan');
 		}
 	}
 
 	function check_plan_exit($plan) {
+
 		$dataTable = $this -> input -> post('txtDataTable');
 		$dataTable2 = $this -> input -> post('txtDataTable2');
 
@@ -134,77 +97,60 @@ class User_controller extends CI_Controller {
 
 	function remove_plan($id) {
 
-		$user_session = $this -> session -> userdata('logged_in');
+		$this -> plan_model -> removePlan($id);
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> plan_model -> removePlan($id);
-
-				$this -> session -> set_flashdata('success_msg', 'ลบแผนสำเร็จ');
-
-				redirect('user/plan');
-				break;
-
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> session -> set_flashdata('success_msg', 'ลบแผนสำเร็จ');
+		redirect('user/plan');
 	}
 
 	// TARGET
 	function target_manager() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$data['targets'] = $this -> target_model -> getAllTarget();
+		$data['sources'] = $this -> source_model -> getAll();
+		$data['destinations'] = $this -> destination_model -> getAll();
 
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/target_view', $data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/target_view', $data);
+		$this -> load -> view('include/footer');
 	}
 
 	function add_target() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtTarget', 'เป้าหมาย', 'trim|required|callback_check_target_exit');
+		$this -> load -> library('form_validation');
+		$typeSource = $this -> input -> post('typeSource');
+		$typeDestination = $this -> input -> post('typeDestination');
+		$y = $this -> input -> post('y');
 
-				if ($this -> form_validation -> run() == FALSE) {
-					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/target');
-				} else {
+		if ($typeSource && $typeDestination) {
+			$this -> form_validation -> set_rules('txtTarget', 'เป้าหมาย', 'trim|required|callback_check_target_exit');
+		} else if ($typeSource) {
+			$this -> form_validation -> set_rules('txtTarget', 'เป้าหมาย', 'trim|required|callback_check_source_exit');
+		} else if ($typeDestination) {
+			$this -> form_validation -> set_rules('txtTarget', 'เป้าหมาย', 'trim|required|callback_check_destination_exit');
+		} else {
+			$this -> session -> set_flashdata('y', $y);
+			$this -> session -> set_flashdata('error_msg', 'กรุณาเลือกประเภทของเป้าหมาย');
+			redirect('user/target');
+		}
 
-					$this -> session -> set_flashdata('success_msg', 'เพิ่มเป้าหมายสำเร็จ');
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/target');
+		} else {
 
-					redirect('user/target');
-				}
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
+			$this -> session -> set_flashdata('success_msg', 'เพิ่มเป้าหมายสำเร็จ');
+
+			redirect('user/target');
 		}
 	}
 
 	function check_target_exit($target) {
 
-		$result = $this -> target_model -> addTarget($target);
+		$result = $this -> source_model -> addSource($target);
+		$result2 = $this -> destination_model -> addDestination($target);
 
-		if ($result) {
+		if ($result || $result2) {
 			return TRUE;
 		} else {
 			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
@@ -213,85 +159,116 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function edit_target($id) {
-		$user_session = $this -> session -> userdata('logged_in');
+	function check_source_exit($target) {
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtTargetName', 'เป้าหมาย', 'trim|required|callback_update_target[' . $id . ']');
-
-				if ($this -> form_validation -> run() == FALSE) {
-					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/target');
-				} else {
-
-					$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
-
-					redirect('user/target');
-				}
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
-	}
-
-	function update_target($target_name, $id) {
-		$result = $this -> target_model -> editTarget($id, $target_name);
+		$result = $this -> source_model -> addSource($target);
 
 		if ($result) {
 			return TRUE;
 		} else {
 			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
-			$this -> form_validation -> set_message('update_target', $message);
+			$this -> form_validation -> set_message('check_source_exit', $message);
 			return FALSE;
 		}
 	}
 
-	function remove_target($id) {
+	function check_destination_exit($target) {
 
-		$user_session = $this -> session -> userdata('logged_in');
+		$result = $this -> destination_model -> addDestination($target);
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> target_model -> removeTarget($id);
-
-				$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
-
-				redirect('user/target');
-				break;
-
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
+			$this -> form_validation -> set_message('check_destination_exit', $message);
+			return FALSE;
 		}
+	}
+
+	function edit_source($id) {
+
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('txtTargetName', 'เป้าหมาย', 'trim|required|callback_update_source[' . $id . ']');
+
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/target');
+		} else {
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+			redirect('user/target');
+		}
+	}
+
+	function update_source($target_name, $id) {
+
+		$result = $this -> source_model -> editSource($id, $target_name);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
+			$this -> form_validation -> set_message('update_source', $message);
+			return FALSE;
+		}
+	}
+
+	function edit_destination($id) {
+
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('txtTargetName', 'เป้าหมาย', 'trim|required|callback_update_destination[' . $id . ']');
+		$this -> session -> set_flashdata('y', 'active');
+
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/target');
+		} else {
+
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+
+			redirect('user/target');
+		}
+	}
+
+	function update_destination($target_name, $id) {
+
+		$result = $this -> destination_model -> editDestination($id, $target_name);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีข้อมูลเป้าหมายนี้แล้ว ';
+			$this -> form_validation -> set_message('update_destination', $message);
+			return FALSE;
+		}
+	}
+
+	function remove_source($id) {
+
+		$this -> source_model -> removeSource($id);
+
+		$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
+		redirect('user/target');
+	}
+
+	function remove_destination($id) {
+
+		$this -> destination_model -> removeDestination($id);
+		$this -> session -> set_flashdata('y', 'active');
+
+		$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
+		redirect('user/target');
 	}
 
 	// COST
 	function cost_manager() {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$data['targets'] = $this -> target_model -> getAllTarget();
-				$data['costs'] = $this -> cost_model -> getAllCost();
+		$data['targets'] = $this -> target_model -> getAllTarget();
+		$data['costs'] = $this -> cost_model -> getAllCost();
 
-				$data['costs'] = $this -> cost_model -> getAllCost();
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/cost_view', $data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/cost_view', $data);
+		$this -> load -> view('include/footer');
 	}
 
 	function save_cost() {
@@ -331,79 +308,47 @@ class User_controller extends CI_Controller {
 	}
 
 	function edit_cost($id) {
-		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtCost', 'ค่าขนส่ง', 'trim|required|numeric|callback_update_cost[' . $id . ']');
+		$this -> load -> library('form_validation');
+		$this -> form_validation -> set_rules('txtCost', 'ค่าขนส่ง', 'trim|required|numeric|callback_update_cost[' . $id . ']');
 
-				if ($this -> form_validation -> run() == FALSE) {
-					$this -> session -> set_flashdata('error_msg', validation_errors());
-					redirect('user/cost');
-				} else {
+		if ($this -> form_validation -> run() == FALSE) {
+			$this -> session -> set_flashdata('error_msg', validation_errors());
+			redirect('user/cost');
+		} else {
 
-					$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
 
-					redirect('user/cost');
-				}
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
+			redirect('user/cost');
 		}
 	}
 
 	function update_cost($cost, $id) {
-		$this -> cost_model -> editCost($id, $cost);
 
+		$this -> cost_model -> editCost($id, $cost);
 	}
 
 	function remove_cost($id) {
 
-		$user_session = $this -> session -> userdata('logged_in');
+		$this -> cost_model -> removeCost($id);
 
-		switch ($user_session['status']) {
-			case "user" :
-				$this -> cost_model -> removeCost($id);
-
-				$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
-
-				redirect('user/cost');
-				break;
-
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> session -> set_flashdata('success_msg', 'ลบเป้าหมายสำเร็จ');
+		redirect('user/cost');
 	}
 
 	// USER PROFILE
 	function edit_profile() {
+
 		$user_session = $this -> session -> userdata('logged_in');
 
-		switch ($user_session['status']) {
-			case "user" :
-				$user_session = $this -> session -> userdata('logged_in');
+		$user_id = $user_session['id'];
 
-				$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
-				$data['name'] = $this -> user_model -> getName($user_id);
-
-				$this -> load -> helper('form');
-				$this -> load -> view('include/header');
-				$this -> load -> view('user/user_profile_view', $data);
-				$this -> load -> view('include/footer');
-				break;
-			case "admin" :
-				redirect('admin', 'refresh');
-				break;
-			default :
-				redirect('login', 'refresh');
-		}
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/user_profile_view', $data);
+		$this -> load -> view('include/footer');
 	}
 
 	function check_password() {

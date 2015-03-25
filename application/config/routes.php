@@ -38,15 +38,15 @@
 |
 */
 
-/* INDEX ROUTE */ 
+/* INDEX ROUTE */
 $route['default_controller'] = "login_controller"; // INDEX PAGE
 $route['404_override'] = '';
 
-/* AUTHENTICATION ROUTE */ 
+/* AUTHENTICATION ROUTE */
 $route['login'] = "login_controller"; // LOGIN
 $route['logout'] = "logout_controller/logout"; // LOGOUT
 
-/* ADMIN ROUTE */ 
+/* ADMIN ROUTE */
 $route['admin'] = "admin_controller"; // HOME ADMIN
 $route['admin/add_user'] = "admin_controller/add_user"; //HOME ADMIN : ADD USER
 $route['admin/add_new_user'] = "admin_controller/add_new_user"; //HOME ADMIN : ADD USER
@@ -57,7 +57,7 @@ $route['admin/approve'] = "admin_controller/approve"; //HOME ADMIN APPROVE
 $route['admin/plan_approve/(:num)'] = "admin_controller/plan_approve/$1"; // approve
 $route['admin/plan_not_approve/(:num)'] = "admin_controller/plan_not_approve/$1"; // not approve
 
-/* USER ROUTE */ 
+/* USER ROUTE */
 $route['user'] = "user_controller"; // HOME USER
 $route['user/profile'] = "user_controller/edit_profile"; //HOME USER : EDIT USER PROFILE
 $route['user/check_password'] = "user_controller/check_password"; // CHECK FOR CHANGE PASSWORD
@@ -65,8 +65,10 @@ $route['user/change_name'] = "user_controller/change_name"; //  UPDATE FIRST NAM
 
 $route['user/target'] = "user_controller/target_manager"; // HOME target
 $route['user/add_target'] = "user_controller/add_target"; //ADD target
-$route['user/edit_target/(:num)'] = "user_controller/edit_target/$1"; //EDIT target
-$route['user/remove_target/(:num)'] = "user_controller/remove_target/$1"; //REMOVE target
+$route['user/edit_source/(:num)'] = "user_controller/edit_source/$1"; //EDIT source
+$route['user/remove_source/(:num)'] = "user_controller/remove_source/$1"; //REMOVE source
+$route['user/edit_destination/(:num)'] = "user_controller/edit_destination/$1"; //EDIT destination
+$route['user/remove_destination/(:num)'] = "user_controller/remove_destination/$1"; //REMOVE destination
 
 $route['user/cost'] = "user_controller/cost_manager"; // HOME COST
 $route['user/save_cost'] = "user_controller/save_cost"; // HOME COST
