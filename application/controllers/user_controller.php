@@ -262,7 +262,8 @@ class User_controller extends CI_Controller {
 	// COST
 	function cost_manager() {
 
-		$data['targets'] = $this -> target_model -> getAllTarget();
+		$data['sources'] = $this -> source_model -> getAll();
+		$data['destinations'] = $this -> destination_model -> getAll();
 		$data['costs'] = $this -> cost_model -> getAllCost();
 
 		$this -> load -> helper('form');
@@ -324,8 +325,8 @@ class User_controller extends CI_Controller {
 	}
 
 	function update_cost($cost, $id) {
-
 		$this -> cost_model -> editCost($id, $cost);
+		return TRUE;
 	}
 
 	function remove_cost($id) {

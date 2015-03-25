@@ -7,22 +7,23 @@
 		</div>
 		<br>
 		<div class="container">
-			<?php $targets_json = json_encode($targets); ?>
+			<?php $sources_json = json_encode($sources); ?>
+			<?php $destinations_json = json_encode($destinations); ?>
 
 			<?php $attributes = array('class' => 'form-inline'); ?>
 			<?php echo form_open('user/save_cost', $attributes); ?>
 			<div class="form-group">
 				<label for="selectSource">ต้นทาง</label>
-				<select class="form-control" id="selectSource" name="selectSource" <?php echo "ng-init='targets = $targets_json'"; ?>>
+				<select class="form-control" id="selectSource" name="selectSource" <?php echo "ng-init='sources = $sources_json'"; ?>>
 					<option value="">-</option>
-					<option ng-repeat="target in targets" value={{target.id}}> {{target.source_name}} </option>
+					<option ng-repeat="source in sources" value={{source.id}}> {{source.source_name}} </option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label for="selectDestination">ปลายทาง</label>
-				<select class="form-control" id="selectDestination" name="selectDestination" <?php echo "ng-init='targets = $targets_json'"; ?>>
+				<select class="form-control" id="selectDestination" name="selectDestination" <?php echo "ng-init='destinations = $destinations_json'"; ?>>
 					<option value="">-</option>
-					<option ng-repeat="target in targets" value={{target.id}}> {{target.source_name}} </option>
+					<option ng-repeat="destination in destinations" value={{destination.id}}> {{destination.destination_name}} </option>
 				</select>
 			</div>
 			<div class="form-group">
@@ -71,7 +72,7 @@
 					data-msg="<input type='text' class='form-control' name='txtCost' value='{{cost.cost}}'>"
 					data-button="บันทึก"
 					data-class="btn btn-success"
-					data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.id}}
+					data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.cost_id}}
 					class="open-ConfirmDialog btn btn-xs btn-default"
 					data-target=".my-modal">
 
