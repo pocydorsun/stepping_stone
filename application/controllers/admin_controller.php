@@ -41,9 +41,30 @@ class Admin_controller extends CI_Controller {
 				redirect('user', 'refresh');
 				break;
 			case "admin" :
-				$this -> load -> library('form_validation');
-				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[20]|xss_clean|callback_check_username_exit');
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('admin/add_user');
+				$this -> load -> view('include/footer');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
 
+	}
+
+	function add_new_user() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtFirstname', 'ชื่อ', 'trim|required|xss_clean');
+				$this -> form_validation -> set_rules('txtLastname', 'นามสกุล', 'trim|required|xss_clean|callback_update_name');
+				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|');
+				$this -> form_validation -> set_rules('txtPasswod', 'รหัสผ่าน', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_username_exit');
 				if ($this -> form_validation -> run() == FALSE) {
 					$this -> session -> set_flashdata('error_msg', validation_errors());
 					redirect('admin');
@@ -53,7 +74,6 @@ class Admin_controller extends CI_Controller {
 
 					redirect('admin');
 				}
-
 				break;
 			default :
 				redirect('login', 'refresh');
@@ -199,8 +219,8 @@ class Admin_controller extends CI_Controller {
 				redirect('login', 'refresh');
 		}
 	}
-	
-		function plan_not_approve($id) {
+
+	function plan_not_approve($id) {
 		$user_session = $this -> session -> userdata('logged_in');
 
 		switch ($user_session['status']) {

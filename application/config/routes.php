@@ -49,6 +49,7 @@ $route['logout'] = "logout_controller/logout"; // LOGOUT
 /* ADMIN ROUTE */ 
 $route['admin'] = "admin_controller"; // HOME ADMIN
 $route['admin/add_user'] = "admin_controller/add_user"; //HOME ADMIN : ADD USER
+$route['admin/add_new_user'] = "admin_controller/add_new_user"; //HOME ADMIN : ADD USER
 $route['admin/remove_user/(:num)'] = "admin_controller/remove_user/$1"; //HOME ADMIN : REMOVE USER
 $route['admin/change_password'] = "admin_controller/change_password"; // CHANGE PASSWORD VIEW
 $route['admin/check_password'] = "admin_controller/check_password"; // CHECK FOR CHANGE PASSWORD

@@ -19,7 +19,7 @@
 				</button>
 				</div>
 				</form> -->
-				<a href=<?php echo site_url("admin/user"); ?> class="btn btn-success">เพิ่มผู้ใช้งาน</a>
+				<a href=<?php echo site_url("admin/add_user"); ?> class="btn btn-success">เพิ่มผู้ใช้งาน</a>
 			</div>
 		</div>
 
