@@ -3,8 +3,10 @@ angular.module('steppingStone', [])
 	.controller('listTableCtrl', ['$scope', function($scope) {
 
 		$scope.sourceTable = [];
+		$scope.sources_backup = [];
 
 		$scope.destinationTable = [];
+		$scope.destinations_backup = [];
 
 		$scope.initSources = function(sources) {
 
@@ -65,7 +67,26 @@ angular.module('steppingStone', [])
 
 				for(var i = 0, len = $scope.sources.length; i < len; i++) {
 	      	if ($scope.sources[i].source_name === json.source_name) {
+
+						$scope.sources_backup.push({
+							id : $scope.sources[i].id,
+							source_name : $scope.sources[i].source_name
+						});
+
 	      		$scope.sources.splice(i,1);
+	      		break;
+	      	}
+				}
+
+				for(var i = 0, len = $scope.destinations.length; i < len; i++) {
+	      	if ($scope.destinations[i].destination_name === json.source_name) {
+
+						$scope.destinations_backup.push({
+							id : $scope.destinations[i].id,
+							destination_name : $scope.destinations[i].destination_name
+						});
+
+	      		$scope.destinations.splice(i,1);
 	      		break;
 	      	}
 				}
@@ -88,8 +109,27 @@ angular.module('steppingStone', [])
 					capacity : $scope.capacityOfDestination
 				});
 
+				for(var i = 0, len = $scope.sources.length; i < len; i++) {
+	      	if ($scope.sources[i].source_name === json.destination_name) {
+
+						$scope.sources_backup.push({
+							id : $scope.sources[i].id,
+							source_name : $scope.sources[i].source_name
+						});
+
+	      		$scope.sources.splice(i,1);
+	      		break;
+	      	}
+				}
+
 				for(var i = 0, len = $scope.destinations.length; i < len; i++) {
 	      	if ($scope.destinations[i].destination_name === json.destination_name) {
+
+						$scope.destinations_backup.push({
+							id : $scope.destinations[i].id,
+							destination_name : $scope.destinations[i].destination_name
+						});
+
 	      		$scope.destinations.splice(i,1);
 	      		break;
 	      	}
@@ -109,6 +149,17 @@ angular.module('steppingStone', [])
 				id : id,
 				source_name : name
 			});
+			for(var i = 0, len = $scope.destinations_backup.length; i < len; i++) {
+				if ($scope.destinations_backup[i].destination_name === name) {
+					$scope.destinations.push({
+						id : $scope.destinations_backup[i].id,
+						destination_name : $scope.destinations_backup[i].destination_name
+					});
+
+					$scope.destinations_backup.splice(i,1);
+					break;
+				}
+			}
 		};
 
 		$scope.deleteDestination = function(idx, id, name) {
@@ -118,6 +169,19 @@ angular.module('steppingStone', [])
 				id : id,
 				destination_name : name
 			});
+
+			for(var i = 0, len = $scope.sources_backup.length; i < len; i++) {
+
+				if ($scope.sources_backup[i].source_name === name) {
+					$scope.sources.push({
+						id : $scope.sources_backup[i].id,
+						source_name : $scope.sources_backup[i].source_name
+					});
+
+					$scope.sources_backup.splice(i,1);
+					break;
+				}
+			}
 		};
 
 		$scope.checkCost = function(id1, id2) {
