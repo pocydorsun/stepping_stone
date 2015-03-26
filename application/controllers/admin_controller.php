@@ -62,9 +62,9 @@ class Admin_controller extends CI_Controller {
 			case "admin" :
 				$this -> load -> library('form_validation');
 				$this -> form_validation -> set_rules('txtFirstname', 'ชื่อ', 'trim|required|xss_clean');
-				$this -> form_validation -> set_rules('txtLastname', 'นามสกุล', 'trim|required|xss_clean|callback_update_name');
-				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|');
-				$this -> form_validation -> set_rules('txtPasswod', 'รหัสผ่าน', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_username_exit');
+				$this -> form_validation -> set_rules('txtLastname', 'นามสกุล', 'trim|required|xss_clean');
+				$this -> form_validation -> set_rules('txtUsername', 'ชื่อผู้ใช้', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_username_exit');
+				$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
 				if ($this -> form_validation -> run() == FALSE) {
 					$this -> session -> set_flashdata('error_msg', validation_errors());
 					redirect('admin');
@@ -81,9 +81,12 @@ class Admin_controller extends CI_Controller {
 
 	}
 
-	function check_username_exit($username) {
-
-		$result = $this -> user_model -> addUser($username);
+	function check_username_exit($username, $password, $firstname, $lastname) {
+		$firstname = $this -> input -> post('txtFirstname');
+		$lastname = $this -> input -> post('txtLastname');
+		$password = $this -> input -> post('txtPassword');
+		
+		$result = $this -> user_model -> addUser($username, $password, $firstname, $lastname);
 
 		if ($result) {
 			return TRUE;

@@ -26,17 +26,19 @@ Class User_model extends CI_Model {
 		return $query -> result();
 	}
 
-	function addUser($username) {
-
+	function addUser($username, $password, $firstname, $lastname) {
 		$this -> db -> from('users');
+		$this -> db -> where('firstname', $firstname);
+		$this -> db -> where('lastname', $lastname);
 		$this -> db -> where('username', $username);
+		$this -> db -> where('password', $password);
 		$this -> db -> limit(1);
 
 		$query = $this -> db -> get();
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('username' => $username, 'password' => md5('12345678'));
+			$data = array('firstname' => $firstname, 'lastname' => $lastname, 'username' => $username, 'password' =>  md5($password));
 			$query = $this -> db -> insert('users', $data);
 			return TRUE;
 		} else {
@@ -61,7 +63,7 @@ Class User_model extends CI_Model {
 
 		$this -> db -> where('username', $username);
 		$query = $this -> db -> update('users', $data);
-		
+
 		if ($query) {
 			return TRUE;
 		} else {
@@ -74,9 +76,9 @@ Class User_model extends CI_Model {
 		$this -> db -> from('users');
 		$this -> db -> where('id', $user_id);
 		$this -> db -> limit(1);
-		
+
 		$query = $this -> db -> get();
-		
+
 		if ($query -> num_rows() == 1) {
 			return $query -> result_array();
 		} else {
@@ -85,14 +87,11 @@ Class User_model extends CI_Model {
 	}
 
 	function updateName($user_id, $firstname, $lastname) {
-		$data = array(
-					'firstname' => $firstname,
-					'lastname' => $lastname
-					);
+		$data = array('firstname' => $firstname, 'lastname' => $lastname);
 
 		$this -> db -> where('id', $user_id);
 		$query = $this -> db -> update('users', $data);
-		
+
 		if ($query) {
 			return TRUE;
 		} else {
