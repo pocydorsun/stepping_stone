@@ -17,7 +17,7 @@ Class Plan_Model extends CI_Model {
 
 	}
 
-	function addPlan($planname, $dataTable, $dataTable2) {
+	function addPlan($planname, $sourceTable, $destinationTable) {
 
 		$this -> db -> from('plan');
 		$this -> db -> where('plan_name', $planname);
@@ -29,8 +29,8 @@ Class Plan_Model extends CI_Model {
 		if (!$rows) {
 			$data = array(
 						'plan_name' => $planname,
-						'plan_source' => $dataTable,
-						'plan_destination' => $dataTable2
+						'plan_source' => $souceTable,
+						'plan_destination' => $destinationTable
 					);
 			$query = $this -> db -> insert('plan', $data);
 			return TRUE;

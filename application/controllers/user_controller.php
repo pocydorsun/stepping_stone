@@ -51,7 +51,8 @@ class User_controller extends CI_Controller {
 
 	function create_plan() {
 
-		$data['targets'] = $this -> target_model -> getAllTarget();
+		$data['sources'] = $this -> source_model -> getAll();
+		$data['destinations'] = $this -> destination_model -> getAll();
 		$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
 
 		$this -> load -> helper('form');
@@ -66,8 +67,8 @@ class User_controller extends CI_Controller {
 		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
 
 		if ($this -> form_validation -> run() == FALSE) {
-			$this -> session -> set_flashdata('dataTable', $this -> input -> post('txtDataTable'));
-			$this -> session -> set_flashdata('dataTable2', $this -> input -> post('txtDataTable2'));
+			$this -> session -> set_flashdata('sourceTable', $this -> input -> post('txtSourceTable'));
+			$this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
 			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
 			redirect('user/create');
@@ -81,10 +82,10 @@ class User_controller extends CI_Controller {
 
 	function check_plan_exit($plan) {
 
-		$dataTable = $this -> input -> post('txtDataTable');
-		$dataTable2 = $this -> input -> post('txtDataTable2');
+		$sourceTable = $this -> input -> post('txtSourceTable');
+		$destinationTable = $this -> input -> post('txtDestinationTable');
 
-		$result = $this -> plan_model -> addPlan($plan, $dataTable, $dataTable2);
+		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable);
 
 		if ($result) {
 			return TRUE;

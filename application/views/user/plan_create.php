@@ -1,3 +1,7 @@
+<?php $sources_json = json_encode($sources); ?>
+<?php $destinations_json = json_encode($destinations); ?>
+<?php $costs_json = json_encode($costs); ?>
+
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
@@ -14,10 +18,10 @@
 						<input type="text" class="form-control" name="txtPlan" id="txtPlan" placeholder="กรอกชื่อแผน">
 					</div>
 					<div class="form-group" ng-hide="true">
-						<input type="text" class="form-control" name="txtDataTable" id="txtDataTable" value="{{dataTable}}">
+						<input type="text" class="form-control" name="txtSourceTable" id="txtSourceTable" value="{{sourceTable}}">
 					</div>
 					<div class="form-group" ng-hide="true">
-						<input type="text" class="form-control" name="txtDataTable2" id="txtDataTable2" value="{{dataTable2}}">
+						<input type="text" class="form-control" name="txtDestinationTable" id="txtDestinationTable" value="{{destinationTable}}">
 					</div>
 					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtMyStep" id="txtMyStep" value="{{myStep}}">
@@ -30,154 +34,159 @@
 			</div>
 		</div>
 		<br>
-		<?php if ($this->session->flashdata('dataTable') && $this->session->flashdata('dataTable2') && $this->session->flashdata('myStep')) :
+		<?php if ($this->session->flashdata('sourceTable') && $this->session->flashdata('destinationTable') && $this->session->flashdata('myStep')) :
 		?>
-		
-		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; dataTable=<?php echo $this -> session -> flashdata("dataTable"); ?>; dataTable2=<?php echo $this -> session -> flashdata("dataTable2"); ?>;'>
-			<?php else : ?>
-			<div ng-init="myStep=1">
-				<?php endif ?>
-				<div class="container" ng-show="myStep===1">
-					<?php $targets_json = json_encode($targets); ?>
-					<?php $costs_json = json_encode($costs); ?>
-					<h2>ต้นทาง</h2>
-					<div class="col-sm-6 well well-lg" >
-						<!-- เรียกใช้ listTableCtrl ด้วยแท็ก div -->
-						<!-- ตารางรายการ -->
-						<table class="table" ng-if="dataTable.length !== 0">
-							<thead>
-								<tr>
-									<th>ชื่อ</th>
-									<th>จำนวน/ความจุ</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="list in dataTable">
-									<td>{{list.name}}</td>
-									<td>
-									<center>
-										{{list.capacity}}
-									</center></td>
-									<td><a ng-click="deleteList($index, list.id, list.name);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-								</tr>
-							</tbody>
-						</table>
-						<br>
-						<!-- เว้นบรรทัด -->
+			<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; sourceTable=<?php echo $this -> session -> flashdata("sourceTable"); ?>; destinationTable=<?php echo $this -> session -> flashdata("destinationTable"); ?>;'>
+		<?php else : ?>
+				<div ng-init="myStep=1">
+		<?php endif ?>
+			<div class="container-fluid">
+					<div class="container" ng-show="myStep===1">
+						<h2>ต้นทาง</h2>
+						<div class="col-sm-6 well well-lg" >
+							<!-- เรียกใช้ listTableCtrl ด้วยแท็ก div -->
+							<!-- ตารางรายการ -->
+							<table class="table" ng-if="sourceTable.length !== 0">
+								<thead>
+									<tr>
+										<th>ชื่อ</th>
+										<th>จำนวน/ความจุ</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="list in sourceTable">
+										<td>{{list.source_name}}</td>
+										<td>
+										<center>
+											{{list.capacity}}
+										</center></td>
+										<td><a ng-click="deleteSource($index, list.id, list.source_name);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<!-- เว้นบรรทัด -->
 
-						<!-- ฟอร์มเพิ่มรายการในตาราง -->
+							<!-- ฟอร์มเพิ่มรายการในตาราง -->
 
-						<div <?php echo "ng-init='targets = dataList($targets_json)'"; ?>>
-							<div ng-show="targets.length !== 0">
-								<form class="form-inline" ng-submit="addList()">
-									<div class="form-group">
-										<select class="form-control" ng-model="name" id="selectSource" name="selectSource">
-											<option value="">-</option>
-											<option ng-repeat="target in targets | orderBy: 'source_name'" value={{target}}> {{target.source_name}} </option>
-										</select>
-									</div>
-									<div class="form-group">
-										<input type="number" class="form-control" ng-model="capacity" placeholder="จำนวน/ความจุ">
-									</div>
-									<button type="submit" class="btn btn-default">
-										เพิ่ม
-									</button>
-								</form>
+							<div <?php echo "ng-init='sources = initSources($sources_json)'"; ?>>
+								<div ng-show="sources.length !== 0">
+									<form class="form-inline" ng-submit="addSource()">
+										<div class="form-group">
+											<select class="form-control" ng-model="selectSource">
+												<option value="">-</option>
+												<option ng-repeat="source in sources | orderBy: 'source_name'" value={{source}}> {{source.source_name}} </option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="number" class="form-control" ng-model="capacityOfSource" placeholder="จำนวน/ความจุ">
+										</div>
+										<button type="submit" class="btn btn-default">
+											เพิ่ม
+										</button>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- ปิดแท็ก div ของการเรียกใช้ listTableCtrl -->
 
-				<div class="container" ng-show="myStep===1">
-					<h2>ปลายทาง</h2>
-					<div class="col-sm-6 well well-lg" >
-						<!-- เรียกใช้ listTableCtrl ด้วยแท็ก div -->
-						<!-- ตารางรายการ -->
-						<table class="table" ng-if="dataTable2.length !== 0">
-							<thead>
-								<tr>
-									<th>ชื่อ</th>
-									<th>จำนวน/ความจุ</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="list in dataTable2">
-									<td>{{list.name}}</td>
-									<td>
-									<center>
-										{{list.capacity}}
-									</center></td>
-									<td><a ng-click="deleteList2($index, list.id, list.name);"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a></td>
+				<div class="container-fluid">
+					<div class="container" ng-show="myStep===1">
+						<h2>ปลายทาง</h2>
+						<div class="col-sm-6 well well-lg" >
+							<!-- เรียกใช้ listTableCtrl ด้วยแท็ก div -->
+							<!-- ตารางรายการ -->
+							<table class="table" ng-if="destinationTable.length !== 0">
+								<thead>
+									<tr>
+										<th>ชื่อ</th>
+										<th>จำนวน/ความจุ</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="list in destinationTable">
+										<td>{{list.destination_name}}</td>
+										<td>
+										<center>
+											{{list.capacity}}
+										</center></td>
+										<td><a ng-click="deleteDestination($index, list.id, list.destination_name);"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> </a></td>
 
-								</tr>
-							</tbody>
-						</table>
-						<br>
-						<!-- เว้นบรรทัด -->
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<!-- เว้นบรรทัด -->
 
-						<!-- ฟอร์มเพิ่มรายการในตาราง -->
-						<div <?php echo "ng-init='targets = dataList($targets_json)'"; ?>>
-							<div ng-show="targets.length !== 0">
-								<form class="form-inline" ng-submit="addList2()" >
-									<div class="form-group">
-										<select class="form-control" ng-model="name2" id="selectSource" name="selectSource">
-											<option value="">-</option>
-											<option ng-repeat="target in targets | orderBy: 'source_name'" value={{target}}> {{target.source_name}} </option>
-										</select>
-									</div>
-									<div class="form-group">
-										<input type="number" class="form-control" ng-model="capacity2" placeholder="จำนวน/ความจุ">
-									</div>
-									<button type="submit" class="btn btn-default">
-										เพิ่ม
-									</button>
-								</form>
+							<!-- ฟอร์มเพิ่มรายการในตาราง -->
+							<div <?php echo "ng-init='destinations = initDestination($destinations_json)'"; ?>>
+								<div ng-show="sources.length !== 0">
+									<form class="form-inline" ng-submit="addDestination()" >
+										<div class="form-group">
+											<select class="form-control" ng-model="selectDestination">
+												<option value="">-</option>
+												<option ng-repeat="destination in destinations | orderBy: 'destination_name'" value={{destination}}> {{destination.destination_name}} </option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="number" class="form-control" ng-model="capacityOfDestination" placeholder="จำนวน/ความจุ">
+										</div>
+										<button type="submit" class="btn btn-default">
+											เพิ่ม
+										</button>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="container-fluid table-responsive" ng-show="myStep===2">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th></th>
-								<th ng-repeat="list in dataTable">{{list.name}}</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody <?php echo "ng-init='costs = $costs_json'"; ?>>
-							<tr ng-repeat="list2 in dataTable2">
-								<th>{{list2.name}}</th>
-								<td ng-repeat="list in dataTable">
-								<input type="number" value="{{checkCost(list.id, list2.id)}}" class="form-control">
-								</td>
-								<th>{{list2.capacity}}</th>
-							</tr>
-							<tr>
-								<td></td>
-								<td ng-repeat="list in dataTable"> {{list.capacity}} </td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="container-fluid">
+					<div class="container-fluid table-responsive" ng-show="myStep===2">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th ng-repeat="source in sourceTable">{{source.source_name}}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody <?php echo "ng-init='costs = $costs_json'"; ?>>
+								<tr ng-repeat="destination in destinationTable">
+									<th>{{destination.destination_name}}</th>
+									<td ng-repeat="source in sourceTable">
+									<input type="number" value="{{checkCost(source.id, destination.id)}}" class="form-control">
+									</td>
+									<th>{{destination.capacity}}</th>
+								</tr>
+								<tr>
+									<td></td>
+									<th ng-repeat="source in sourceTable"> {{source.capacity}} </th>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
+				<br>
 
-				<div class="container" ng-show="myStep===1">
-					<button class="btn btn-success" ng-click="changeStep(2)">
-						ต่อไป
-					</button>
+				<div class="container-fluid">
+					<div class="container-fluid" ng-show="myStep===1">
+						<button class="btn btn-success" ng-click="changeStep(2)">
+							ต่อไป
+						</button>
+					</div>
+
+					<div class="container-fluid" ng-show="myStep===2">
+						<button class="btn btn-success" ng-click="changeStep(1)">
+							กลับ
+						</button>
+					</div>
 				</div>
-
-				<div class="container" ng-show="myStep===2">
-					<button class="btn btn-success" ng-click="changeStep(1)">
-						กลับ
-					</button>
-				</div>
-
 			</div>
 		</div>
 </div>
