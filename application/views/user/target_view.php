@@ -5,9 +5,9 @@
 <?php endif ?>
 	<div class=" well well-white">
 		<div class="container">
-			<center>
+
 				<font color="#0000FF" size="6">จัดการเป้าหมาย</font>
-			</center>
+
 			<div>
 				<?php
 				$attributes = array('class' => 'form-inline');

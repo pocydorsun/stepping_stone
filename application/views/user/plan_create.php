@@ -5,9 +5,7 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-			<center>
-				<font color="#0000FF" size="6">สร้างแผน</font>
-			</center>
+			<font color="#0000FF" size="6">สร้างแผน</font>
 			<div>
 				<?php
 				$attributes = array('class' => 'form-inline');
@@ -24,6 +22,9 @@
 						<input type="text" class="form-control" name="txtDestinationTable" id="txtDestinationTable" value="{{destinationTable}}">
 					</div>
 					<div class="form-group" ng-hide="true">
+						<input type="text" class="form-control" name="txtCostOfPlan" id="txtCostOfPlan" value="{{new_costs}}">
+					</div>
+					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtMyStep" id="txtMyStep" value="{{myStep}}">
 					</div>
 					<button type="submit" class="btn btn-success">
@@ -34,13 +35,13 @@
 			</div>
 		</div>
 		<br>
-		<?php if ($this->session->flashdata('sourceTable') && $this->session->flashdata('destinationTable') && $this->session->flashdata('myStep')) :
+		<?php if ($this->session->flashdata('sourceTable') && $this->session->flashdata('destinationTable') && $this->session->flashdata('myStep') && $this->session->flashdata('costOfPlan')) :
 		?>
-			<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; sourceTable=<?php echo $this -> session -> flashdata("sourceTable"); ?>; destinationTable=<?php echo $this -> session -> flashdata("destinationTable"); ?>;'>
-		<?php else : ?>
-				<div ng-init="myStep=1">
-		<?php endif ?>
-			<div class="container-fluid">
+		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; sourceTable=<?php echo $this -> session -> flashdata("sourceTable"); ?>; destinationTable=<?php echo $this -> session -> flashdata("destinationTable"); ?>; new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
+			<?php else : ?>
+			<div ng-init="myStep=1">
+				<?php endif ?>
+				<div class="container-fluid">
 					<div class="container" ng-show="myStep===1">
 						<h2>ต้นทาง</h2>
 						<div class="col-sm-6 well well-lg" >
@@ -151,21 +152,21 @@
 							<thead>
 								<tr>
 									<th></th>
-									<th ng-repeat="source in sourceTable">{{source.source_name}}</th>
+									<th ng-repeat="destination in destinationTable">{{destination.destination_name}}</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody <?php echo "ng-init='costs = $costs_json'"; ?>>
-								<tr ng-repeat="destination in destinationTable">
-									<th>{{destination.destination_name}}</th>
-									<td ng-repeat="source in sourceTable">
-									<input type="number" value="{{checkCost(source.id, destination.id)}}" class="form-control">
+								<tr ng-repeat="source in sourceTable">
+									<th>{{source.source_name}}</th>
+									<td ng-repeat="destination in destinationTable">
+									<input type="number" ng-model="c" ng-init="c = checkCost(source.id, destination.id)" ng-change="addCost(source.id, destination.id, c)" class="form-control">
 									</td>
-									<th>{{destination.capacity}}</th>
+									<th>{{source.capacity}}</th>
 								</tr>
 								<tr>
 									<td></td>
-									<th ng-repeat="source in sourceTable"> {{source.capacity}} </th>
+									<th ng-repeat="destination in destinationTable"> {{destination.capacity}} </th>
 									<td></td>
 								</tr>
 							</tbody>
@@ -173,6 +174,38 @@
 					</div>
 				</div>
 				<br>
+				
+				<div class="container-fluid">
+					<div class="container-fluid table-responsive" ng-show="myStep===3">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th ng-repeat="destination in destinationTable">{{destination.destination_name}}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody <?php echo "ng-init='costs = $costs_json'"; ?>>
+								<tr ng-repeat="source in sourceTable">
+									<th>{{source.source_name}}</th>
+									<td ng-repeat="destination in destinationTable">
+										<input ng-model="search.source_id" ng-init="search.source_id = source.id" ng-hide="true">
+										<input ng-model="search.destination_id" ng-init="search.destination_id = destination.id" ng-hide="true">
+										<div ng-repeat="cap in initCapacity | filter:search">
+											{{cap.capacity}}
+										</div>
+									</td>
+									<th>{{source.capacity}}</th>
+								</tr>
+								<tr>
+									<td></td>
+									<th ng-repeat="destination in destinationTable"> {{destination.capacity}} </th>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 				<div class="container-fluid">
 					<div class="container-fluid" ng-show="myStep===1">
@@ -185,10 +218,20 @@
 						<button class="btn btn-success" ng-click="changeStep(1)">
 							กลับ
 						</button>
+				
+						<button class="btn btn-success" ng-click="changeStep(3)">
+							ต่อไป
+						</button>
+					</div>
+					
+					<div class="container-fluid" ng-show="myStep===3">
+						<button class="btn btn-success" ng-click="changeStep(2)">
+							กลับ
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-</div>
+	</div>
 </div>
 <!-- ปิดแท็ก div ของการเรียกใช้ listTableCtrl -->

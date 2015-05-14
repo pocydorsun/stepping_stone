@@ -85,7 +85,7 @@ class Admin_controller extends CI_Controller {
 		$firstname = $this -> input -> post('txtFirstname');
 		$lastname = $this -> input -> post('txtLastname');
 		$password = $this -> input -> post('txtPassword');
-		
+
 		$result = $this -> user_model -> addUser($username, $password, $firstname, $lastname);
 
 		if ($result) {
@@ -136,23 +136,34 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function check_password() {
-		$this -> load -> library('form_validation');
-		$this -> form_validation -> set_rules('txtNewPassword', 'รหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
-		$this -> form_validation -> set_rules('txtReNewPassword', 'ยืนยันรหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_new_password');
-		$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_admin_password');
+		$user_session = $this -> session -> userdata('logged_in');
 
-		if ($this -> form_validation -> run() == FALSE) {
-			$this -> session -> set_flashdata('error_msg', validation_errors());
-			redirect('admin/change_password');
-		} else {
-			$user_session = $this -> session -> userdata('logged_in');
-			$new_password = $this -> input -> post('txtNewPassword');
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtNewPassword', 'รหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
+				$this -> form_validation -> set_rules('txtReNewPassword', 'ยืนยันรหัสผ่านใหม่', 'trim|required|alpha_numeric|min_length[6]|max_length[12]|xss_clean|callback_check_new_password');
+				$this -> form_validation -> set_rules('txtPassword', 'รหัสผ่าน', 'trim|required|xss_clean|callback_check_admin_password');
 
-			$this -> user_model -> updatePassword($user_session['username'], $new_password);
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('admin/change_password');
+				} else {
+					$user_session = $this -> session -> userdata('logged_in');
+					$new_password = $this -> input -> post('txtNewPassword');
 
-			$this -> session -> set_flashdata('success_msg', 'บันทึกรหัสผ่านใหม่สำเร็จ');
+					$this -> user_model -> updatePassword($user_session['username'], $new_password);
 
-			redirect('admin/change_password');
+					$this -> session -> set_flashdata('success_msg', 'บันทึกรหัสผ่านใหม่สำเร็จ');
+
+					redirect('admin/change_password');
+				}
+				break;
+			default :
+				redirect('login', 'refresh');
 		}
 	}
 
@@ -238,6 +249,56 @@ class Admin_controller extends CI_Controller {
 				break;
 			default :
 				redirect('login', 'refresh');
+		}
+	}
+
+	function edit_user($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				$this -> load -> library('form_validation');
+				$this -> form_validation -> set_rules('txtFirstname', 'ชื่อ', 'trim|required|xss_clean');
+				$this -> form_validation -> set_rules('txtpassword', 'รหัสผ่านใหม่', 'trim|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
+				$this -> form_validation -> set_rules('txtrepassword', 'ยืนยันรหัสผ่านใหม่', 'trim|alpha_numeric|min_length[6]|max_length[12]|xss_clean');
+				$this -> form_validation -> set_rules('txtLastname', 'นามสกุล', 'trim|required|xss_clean|callback_update_name[' . $id . ']');
+
+				if ($this -> form_validation -> run() == FALSE) {
+					$this -> session -> set_flashdata('error_msg', validation_errors());
+					redirect('admin');
+				} else {
+
+					$this -> session -> set_flashdata('success_msg', 'บันทึกสำเร็จ');
+
+					redirect('admin', 'refresh');
+				}
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function update_name($lastname, $id) {
+
+		$firstname = $this -> input -> post('txtFirstname');
+		$password = $this -> input -> post('txtpassword');
+		$repassword = $this -> input -> post('txtrepassword');
+		if ($password == $repassword) {
+
+			$result = $this -> user_model -> updateName($id, $firstname, $lastname, $password);
+
+			if ($result) {
+				return TRUE;
+			} else {
+				$this -> form_validation -> set_message('update_name', 'ระบบทำการบันทึกล้มเหลว กรุณาลองใหม่อีกครั้ง');
+				return FALSE;
+			}
+		}else{
+			$this -> form_validation -> set_message('update_name', 'รหัสผ่านใหม่ไม่ตรงกัน');
+			return false;
 		}
 	}
 

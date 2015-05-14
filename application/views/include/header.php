@@ -89,7 +89,7 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="<?php echo site_url("user/plan"); ?>">จัดการแผนการขนส่ง</a>
+								<a href="<?php echo site_url("user/plan"); ?>">แผนการขนส่ง</a>
 							</li>
 							<li>
 								<a href="<?php echo site_url("user/target"); ?>">จัดการเป้าหมาย</a>
@@ -134,3 +134,12 @@
 			</div>
 		</div>
 		<?php endif; ?>
+		
+		<!-- ALERT ERROR MESSAGE FOR PLAN CREATE & EDIT -->
+		<div class="container" ng-show="err_plan">
+			<div class="alert alert-warning">
+				<button type="button" class="close" ng-click="err_plan = false" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>ต้อง 3x3 เท่านั้น
+			</div>
+		</div>

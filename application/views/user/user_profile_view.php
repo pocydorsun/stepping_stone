@@ -19,9 +19,11 @@
 					<label for="txtReNewPassword">ยืนยันรหัสผ่านใหม่</label>
 					<input type="password" class="form-control" name="txtReNewPassword" id="txtReNewPassword" placeholder="กรอกยืนยันรหัสผ่านใหม่ 8-12 ตัวอักษร">
 				</div>
-				<button type="submit" class="btn btn-success">
-					บันทึกการเปลี่ยนแปลง
-				</button>
+				<div class="col-md-6 col-md-offset-10">
+					<button type="submit" class="btn btn-success">
+						บันทึกการเปลี่ยนแปลง
+					</button>
+				</div>
 			</div>
 			</form>
 		</div>
@@ -50,9 +52,11 @@
 					<label for="txtLastname">นามสกุล</label>
 					<input type="text" class="form-control" name="txtLastname" id="txtLastname" placeholder="นามสกุล" value=<?php echo $lastname; ?>>
 				</div>
-				<button type="submit" class="btn btn-success">
-					บันทึกการเปลี่ยนแปลง
-				</button>
+				<div class="col-md-6 col-md-offset-10">
+					<button type="submit" class="btn btn-success">
+						บันทึกการเปลี่ยนแปลง
+					</button>
+				</div>
 			</div>
 			</form>
 		</div>

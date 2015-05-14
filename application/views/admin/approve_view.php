@@ -1,12 +1,10 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-			<center>
-				<font color="#0000FF" size="6">อนุมัติรายงาน</font>
-			</center>
+			<font color="#0000FF" size="6">อนุมัติรายงาน</font>
 		</div>
 		<br>
-
+		
 		<div class="container" >
 			<div class="col-sm-6">
 

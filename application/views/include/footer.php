@@ -1,3 +1,5 @@
+<?php print_r($this->session->all_userdata()); ?>
+
 <!-- MODAL -->
 <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
@@ -17,12 +19,13 @@
 
 				<!-- footer of modal -->
 				<div class="modal-footer">
+										<button type="submit" class="btn btn-success" id="buttonSubmit">
+
+					</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">
 						ยกเลิก
 					</button>
-					<button type="submit" class="btn btn-success" id="buttonSubmit">
 
-					</button>
 				</div>
 			</form>
 		</div>

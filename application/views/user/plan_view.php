@@ -1,10 +1,11 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-			<center>
-				<font color="#0000FF" size="6">จัดการแผนการขนส่ง</font>
-			</center>
-			<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
+
+			<font color="#0000FF" size="6">แผนการขนส่ง</font>
+			<div class="col-md-6 col-md-offset-10">
+				<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
+			</div>
 		</div>
 		<br>
 
@@ -39,16 +40,10 @@
 							data-target=".my-modal">
 								<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
 							</button>
-							<button data-toggle="modal"
-							data-title="แก้ไข"
-							data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{target.source_name}}'>"
-							data-button="บันทึก"
-							data-class="btn btn-success"
-							data-id=<?php echo site_url("user/edit_target/"); ?>{{"/"+target.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".my-modal">
-								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-							</button>
+							
+							<a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+							
+													
 							<button data-toggle="modal"
 							data-title="คำเตือน"
 							data-msg="ยืนยันการลบ"

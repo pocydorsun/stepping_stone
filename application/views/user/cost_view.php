@@ -1,9 +1,9 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-			<center>
+
 				<font color="#0000FF" size="6">กำหนดค่าขนส่ง</font>
-			</center>
+
 		</div>
 		<br>
 		<div class="container">
@@ -16,14 +16,14 @@
 				<label for="selectSource">ต้นทาง</label>
 				<select class="form-control" id="selectSource" name="selectSource" <?php echo "ng-init='sources = $sources_json'"; ?>>
 					<option value="">-</option>
-					<option ng-repeat="source in sources" value={{source.id}}> {{source.source_name}} </option>
+					<option ng-repeat="source in sources" value="{{source.id}}:::{{source.source_name}}"> {{source.source_name}} </option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label for="selectDestination">ปลายทาง</label>
 				<select class="form-control" id="selectDestination" name="selectDestination" <?php echo "ng-init='destinations = $destinations_json'"; ?>>
 					<option value="">-</option>
-					<option ng-repeat="destination in destinations" value={{destination.id}}> {{destination.destination_name}} </option>
+					<option ng-repeat="destination in destinations" value="{{destination.id}}:::{{destination.destination_name}}"> {{destination.destination_name}} </option>
 				</select>
 			</div>
 			<div class="form-group">

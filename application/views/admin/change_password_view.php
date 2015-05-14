@@ -1,10 +1,7 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-			<center>
-				<font color="#0000FF" size="6">แก้ไขรหัสผ่าน</font>
-			</center>
-
+			<font color="#0000FF" size="6">แก้ไขรหัสผ่าน</font>
 			<?php
 			echo form_open('admin/check_password');
 			?>
@@ -21,9 +18,11 @@
 					<label for="txtReNewPassword">ยืนยันรหัสผ่านใหม่</label>
 					<input type="password" class="form-control" name="txtReNewPassword" id="txtReNewPassword" placeholder="กรอกยืนยันรหัสผ่านใหม่ 8-12 ตัวอักษร">
 				</div>
-				<button type="submit" class="btn btn-success">
-					บันทึกการเปลี่ยนแปลง
-				</button>
+				<div class="col-md-6 col-md-offset-10">
+					<button type="submit" class="btn btn-success">
+						บันทึกการเปลี่ยนแปลง
+					</button>
+				</div>
 			</div>
 			</form>
 		</div>
