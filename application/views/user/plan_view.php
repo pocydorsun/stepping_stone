@@ -6,6 +6,9 @@
 			<div class="col-md-6 col-md-offset-10">
 				<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
 			</div>
+			<div class="col-md-6 col-md-offset-10">
+				<a href=<?php echo site_url("user/create2"); ?> class="btn btn-success">สร้างแผน2</a>
+			</div>
 		</div>
 		<br>
 

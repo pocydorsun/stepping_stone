@@ -73,6 +73,7 @@
 
 							<div <?php echo "ng-init='sources = initSources($sources_json)'"; ?>>
 								<div ng-show="sources.length !== 0">
+									
 									<form class="form-inline" ng-submit="addSource()">
 										<div class="form-group">
 											<select class="form-control" ng-model="selectSource">
@@ -87,6 +88,7 @@
 											เพิ่ม
 										</button>
 									</form>
+									
 								</div>
 							</div>
 						</div>

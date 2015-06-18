@@ -1,6 +1,6 @@
 angular.module('steppingStone', [])
 
-	.controller('listTableCtrl', ['$scope', function($scope) {
+	.controller('miniSteppingStone', ['$scope', function($scope) {
 
 		$scope.sourceTable = [];
 		$scope.sources_backup = [];
@@ -268,7 +268,7 @@ angular.module('steppingStone', [])
 				len1 = $scope.sourceTable.length;
 				len2 = $scope.destinationTable.length;
 				
-				if (len1 < 3 && len2 < 3) {
+				if (len1 < 3 || len2 < 3) {
 					$scope.myStep = 1;
 					$scope.err_plan = true;
 				}
@@ -279,6 +279,7 @@ angular.module('steppingStone', [])
 				$scope.sortNewCosts();
 				$scope.initCapacity = [];
 				$scope.setInitCapacity();
+				console.log($scope.initCapacity);
 			}
 		};
 		

@@ -18,7 +18,8 @@
 		<script src=
 <?php echo base_url("asset/angular/angular.min.js"); ?>></script>
 		<script src=
-<?php echo base_url("asset/angular/myapp.js"); ?>></script>
+<?php echo base_url("asset/angular/myapp2.js"); ?>></script>
+
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +29,7 @@
 		<![endif]-->
 
 	</head>
-	<body ng-controller="listTableCtrl">
+	<body ng-controller="miniSteppingStone">
 		<div class="container">
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
@@ -41,23 +42,23 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-				
-							<?php $login_sess = $this -> session -> userdata('logged_in'); ?>
 
-							<?php if ($login_sess['status'] == 'admin') :?>
-						
-								<a class="navbar-brand my-brand" href=<?php echo site_url("admin"); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
-							
-							<?php elseif ($login_sess['status'] == 'user') : ?>
+						<?php $login_sess = $this -> session -> userdata('logged_in'); ?>
 
-								<a  class="navbar-brand my-brand" href=<?php echo site_url("user/plan"); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
+						<?php if ($login_sess['status'] == 'admin') :?>
 
-							<?php else : ?>
+						<a class="navbar-brand my-brand" href=<?php echo site_url("admin"); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
 
-								<a  class="navbar-brand my-brand" href=<?php echo base_url(); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
+						<?php elseif ($login_sess['status'] == 'user') : ?>
 
-							<?php endif; ?>
-					
+						<a  class="navbar-brand my-brand" href=<?php echo site_url("user/plan"); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
+
+						<?php else : ?>
+
+						<a  class="navbar-brand my-brand" href=<?php echo base_url(); ?>>โปรแกรมคำนวนรูปแบบการขนส่ง</a>
+
+						<?php endif; ?>
+
 					</div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 
@@ -134,12 +135,13 @@
 			</div>
 		</div>
 		<?php endif; ?>
-		
+
 		<!-- ALERT ERROR MESSAGE FOR PLAN CREATE & EDIT -->
 		<div class="container" ng-show="err_plan">
 			<div class="alert alert-warning">
 				<button type="button" class="close" ng-click="err_plan = false" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
-				</button>ต้อง 3x3 เท่านั้น
+				</button>
+				ต้อง 3x3 เท่านั้น
 			</div>
 		</div>

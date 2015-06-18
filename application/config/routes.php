@@ -78,11 +78,14 @@ $route['user/remove_cost/(:num)'] = "user_controller/remove_cost/$1"; //REMOVE c
 
 $route['user/plan'] = "user_controller/plan_manager"; // HOME plan
 $route['user/plan_send/(:num)'] = "user_controller/plan_send/$1"; //REMOVE send plan
-$route['user/create'] = "user_controller/create_plan"; // HOME plan
+$route['user/create'] = "user_controller/create_plan"; // create plan
+$route['user/create2'] = "user_controller/create_plan2"; // create plan
 $route['user/add_plan'] = "user_controller/add_plan"; //ADD plan
+$route['user/add_plan2'] = "user_controller/add_plan2"; //ADD plan
 $route['user/remove_plan/(:num)'] = "user_controller/remove_plan/$1"; //REMOVE target
 $route['user/plan_edit/(:num)'] = "user_controller/plan_edit/$1"; // edit plan
 $route['user/update_plan/(:num)'] = "user_controller/update_plan/$1"; // update plan
+
 
 
 /* End of file routes.php */
