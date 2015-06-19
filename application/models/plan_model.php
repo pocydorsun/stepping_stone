@@ -4,6 +4,9 @@ Class Plan_Model extends CI_Model {
 	function getAllPlan() {
 		$this -> db -> select('id, plan_name');
 		$this -> db -> from('plan');
+		$this -> db -> where('plan_status', 0);
+		$this -> db -> or_where('plan_status', 2);
+		$this -> db -> or_where('plan_status', 2);
 		$query = $this -> db -> get();
 
 		return $query -> result();
@@ -50,7 +53,7 @@ Class Plan_Model extends CI_Model {
 		}
 
 	}
-	
+
 	function addPlan2($planname, $sourceTable, $destinationTable, $costOfPlan) {
 
 		$this -> db -> from('plan');
@@ -85,10 +88,10 @@ Class Plan_Model extends CI_Model {
 			$this -> db -> from('plan');
 			$this -> db -> where('plan_name', $planname);
 			$this -> db -> limit(1);
-	
+
 			$query = $this -> db -> get();
 			$rows = $query -> num_rows();
-	
+
 			if (!$rows) {
 				$data = array('plan_name' => $planname, 'plan_source' => $sourceTable, 'plan_destination' => $destinationTable, 'plan_cost' => $costOfPlan);
 				$this -> db -> where('id', $id);
@@ -99,7 +102,7 @@ Class Plan_Model extends CI_Model {
 			}
 		}
 	}
-	
+
 	function removePlan($id) {
 		$this -> db -> where('id', $id);
 		$query = $this -> db -> delete('plan');
@@ -134,6 +137,15 @@ Class Plan_Model extends CI_Model {
 		$this -> db -> where('id', $id);
 		$this -> db -> update('plan', $data);
 
+	}
+
+	function getPlanList() {
+		$this -> db -> select('*');
+		$this -> db -> from('plan');
+		$this -> db -> where('plan_status', 3);
+		$query = $this -> db -> get();
+
+		return $query -> result();
 	}
 
 }

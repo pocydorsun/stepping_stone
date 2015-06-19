@@ -9,6 +9,9 @@ class Admin_controller extends CI_Controller {
 		parent::__construct();
 		$this -> load -> model('user_model', '', TRUE);
 		$this -> load -> model('plan_model', '', TRUE);
+		$this -> load -> model('destination_model', '', TRUE);
+		$this -> load -> model('source_model', '', TRUE);
+		$this -> load -> model('cost_model', '', TRUE);
 
 	}
 
@@ -206,9 +209,30 @@ class Admin_controller extends CI_Controller {
 				break;
 			case "admin" :
 				$data['plans'] = $this -> plan_model -> getAllPlanSend();
+
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
 				$this -> load -> view('admin/approve_view', $data);
+				$this -> load -> view('include/footer');
+				break;
+			default :
+				redirect('login', 'refresh');
+		}
+	}
+
+	function plan_view($id) {
+
+		$user_session = $this -> session -> userdata('logged_in');
+
+		switch ($user_session['status']) {
+			case "user" :
+				redirect('user', 'refresh');
+				break;
+			case "admin" :
+				
+				$this -> load -> helper('form');
+				$this -> load -> view('include/header');
+				$this -> load -> view('admin/plan_view', $data);
 				$this -> load -> view('include/footer');
 				break;
 			default :
@@ -296,7 +320,7 @@ class Admin_controller extends CI_Controller {
 				$this -> form_validation -> set_message('update_name', 'ระบบทำการบันทึกล้มเหลว กรุณาลองใหม่อีกครั้ง');
 				return FALSE;
 			}
-		}else{
+		} else {
 			$this -> form_validation -> set_message('update_name', 'รหัสผ่านใหม่ไม่ตรงกัน');
 			return false;
 		}

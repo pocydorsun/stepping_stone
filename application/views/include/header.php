@@ -90,7 +90,10 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="<?php echo site_url("user/plan"); ?>">แผนการขนส่ง</a>
+								<a href="<?php echo site_url("user/plan"); ?>">สร้างแผนการขนส่ง</a>
+							</li>
+														<li>
+								<a href="<?php echo site_url("user/plan_list"); ?>">รายการแผนการขนส่ง</a>
 							</li>
 							<li>
 								<a href="<?php echo site_url("user/target"); ?>">จัดการเป้าหมาย</a>

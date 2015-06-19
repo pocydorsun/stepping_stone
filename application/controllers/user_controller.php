@@ -40,6 +40,16 @@ class User_controller extends CI_Controller {
 		$this -> load -> view('user/plan_view', $data);
 		$this -> load -> view('include/footer');
 	}
+	
+		function plan_list() {
+
+		$data['plans'] = $this -> plan_model -> getPlanList();
+
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header');
+		$this -> load -> view('user/plan_list', $data);
+		$this -> load -> view('include/footer');
+	}
 
 	function plan_send($id) {
 

@@ -57,6 +57,8 @@ $route['admin/approve'] = "admin_controller/approve"; //HOME ADMIN APPROVE
 $route['admin/plan_approve/(:num)'] = "admin_controller/plan_approve/$1"; // approve
 $route['admin/plan_not_approve/(:num)'] = "admin_controller/plan_not_approve/$1"; // not approve
 $route['admin/edit_user/(:num)'] = "admin_controller/edit_user/$1"; // Edit User
+$route['admin/plan_view/(:num)'] = "admin_controller/plan_view/$1"; // approve
+
 
 /* USER ROUTE */
 $route['user'] = "user_controller"; // HOME USER
@@ -85,6 +87,7 @@ $route['user/add_plan2'] = "user_controller/add_plan2"; //ADD plan
 $route['user/remove_plan/(:num)'] = "user_controller/remove_plan/$1"; //REMOVE target
 $route['user/plan_edit/(:num)'] = "user_controller/plan_edit/$1"; // edit plan
 $route['user/update_plan/(:num)'] = "user_controller/update_plan/$1"; // update plan
+$route['user/plan_list'] = "user_controller/plan_list"; // HOME plan
 
 
 
