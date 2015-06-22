@@ -38,7 +38,7 @@
 								<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
 							</button>
 							
-							<a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+							<a class="btn btn-default btn-xs" href="" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
 							
 													
 							<button data-toggle="modal"

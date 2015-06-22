@@ -2,7 +2,7 @@
 Class Plan_Model extends CI_Model {
 
 	function getAllPlan() {
-		$this -> db -> select('id, plan_name');
+		$this -> db -> select('id, plan_name, plan_status');
 		$this -> db -> from('plan');
 		$this -> db -> where('plan_status', 0);
 		$this -> db -> or_where('plan_status', 2);

@@ -35,8 +35,6 @@
 			</div>
 		</div>
 
-		{{new_costs}}
-
 		<div ng-init="myStep=1">
 			<div class="container-fluid">
 				<div class="container" ng-show="myStep===1">

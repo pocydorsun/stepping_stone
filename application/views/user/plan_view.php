@@ -1,7 +1,6 @@
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
-
 			<font color="#0000FF" size="6">แผนการขนส่ง</font>
 			<div class="col-md-6 col-md-offset-10">
 				<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
@@ -15,7 +14,7 @@
 		<div class="container" >
 			<div class="col-sm-6">
 
-				<?php $plans_json = json_encode($plans); ?>
+				<?php $plans_json = json_encode($plans, JSON_UNESCAPED_UNICODE); ?>
 				<ul class="list-group" <?php echo "ng-init='plans = $plans_json'"; ?>>
 
 					<li class="list-group-item">
@@ -30,37 +29,79 @@
 
 					<li class="list-group-item" ng-repeat="plan in filtered = (plans | filter:searchText)">
 
-						{{plan.plan_name}}
+						<tbody>
+							<tr>
+								<td>
+									<span class="glyphicon glyphicon-ok-circle" ng-show="plan.plan_status=='0'" style="color: red;">{{plan.plan_name}}</span>
+									<span class="glyphicon glyphicon-remove-circle" ng-show="plan.plan_status=='2'" style="color: green;">{{plan.plan_name}}</span>
+								</td>
+								<td>
+									<span class="pull-right">
+									<button data-toggle="modal"
+									data-title="คำเตือน"
+									data-msg="ยืนยันการส่งแผน"
+									data-button="ยืนยัน"
+									data-class="btn btn-success"
+									data-id=<?php echo site_url("user/plan_send/"); ?>{{"/"+plan.id}}
+									class="open-ConfirmDialog btn btn-xs btn-default"
+									data-target=".my-modal">
+										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+									</button> <a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+									<button data-toggle="modal"
+									data-title="คำเตือน"
+									data-msg="ยืนยันการลบ"
+									data-button="ยืนยัน"
+									data-class="btn btn-danger"
+									data-id=<?php echo site_url("user/remove_plan/"); ?>{{"/"+plan.id}}
+									class="open-ConfirmDialog btn btn-xs btn-default"
+									data-target=".my-modal">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+									</span>
+								</td>
+							</tr>
+						</tbody>
 
-						<span class="pull-right">
-							<button data-toggle="modal"
-							data-title="คำเตือน"
-							data-msg="ยืนยันการส่งแผน"
-							data-button="ยืนยัน"
-							data-class="btn btn-success"
-							data-id=<?php echo site_url("user/plan_send/"); ?>{{"/"+plan.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".my-modal">
-								<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-							</button>
-							
-							<a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-							
-													
-							<button data-toggle="modal"
-							data-title="คำเตือน"
-							data-msg="ยืนยันการลบ"
-							data-button="ยืนยัน"
-							data-class="btn btn-danger"
-							data-id=<?php echo site_url("user/remove_plan/"); ?>{{"/"+plan.id}}
-							class="open-ConfirmDialog btn btn-xs btn-default"
-							data-target=".my-modal">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							</button> </span>
 					</li>
 					<li class="list-group-item" ng-show="filtered == 0">
 						ไม่พบข้อมูล
 					</li>
+					<!-- <?php if ($plans [0] -> plan_status == '0'):
+					?>
+					<span ng-show="plans.plan_status=='0'" style="color: red;">{{plan.plan_name}}</span>
+
+					<?php elseif ($plans [0] -> plan_status == '2'):
+					?>
+
+					<span style="color: green;">{{plan.plan_name}}</span>
+
+					<?php endif ; ?>
+
+					<span class="pull-right">
+					<button data-toggle="modal"
+					data-title="คำเตือน"
+					data-msg="ยืนยันการส่งแผน"
+					data-button="ยืนยัน"
+					data-class="btn btn-success"
+					data-id=<?php echo site_url("user/plan_send/"); ?>{{"/"+plan.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
+					<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+					</button> <a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+					<button data-toggle="modal"
+					data-title="คำเตือน"
+					data-msg="ยืนยันการลบ"
+					data-button="ยืนยัน"
+					data-class="btn btn-danger"
+					data-id=<?php echo site_url("user/remove_plan/"); ?>{{"/"+plan.id}}
+					class="open-ConfirmDialog btn btn-xs btn-default"
+					data-target=".my-modal">
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button> </span>
+					</li>
+					<li class="list-group-item" ng-show="filtered == 0">
+					ไม่พบข้อมูล
+					</li> -->
 				</ul>
 			</div>
 		</div>
