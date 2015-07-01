@@ -232,7 +232,7 @@ class Admin_controller extends CI_Controller {
 				
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('admin/plan_view', $data);
+				$this -> load -> view('admin/plan_view');
 				$this -> load -> view('include/footer');
 				break;
 			default :

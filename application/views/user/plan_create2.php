@@ -62,7 +62,7 @@
 									</center> </a>
 									<input type="number"
 									class="form-control"
-									style="width:50px;"/
+									style="width:100px;"/
 									ng-model ='newCapacity'
 									ng-show="statusEdit">
 									</td>
