@@ -46,7 +46,7 @@
 									class="open-ConfirmDialog btn btn-xs btn-default"
 									data-target=".my-modal">
 										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-									</button> <a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+									</button> <a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit2"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
 									<button data-toggle="modal"
 									data-title="คำเตือน"
 									data-msg="ยืนยันการลบ"

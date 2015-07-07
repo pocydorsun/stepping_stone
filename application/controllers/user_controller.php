@@ -154,7 +154,21 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function plan_edit($id) {
+	// function plan_edit($id) {
+// 
+		// $data['sources'] = $this -> source_model -> getAll();
+		// $data['destinations'] = $this -> destination_model -> getAll();
+		// $data['costs'] = $this -> cost_model -> getAllCostWithOutName();
+// 
+		// $data["plan"] = $this -> plan_model -> getPlan($id);
+// 
+		// $this -> load -> helper('form');
+		// $this -> load -> view('include/header');
+		// $this -> load -> view('user/plan_edit', $data);
+		// $this -> load -> view('include/footer');
+	// }
+	
+		function plan_edit2($id) {
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
@@ -164,7 +178,7 @@ class User_controller extends CI_Controller {
 
 		$this -> load -> helper('form');
 		$this -> load -> view('include/header');
-		$this -> load -> view('user/plan_edit', $data);
+		$this -> load -> view('user/plan_edit2', $data);
 		$this -> load -> view('include/footer');
 	}
 

@@ -34,12 +34,23 @@
 				</form>
 			</div>
 		</div>
-		<?php if ($this->session->flashdata('source_data') && $this->session->flashdata('destination_data') && $this->session->flashdata('myStep') && $this->session->flashdata('costOfPlan')) :
+		<?php if ($this->session->flashdata('source_data') && 
+		$this->session->flashdata('destination_data') && 
+		$this->session->flashdata('myStep') && 
+		$this->session->flashdata('costOfPlan')) :
 		?>
-		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; source_data=<?php echo $this -> session -> flashdata("source_data"); ?>; destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>; new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
-			<?php else : ?>
-			<div ng-init="myStep=1">
-				<?php endif ?>
+		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; 
+			source_data=<?php echo $this -> session -> flashdata("source_data"); ?>; 
+			destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>; 
+			new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
+			<?php elseif($plan) : ?>
+			<div ng-init='myStep=1; 
+				source_data=<?php echo $plan[0]["plan_source"]; ?>; 
+				destination_data=<?php echo $plan[0]["plan_destination"]; ?>; 
+				new_costs=<?php echo $plan[0]["plan_cost"]; ?>;'>
+				<?php else : ?>
+				<div ng-init="myStep=1">
+					<?php endif ?>
 				<div class="container-fluid">
 					<div class="container" ng-show="myStep===1">
 						<h2>ต้นทาง</h2>

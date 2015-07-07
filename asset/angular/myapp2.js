@@ -49,6 +49,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				$scope.source_data.push(list);
 			} else {
 				$scope.source_lists.push({
+					id : list.id,
 					source_name : list.source_name,
 					capacity : list.capacity
 				});
@@ -116,6 +117,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				$scope.destination_data.push(list);
 			} else {
 				$scope.destination_lists.push({
+					id : list.id,
 					destination_name : list.destination_name,
 					capacity : list.capacity
 				});
@@ -139,14 +141,14 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	$scope.checkCost = function(SourceId, DestinationId) {
 
 		var myCost = 0;
-
+		// ตรวจสอบ  cost โดย  SourceId, DestinationId จาก  DB
 		var cost = $scope.costs;
 		angular.forEach(cost, function(list) {
 			if (SourceId === list.source_id && DestinationId === list.destination_id) {
 				myCost = list.cost;
 			}
 		});
-
+		// ตรวจสอบ cost จากข้อมูลที่เลือกมาใน new_cost
 		var new_cost = $scope.new_costs;
 		angular.forEach(new_cost, function(list) {
 			if (SourceId === list.source_id && DestinationId === list.destination_id) {
@@ -169,6 +171,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			});
 		} else {
 			var old_costs = $scope.new_costs;
+			// status 1 ยังไม่ได้ใส่ข้อมูล
 			var status = 1;
 			$scope.new_costs = [];
 			angular.forEach(old_costs, function(list) {
@@ -209,7 +212,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		angular.forEach(data, function(list){
 			console.log(list);
 		});
-	}
+	};
 
 	// 3.3ฟังค์ชั่นตั้งค่า Capacity เริ่มต้น โดยการเลือกใส่ค่า Capacity จาก Cost น้อยไปหา Cost มาก
 	$scope.initCapacity = function() {
