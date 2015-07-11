@@ -58,38 +58,6 @@ class User_controller extends CI_Controller {
 		$this -> session -> set_flashdata('success_msg', 'ส่งแผนแผนสำเร็จ');
 		redirect('user/plan');
 	}
-
-	 function create_plan() {
- 
-		 $data['sources'] = $this -> source_model -> getAll();
-		 $data['destinations'] = $this -> destination_model -> getAll();
-		 $data['costs'] = $this -> cost_model -> getAllCostWithOutName();
-
-		 $this -> load -> helper('form');
-		 $this -> load -> view('include/header');
-		 $this -> load -> view('user/plan_create', $data);
-		 $this -> load -> view('include/footer');
-	 }
-
-	 function add_plan() {
- 
-		 $this -> load -> library('form_validation');
-		 $this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
- 
-		 if ($this -> form_validation -> run() == FALSE) {
-			 $this -> session -> set_flashdata('sourceTable', $this -> input -> post('txtSourceTable'));
-			 $this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
-			 $this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
-			 $this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
-			 $this -> session -> set_flashdata('error_msg', validation_errors());
-			 redirect('user/create');
-		 } else {
- 
-			 $this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
- 
-			 redirect('user/plan');
-		 }
-	 }
 	
 		 function check_plan_exit($plan) {
 		 $sourceTable = $this -> input -> post('txtSourceTable');
@@ -117,7 +85,7 @@ class User_controller extends CI_Controller {
 			$this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
-			redirect('user/create');
+			redirect('user/create2');
 		} else {
 
 			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
@@ -153,20 +121,6 @@ class User_controller extends CI_Controller {
 			return FALSE;
 		}
 	}
-
-	// function plan_edit($id) {
-// 
-		// $data['sources'] = $this -> source_model -> getAll();
-		// $data['destinations'] = $this -> destination_model -> getAll();
-		// $data['costs'] = $this -> cost_model -> getAllCostWithOutName();
-// 
-		// $data["plan"] = $this -> plan_model -> getPlan($id);
-// 
-		// $this -> load -> helper('form');
-		// $this -> load -> view('include/header');
-		// $this -> load -> view('user/plan_edit', $data);
-		// $this -> load -> view('include/footer');
-	// }
 	
 		function plan_edit2($id) {
 
@@ -192,12 +146,12 @@ class User_controller extends CI_Controller {
 			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
-			redirect('user/plan_edit/' . $id);
+			redirect('user/plan_edit2/' . $id);
 		} else {
 
 			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
 
-			redirect('user/plan_edit/' . $id);
+			redirect('user/plan_edit2/' . $id);
 		}
 	}
 

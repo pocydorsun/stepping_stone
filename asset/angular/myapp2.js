@@ -19,10 +19,21 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				if (list.source_name != $scope.selectSource.source_name)
 					$scope.source_lists.push(list);
 			});
+
 			// ตั้งค่า selectSource ใหม่
 			$scope.selectSource = '';
 			$scope.source_capacity = '';
 		};
+	};
+
+	$scope.checkSourceEdit = function() {
+		console.log($scope.source_lists);
+		console.log($scope.source_data);
+	};
+
+	$scope.checkDestinationEdit = function() {
+		console.log($scope.destination_lists);
+		console.log($scope.destination_data);
 	};
 
 	$scope.editSource = function(id, name, newCapacity) {
@@ -197,19 +208,19 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	};
 
 	// 3. สิ่งที่จำเป็นต้องใช้ใน Step3
- 	// 3.1เรียง $scope.new_cost ใหม่จาก Cost น้อยไปหา Cost มาก
+	// 3.1เรียง $scope.new_cost ใหม่จาก Cost น้อยไปหา Cost มาก
 	$scope.sortNewCosts = function() {
-		$scope.new_costs.sort(function(a,b) {
-			return a.cost-b.cost;
+		$scope.new_costs.sort(function(a, b) {
+			return a.cost - b.cost;
 		});
 	};
 
-  // 3.2ตัวแปรที่ต้องใช้ในการเซ็ท Capacity เริ่มแรก
+	// 3.2ตัวแปรที่ต้องใช้ในการเซ็ท Capacity เริ่มแรก
 	$scope.init_capacity = [];
 
-  // ไม่เกี่ยวกับการคำนวณ แต่เอามาใช้ปริ้นค่า Json ให้ดูง่ายเฉยๆ
-	printData = function(data){
-		angular.forEach(data, function(list){
+	// ไม่เกี่ยวกับการคำนวณ แต่เอามาใช้ปริ้นค่า Json ให้ดูง่ายเฉยๆ
+	printData = function(data) {
+		angular.forEach(data, function(list) {
 			console.log(list);
 		});
 	};
@@ -222,20 +233,20 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 		// 3.3.1.1ทำการ Backup source_data
 		angular.forEach($scope.source_data, function(list) {
-			source_data_backup.push(
-				{	id: list.id,
-					source_name: list.source_name,
-					capacity: list.capacity
-				});
+			source_data_backup.push({
+				id : list.id,
+				source_name : list.source_name,
+				capacity : list.capacity
+			});
 		});
 
 		// 3.3.1.2ทำการ Backup destination_data
 		angular.forEach($scope.destination_data, function(list) {
-			destination_data_backup.push(
-				{	id: list.id,
-					destination_name: list.destination_name,
-					capacity: list.capacity
-				});
+			destination_data_backup.push({
+				id : list.id,
+				destination_name : list.destination_name,
+				capacity : list.capacity
+			});
 		});
 
 		//3.3.2ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
@@ -259,13 +270,16 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		console.log("[---END---]");
 	};
 
-  // 4.การเปลี่ยนสเต็ปไปมา
-  // 4.1ตัวแปรนี้ใช้เก็บค่าสเตตัสของแผนว่า error หรือไม่ ถ้า error จะไป step 2 ไม่ได้
+	// 4.การเปลี่ยนสเต็ปไปมา
+	// 4.1ตัวแปรนี้ใช้เก็บค่าสเตตัสของแผนว่า error หรือไม่ ถ้า error จะไป step 2 ไม่ได้
 	$scope.err_plan = false;
 
-  // 4.2 ฟังค์ชั่นการเปลี่ยน Step
+	// 4.2 ฟังค์ชั่นการเปลี่ยน Step
 	$scope.changeStep = function(step) {
 		$scope.myStep = step;
+		// if (step === 1) {
+		// $scope.check();
+		// }
 
 		// 4.2.1 เงื่อนไขการไปสเต็ปที่สอง ถ้าความไม่ใช่ ตาราง 3x3 ขึ้นไป ก็จะไม่สามารถข้ามไปยัง Step 2 ได้
 		if (step === 2) {

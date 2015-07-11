@@ -34,138 +34,155 @@
 				</form>
 			</div>
 		</div>
+		<br>
 		<?php if ($this->session->flashdata('source_data') && $this->session->flashdata('destination_data') && $this->session->flashdata('myStep') && $this->session->flashdata('costOfPlan')) :
 		?>
 		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; source_data=<?php echo $this -> session -> flashdata("source_data"); ?>; destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>; new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
 			<?php else : ?>
 			<div ng-init="myStep=1">
 				<?php endif ?>
-				<div class="container-fluid">
-					<div class="container" ng-show="myStep===1">
-						<h2>ต้นทาง</h2>
-						<div class="col-sm-7 well well-lg" >
+				<div class="container col-sm-12">
+					<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+						<ul id="myTabs" class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active">
+								<a href="#source" id="source-tab" role="tab" data-toggle="tab" aria-controls="source" aria-expanded="true">ต้นทาง</a>
+							</li>
+							<li role="presentation">
+								<a href="#destination" role="tab" id="destination-tab" data-toggle="tab" aria-controls="destination">ปลายทาง</a>
+							</li>
+						</ul>
+						<div id="myTabContent" class="tab-content">
+							<!-- ส่วนต้นทาง -->
+							<div role="tabpanel" class="tab-pane fade active in" id="source" aria-labelledby="source-tab">
+								<div class="container" ng-show="myStep===1">
+									<br>
+									<div class="col-sm-7 well well-lg" >
+										<table  class="table table-striped">
+											<thead>
+												<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
+												<th></th>
+											</thead>
+											<br>
+											<tbody>
+												<tr ng-repeat='list in source_data'>
 
-							<table  class="table table-striped">
-								<thead>
-									<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
-									<th></th>
-								</thead>
-								<br>
+													<td>{{list.source_name}}</td>
 
-								<tbody>
-									<tr ng-repeat='list in source_data'>
+													<td  ng-init='statusEdit=false; statusShow=true'><a = href=""
+													ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
+													ng-show="statusShow">
+													<center>
+														{{list.capacity}}
+													</center> </a>
+													<input type="number"
+													class="form-control"
+													style="width:100px;"/
+													ng-model ='newCapacity'
+													ng-show="statusEdit">
+													</td>
 
-										<td>{{list.source_name}}</td>
+													<td><a href=""
+													ng-click="editSource(list.id, list.source_name, newCapacity)"
+													ng-show="statusEdit"> ตกลง </a></td>
 
-										<td  ng-init='statusEdit=false; statusShow=true'><a = href=""
-										ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
-										ng-show="statusShow">
-										<center>
-											{{list.capacity}}
-										</center> </a>
-										<input type="number"
-										class="form-control"
-										style="width:100px;"/
-										ng-model ='newCapacity'
-										ng-show="statusEdit">
-										</td>
+													<td><a href=""
+													ng-click="statusEdit=false; statusShow=true; newName=''"
+													ng-show="statusEdit"> ยกเลิก </a></td>
 
-										<td><a href=""
-										ng-click="editSource(list.id, list.source_name, newCapacity)"
-										ng-show="statusEdit"> ตกลง </a></td>
+													<td><a href="" ng-click="removeSource(list.id)"
+													ng-show="statusShow" > ลบ </a></td>
+												</tr>
+											</tbody>
+										</table>
 
-										<td><a href=""
-										ng-click="statusEdit=false; statusShow=true; newName=''"
-										ng-show="statusEdit"> ยกเลิก </a></td>
+										<div <?php echo "ng-init='source_lists = $sources_json'"; ?> >
+											<div ng-show="sources.length !== 0">
+												<form class="form-inline" ng-submit="addSource()">
+													<div class="form-group">
+														<select style="width:150px;"/ class="form-control" ng-model="selectSource" ng-options="list.source_name for list in source_lists | orderBy:'source_name'">
+															<option value="">เลือก</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<input type="number" class="form-control" ng-model="source_capacity" placeholder="ความจุ">
+													</div>
 
-										<td><a href="" ng-click="removeSource(list.id)"
-										ng-show="statusShow" > ลบ </a></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<div <?php echo "ng-init='source_lists = $sources_json'"; ?> >
-								<form class="form-inline" ng-submit="addSource()">
-									<div class="form-group">
-										<select style="width:150px;"/ class="form-control" ng-model="selectSource" ng-options="list.source_name for list in source_lists | orderBy:'source_name'">
-											<option value="">เลือก</option>
-										</select>
+													<button type="submit" class="btn btn-default">
+														เพิ่ม
+													</button>
+												</form>
+											</div>
+										</div>
 									</div>
-									<div class="form-group">
-										<input type="number" class="form-control" ng-model="source_capacity" placeholder="ความจุ">
-									</div>
-
-									<button type="submit" class="btn btn-default">
-										เพิ่ม
-									</button>
-								</form>
+								</div>
 							</div>
+							
+							<!-- ส่วนปลายทาง -->
+							<div role="tabpanel" class="tab-pane fade" id="destination" aria-labelledby="destination-tab">
+								<div class="container" ng-show="myStep===1">
+									<br>
+									<div class="col-sm-7 well well-lg" >
 
-						</div>
-					</div>
-				</div>
+										<table class="table table-striped" >
+											<thead>
+												<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
+												<th></th>
+											</thead>
+											<br>
 
-				<div class="container-fluid">
-					<div class="container" ng-show="myStep===1">
-						<h2>ปลายทาง</h2>
-						<div class="col-sm-7 well well-lg" >
+											<tbody>
+												<tr ng-repeat='list in destination_data'>
 
-							<table class="table table-striped" >
-								<thead>
-									<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
-									<th></th>
-								</thead>
-								<br>
+													<td>{{list.destination_name}}</td>
 
-								<tbody>
-									<tr ng-repeat='list in destination_data'>
+													<td ng-init='statusEdit=false; statusShow=true'><a = href=""
+													ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
+													ng-show="statusShow">
+													<center>
+														{{list.capacity}}
+													</center> </a>
+													<input type="number"
+													class="form-control"
+													style="width:50px;"/
+													ng-model ='newCapacity'
+													ng-show="statusEdit">
+													</td>
 
-										<td>{{list.destination_name}}</td>
+													<td><a href=""
+													ng-click="editSource(list.id, list.destination_name, newCapacity)"
+													ng-show="statusEdit"> ตกลง </a></td>
 
-										<td ng-init='statusEdit=false; statusShow=true'><a = href=""
-										ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
-										ng-show="statusShow">
-										<center>
-											{{list.capacity}}
-										</center> </a>
-										<input type="number"
-										class="form-control"
-										style="width:50px;"/
-										ng-model ='newCapacity'
-										ng-show="statusEdit">
-										</td>
+													<td><a href=""
+													ng-click="statusEdit=false; statusShow=true; newName=''"
+													ng-show="statusEdit"> ยกเลิก </a></td>
 
-										<td><a href=""
-										ng-click="editSource(list.id, list.destination_name, newCapacity)"
-										ng-show="statusEdit"> ตกลง </a></td>
+													<td><a href="" ng-click="removeDestination(list.id)"
+													ng-show="statusShow"> ลบ </a></td>
+												</tr>
+											</tbody>
+										</table>
 
-										<td><a href=""
-										ng-click="statusEdit=false; statusShow=true; newName=''"
-										ng-show="statusEdit"> ยกเลิก </a></td>
+										<div <?php echo "ng-init='destination_lists = $destinations_json'"; ?> >
+											<div ng-show="destinations.length !== 0">
+												<form class="form-inline" ng-submit="addDestination()">
+													<div class="form-group">
+														<select style="width:150px;"/ class="form-control" ng-model="selectDestination" ng-options="list.destination_name for list in destination_lists | orderBy:'destination_name'">
+															<option value="">เลือก</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<input type="number" class="form-control" ng-model="destination_capacity" placeholder="ความจุ">
+													</div>
 
-										<td><a href="" ng-click="removeDestination(list.id)"
-										ng-show="statusShow"> ลบ </a></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<div <?php echo "ng-init='destination_lists = $destinations_json'"; ?> >
-								<form class="form-inline" ng-submit="addDestination()">
-									<div class="form-group">
-										<select style="width:150px;"/ class="form-control" ng-model="selectDestination" ng-options="list.destination_name for list in destination_lists | orderBy:'destination_name'">
-											<option value="">เลือก</option>
-										</select>
+													<button type="submit" class="btn btn-default">
+														เพิ่ม
+													</button>
+												</form>
+											</div>
+										</div>
 									</div>
-									<div class="form-group">
-										<input type="number" class="form-control" ng-model="destination_capacity" placeholder="ความจุ">
-									</div>
-
-									<button type="submit" class="btn btn-default">
-										เพิ่ม
-									</button>
-								</form>
+								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -257,3 +274,5 @@
 			</div>
 		</div>
 	</div>
+</div>
+

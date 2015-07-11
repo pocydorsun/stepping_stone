@@ -3,9 +3,6 @@
 		<div class="container">
 			<font color="#0000FF" size="6">แผนการขนส่ง</font>
 			<div class="col-md-6 col-md-offset-10">
-				<a href=<?php echo site_url("user/create"); ?> class="btn btn-success">สร้างแผน</a>
-			</div>
-			<div class="col-md-6 col-md-offset-10">
 				<a href=<?php echo site_url("user/create2"); ?> class="btn btn-success">สร้างแผน2</a>
 			</div>
 		</div>
