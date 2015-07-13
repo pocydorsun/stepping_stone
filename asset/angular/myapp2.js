@@ -3,8 +3,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	$scope.source_data = [];
 
 	$scope.addSource = function() {
-		if ($scope.selectSource != undefined && $scope.selectSource != '') {
-			if ($scope.source_capacity == undefined || $scope.source_capacity == '') {
+		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {
+			if ($scope.source_capacity === undefined || $scope.source_capacity === '') {
 				$scope.source_capacity = 0;
 			}
 			$scope.source_data.push({
@@ -16,8 +16,9 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			var oldSourceList = $scope.source_lists;
 			$scope.source_lists = [];
 			angular.forEach(oldSourceList, function(list) {
-				if (list.source_name != $scope.selectSource.source_name)
+				if (list.source_name !== $scope.selectSource.source_name) {
 					$scope.source_lists.push(list);
+				}
 			});
 
 			// ตั้งค่า selectSource ใหม่
@@ -26,21 +27,11 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		};
 	};
 
-	$scope.checkSourceEdit = function() {
-		console.log($scope.source_lists);
-		console.log($scope.source_data);
-	};
-
-	$scope.checkDestinationEdit = function() {
-		console.log($scope.destination_lists);
-		console.log($scope.destination_data);
-	};
-
 	$scope.editSource = function(id, name, newCapacity) {
 		var oldData = $scope.source_data;
 		$scope.source_data = [];
 		angular.forEach(oldData, function(list) {
-			if (list.id != id) {
+			if (list.id !== id) {
 				$scope.source_data.push(list);
 			} else {
 				$scope.source_data.push({
@@ -56,13 +47,12 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var oldData = $scope.source_data;
 		$scope.source_data = [];
 		angular.forEach(oldData, function(list) {
-			if (list.id != id) {
+			if (list.id !== id) {
 				$scope.source_data.push(list);
 			} else {
 				$scope.source_lists.push({
 					id : list.id,
-					source_name : list.source_name,
-					capacity : list.capacity
+					source_name : list.source_name
 				});
 			}
 		});
@@ -79,11 +69,34 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		}
 	};
 
+	$scope.checkSourceEdit = function() {
+
+		var oldsource = $scope.source_lists;
+		$scope.source_lists = [];
+		angular.forEach(oldsource, function(list) {
+			if ($scope.checkSourceData(list.id)) {//ส่ง source_lists.id ไป เช็คที่ checkSourceData
+				$scope.source_lists.push(list);
+				// ถ้า  true ให้ใส่ใน source_lists
+			}
+		});
+	};
+
+	$scope.checkSourceData = function(id) {
+		var x = true;
+		angular.forEach($scope.source_data, function(list) {
+			if (list.id === id) {// เช็ค source_data.id === source_lists.id
+				x = false;
+				//ถ้าไอดีตรงกัน ให้ส่งค่า false กลับไป ถ้าไม่ตรงให้ส่งค่า true
+			}
+		});
+		return x;
+	};
+
 	$scope.destination_data = [];
 
 	$scope.addDestination = function() {
-		if ($scope.selectDestination != undefined && $scope.selectDestination != '') {
-			if ($scope.destination_capacity == undefined || $scope.destination_capacity == '') {
+		if ($scope.selectDestination !== undefined && $scope.selectDestination !== '') {
+			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '') {
 				$scope.destination_capacity = 0;
 			}
 			$scope.destination_data.push({
@@ -95,8 +108,9 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			var oldDestinationList = $scope.destination_lists;
 			$scope.destination_lists = [];
 			angular.forEach(oldDestinationList, function(list) {
-				if (list.destination_name != $scope.selectDestination.destination_name)
+				if (list.destination_name !== $scope.selectDestination.destination_name) {
 					$scope.destination_lists.push(list);
+				}
 			});
 			// ตั้งค่า selectDestination ใหม่
 			$scope.selectDestination = '';
@@ -108,7 +122,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var oldData = $scope.destination_data;
 		$scope.destination_data = [];
 		angular.forEach(oldData, function(list) {
-			if (list.id != id) {
+			if (list.id !== id) {
 				$scope.destination_data.push(list);
 			} else {
 				$scope.destination_data.push({
@@ -124,13 +138,12 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var oldData = $scope.destination_data;
 		$scope.destination_data = [];
 		angular.forEach(oldData, function(list) {
-			if (list.id != id) {
+			if (list.id !== id) {
 				$scope.destination_data.push(list);
 			} else {
 				$scope.destination_lists.push({
 					id : list.id,
-					destination_name : list.destination_name,
-					capacity : list.capacity
+					destination_name : list.destination_name
 				});
 			}
 		});
@@ -145,6 +158,28 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			});
 			new_costs_backup = [];
 		}
+	};
+
+	$scope.checkDestinationEdit = function() {
+		var olddestination = $scope.destination_lists;
+		$scope.destination_lists = [];
+
+		angular.forEach(olddestination, function(list) {
+			//ส่ง
+			if ($scope.checkDestinationData(list.id)) {
+				$scope.destination_lists.push(list);
+			}
+		});
+	};
+
+	$scope.checkDestinationData = function(id) {
+		var x = true;
+		angular.forEach($scope.destination_data, function(list) {
+			if (list.id === id) {
+				x = false;
+			}
+		});
+		return x;
 	};
 
 	$scope.new_costs = [];
@@ -277,9 +312,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	// 4.2 ฟังค์ชั่นการเปลี่ยน Step
 	$scope.changeStep = function(step) {
 		$scope.myStep = step;
-		// if (step === 1) {
-		// $scope.check();
-		// }
 
 		// 4.2.1 เงื่อนไขการไปสเต็ปที่สอง ถ้าความไม่ใช่ ตาราง 3x3 ขึ้นไป ก็จะไม่สามารถข้ามไปยัง Step 2 ได้
 		if (step === 2) {
