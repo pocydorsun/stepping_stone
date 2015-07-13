@@ -284,11 +284,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			});
 		});
 
-		//3.3.2ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
-		angular.forEach($scope.new_costs, function(list) {
-			$scope.init_capacity.push(list);
-		});
-
 		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
 		console.log("source_data:");
 		printData($scope.source_data);
@@ -300,8 +295,57 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		printData(destination_data_backup);
 		console.log("$scope.new_costs:");
 		printData($scope.new_costs);
-		console.log("$scope.init_capacity:");
-		printData($scope.init_capacity);
+
+		//3.3.2ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
+		var similar_cost = [];
+
+		var current_cost = 0;
+
+		var next_similar_cost = false;
+
+		var current_list_point = 0;
+		var last_list_point = $scope.new_costs.length;
+
+		angular.forEach($scope.new_costs, function(list) {
+			current_list_point = current_list_point + 1;
+
+			if (current_list_point === 1) {
+				current_cost = list.cost;
+			}
+
+			if (list.cost === current_cost) {
+				similar_cost.push(list);
+			} else {
+				next_similar_cost = true;
+			}
+
+			if (next_similar_cost) {
+				console.log(" ");
+				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
+				console.log(similar_cost);
+				next_similar_cost = false;
+				similar_cost = [];
+			}
+
+			if (list.cost !== current_cost) {
+				current_cost = list.cost;
+				similar_cost.push(list);
+			}
+
+			if (current_list_point === last_list_point) {
+				console.log(" ");
+				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
+				console.log(similar_cost);
+				console.log(" ");
+				similar_cost = [];
+			}
+		});
+
+		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
+
+		// printData($scope.new_costs);
+		// console.log("$scope.init_capacity:");
+		// printData($scope.init_capacity);
 		console.log("[---END---]");
 	};
 
