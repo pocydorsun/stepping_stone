@@ -7,7 +7,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) {
 				$scope.source_capacity = 0;
 			}
-			console.log($scope.source_capacity);
+			
 			$scope.source_data.push({
 				id : $scope.selectSource.id,
 				source_name : $scope.selectSource.source_name,
