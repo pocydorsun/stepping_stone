@@ -4,14 +4,16 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	$scope.addSource = function() {
 		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {
-			if ($scope.source_capacity === undefined || $scope.source_capacity === '') {
+			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) {
 				$scope.source_capacity = 0;
 			}
+			console.log($scope.source_capacity);
 			$scope.source_data.push({
 				id : $scope.selectSource.id,
 				source_name : $scope.selectSource.source_name,
 				capacity : $scope.source_capacity
 			});
+
 			// ลบลิสที่ถูกเลือกแล้ว
 			var oldSourceList = $scope.source_lists;
 			$scope.source_lists = [];
@@ -96,7 +98,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	$scope.addDestination = function() {
 		if ($scope.selectDestination !== undefined && $scope.selectDestination !== '') {
-			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '') {
+			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '' || $scope.destination_capacity === null) {
 				$scope.destination_capacity = 0;
 			}
 			$scope.destination_data.push({
