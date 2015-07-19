@@ -299,26 +299,27 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		printData($scope.new_costs);
 
 		//3.3.2ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
-		var similar_cost = [];
+		var similar_cost = []; // cost ที่เหมือนกัน
 
-		var current_cost = 0;
+		var current_cost = 0; // cost ปัจจุบัน
 
-		var next_similar_cost = false;
+		var next_similar_cost = false; // ทำต่อ  cost ที่เหมือนกัน
 
-		var current_list_point = 0;
-		var last_list_point = $scope.new_costs.length;
+		var current_list_point = 0;	// รายการปัจจุบัน
+
+		var last_list_point = $scope.new_costs.length; // รายการสุดม้าย
 
 		angular.forEach($scope.new_costs, function(list) {
 			current_list_point = current_list_point + 1;
 
-			if (current_list_point === 1) {
-				current_cost = list.cost;
+			if (current_list_point === 1) {	// รายการปัจจุบัน
+				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
 			}
 
-			if (list.cost === current_cost) {
-				similar_cost.push(list);
+			if (list.cost === current_cost) {	// ถ้า list.cost เท่ากับ cost ปัจจุบัน
+				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
 			} else {
-				next_similar_cost = true;
+				next_similar_cost = true;	// ทำต่อ cost ที่เหมือนกัน
 			}
 
 			if (next_similar_cost) {
@@ -329,12 +330,12 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				similar_cost = [];
 			}
 
-			if (list.cost !== current_cost) {
-				current_cost = list.cost;
-				similar_cost.push(list);
+			if (list.cost !== current_cost) {	// ถ้า list.cost ไม่เท่ากับ cost ปัจจุบัน
+				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
+				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
 			}
 
-			if (current_list_point === last_list_point) {
+			if (current_list_point === last_list_point) {	// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
 				console.log(similar_cost);
@@ -342,6 +343,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				similar_cost = [];
 			}
 		});
+
 
 		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
 
