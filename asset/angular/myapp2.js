@@ -7,7 +7,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) {
 				$scope.source_capacity = 0;
 			}
-			
+
 			$scope.source_data.push({
 				id : $scope.selectSource.id,
 				source_name : $scope.selectSource.source_name,
@@ -262,13 +262,14 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		});
 	};
 
-	// 3.3ฟังค์ชั่นตั้งค่า Capacity เริ่มต้น โดยการเลือกใส่ค่า Capacity จาก Cost น้อยไปหา Cost มาก
-	$scope.initCapacity = function() {
-		//3.3.1 ตัวแปรที่จะต้องใช้ในการคำนวณ Capacity (จำเป็นต้อง Backup)
-		var source_data_backup = [];
-		var destination_data_backup = [];
+	// 3.3 ตัวแปรที่จะต้องใช้ในการคำนวณ Capacity (จำเป็นต้อง Backup)
+	var source_data_backup = [];
+	var destination_data_backup = [];
 
-		// 3.3.1.1ทำการ Backup source_data
+	// 3.4ฟังค์ชั่นตั้งค่า Capacity เริ่มต้น โดยการเลือกใส่ค่า Capacity จาก Cost น้อยไปหา Cost มาก
+	$scope.initCapacity = function() {
+
+		// 3.4.1ทำการ Backup source_data
 		angular.forEach($scope.source_data, function(list) {
 			source_data_backup.push({
 				id : list.id,
@@ -277,7 +278,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			});
 		});
 
-		// 3.3.1.2ทำการ Backup destination_data
+		// 3.4.2ทำการ Backup destination_data
 		angular.forEach($scope.destination_data, function(list) {
 			destination_data_backup.push({
 				id : list.id,
@@ -298,8 +299,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		console.log("$scope.new_costs:");
 		printData($scope.new_costs);
 
-		//3.3.2ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
-		var similar_cost = []; // cost ที่เหมือนกัน
+		//3.4.3ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
+		var similar_cost = [];
 
 		var current_cost = 0; // cost ปัจจุบัน
 
