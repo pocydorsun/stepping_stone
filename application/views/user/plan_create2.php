@@ -42,7 +42,7 @@
 			<div ng-init="myStep=1">
 				<?php endif ?>
 				<div class="container col-sm-12">
-					<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+					<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs" ng-show="myStep===1">
 						<ul id="myTabs" class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
 								<a href="#source" id="source-tab" role="tab" data-toggle="tab" aria-controls="source" aria-expanded="true">ต้นทาง</a>
@@ -143,13 +143,13 @@
 													</center> </a>
 													<input type="number"
 													class="form-control"
-													style="width:50px;"/
+													style="width:100px;"/
 													ng-model ='newCapacity'
 													ng-show="statusEdit">
 													</td>
 
 													<td><a href=""
-													ng-click="editSource(list.id, list.destination_name, newCapacity)"
+													ng-click="editDestination(list.id, list.destination_name, newCapacity)"
 													ng-show="statusEdit"> ตกลง </a></td>
 
 													<td><a href=""
