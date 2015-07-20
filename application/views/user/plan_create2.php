@@ -116,7 +116,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<!-- ส่วนปลายทาง -->
 							<div role="tabpanel" class="tab-pane fade" id="destination" aria-labelledby="destination-tab">
 								<div class="container" ng-show="myStep===1">
@@ -232,7 +232,7 @@
 									<td ng-repeat="destination in destination_data">
 									<input ng-model="search.source_id" ng-init="search.source_id = source.id" ng-hide="true">
 									<input ng-model="search.destination_id" ng-init="search.destination_id = destination.id" ng-hide="true">
-									<div ng-repeat="cap in initCapacity | filter:search">
+									<div ng-repeat="cap in init_capacity | filter:search">
 										{{cap.capacity}}
 									</div></td>
 									<th>{{source.capacity}}</th>
@@ -275,4 +275,3 @@
 		</div>
 	</div>
 </div>
-
