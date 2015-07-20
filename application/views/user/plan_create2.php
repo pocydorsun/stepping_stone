@@ -244,7 +244,6 @@
 								</tr>
 							</tbody>
 						</table>
-						{{init_capacity}}
 					</div>
 				</div>
 
