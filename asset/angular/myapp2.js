@@ -268,6 +268,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	// 3.4ฟังค์ชั่นตั้งค่า Capacity เริ่มต้น โดยการเลือกใส่ค่า Capacity จาก Cost น้อยไปหา Cost มาก
 	$scope.initCapacity = function() {
+		source_data_backup = [];
+		destination_data_backup = [];
 
 		// 3.4.1ทำการ Backup source_data
 		angular.forEach($scope.source_data, function(list) {
@@ -310,6 +312,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 		var last_list_point = $scope.new_costs.length; // รายการสุดม้าย
 
+		$scope.init_capacity = []; // ล้างค่า init_capacity ใหม่ทุกครั้ง
+
 		angular.forEach($scope.new_costs, function(list) {
 			current_list_point = current_list_point + 1;
 
@@ -326,7 +330,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if (next_similar_cost) {
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				console.log(similar_cost);
+				setInitCapacity(similar_cost);
 				next_similar_cost = false;
 				similar_cost = [];
 			}
@@ -339,20 +343,148 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if (current_list_point === last_list_point) {	// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				console.log(similar_cost);
+				setInitCapacity(similar_cost);
 				console.log(" ");
 				similar_cost = [];
 			}
 		});
 
+		angular.forEach($scope.new_costs, function(list) {
+			var pushList = true;
+
+			angular.forEach($scope.init_capacity, function(list2) {
+				if ((list.source_id === list2.source_id) && (list.destination_id === list2.destination_id)) {
+					pushList = false;
+				}
+			});
+
+			if (pushList) {
+				$scope.init_capacity.push({
+					source_id : list.source_id,
+					destination_id : list.destination_id,
+					cost : list.cost,
+					capacity : 0
+				});
+			}
+		});
 
 		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
 
 		// printData($scope.new_costs);
 		// console.log("$scope.init_capacity:");
 		// printData($scope.init_capacity);
+		var total_result = 0;
+		angular.forEach($scope.init_capacity, function(list) {
+			console.log(list);
+			total_result = total_result + list.capacity;
+		});
+		console.log(total_result);
+		console.log($scope.new_costs.length === $scope.init_capacity.length);
 		console.log("[---END---]");
 	};
+
+	// 3.5. ฟังค์ชั่น setInitCapacity() ใช้ค้ำนวณกำหนดค่า Capacity ของแต่ละกลุ่มที่มี Cost เท่ากัน
+	function setInitCapacity(similar_cost) {
+
+		var total_capacity = 0;
+
+		do {
+			var x = calCapacity(similar_cost);
+			// console.log(x);
+			// console.log(" ");
+			// console.log(x[0]);
+			if (x[0].capacity !== 0) {
+				$scope.init_capacity.push(x[0]);
+				reCapacity(x[0]);
+			}
+			total_capacity = 0;
+			angular.forEach(x, function(list) {
+				// console.log("test : ")
+				// console.log(list.capacity);
+				total_capacity = total_capacity + list.capacity;
+			});
+    }
+    while (total_capacity !== 0)
+
+		// var x = calCapacity(similar_cost);
+		// angular.forEach(x, function(list) {
+		// 	console.log("test : " + list);
+		// 	total_capacity = total_capacity + list.capacity;
+		// });
+	}
+
+	// 3.6. ฟังค์ชั่น findCapacityOfSource() ใช้ค้นหา Capacity จาก source_id
+	function findCapacityOfSource(source_id) {
+		var result = 0;
+		angular.forEach(source_data_backup, function(list) {
+			if (source_id === list.id) {
+				result = list.capacity;
+			}
+		});
+		return result;
+	}
+
+	// 3.7. ฟังค์ชั่น findCapacityOfDestination() ใช้ค้นหา Capacity จาก source_id
+	function findCapacityOfDestination(destination_id) {
+		var result = 0;
+		angular.forEach(destination_data_backup, function(list) {
+			if (destination_id === list.id) {
+				result = list.capacity;
+			}
+		});
+		return result;
+	}
+
+	// 3.8. ฟังค์ชั่น calCapacity()
+	function calCapacity(similar_cost) {
+		var x = [];
+		angular.forEach(similar_cost, function(list) {
+			console.log(list);
+			var a = findCapacityOfSource(list.source_id);
+			var b = findCapacityOfDestination(list.destination_id);
+			var c = 0;
+			if (a < b) {
+				c = a;
+			} else {
+				c = b;
+			}
+			console.log(a + " " + b);
+
+			console.log(c);
+
+			x.push({
+				source_id : list.source_id,
+				destination_id : list.destination_id,
+				cost : list.cost,
+				capacity : c
+			});
+		});
+
+		x.sort(function(a, b) {
+			return b.capacity - a.capacity;
+		});
+
+		return x;
+	}
+
+	// 3.9 ฟังค์ชั่น reCapacity() แก้ไข  capacity ใน source_data_backup, destination_data_backup ใหม่เพื่อการคำนวณ
+	function reCapacity(obj) {
+		var source_point = 0;
+		angular.forEach(source_data_backup, function(list) {
+			if (obj.source_id == list.id) {
+				source_data_backup[source_point].capacity = source_data_backup[source_point].capacity - obj.capacity;
+			}
+			source_point = source_point + 1;
+		});
+
+		var destination_point = 0;
+		angular.forEach(destination_data_backup, function(list) {
+			if (obj.destination_id == list.id) {
+				destination_data_backup[destination_point].capacity = destination_data_backup[destination_point].capacity - obj.capacity;
+			}
+			destination_point = destination_point + 1;
+		});
+	}
 
 	// 4.การเปลี่ยนสเต็ปไปมา
 	// 4.1ตัวแปรนี้ใช้เก็บค่าสเตตัสของแผนว่า error หรือไม่ ถ้า error จะไป step 2 ไม่ได้
