@@ -40,8 +40,8 @@ class User_controller extends CI_Controller {
 		$this -> load -> view('user/plan_view', $data);
 		$this -> load -> view('include/footer');
 	}
-	
-		function plan_list() {
+
+	function plan_list() {
 
 		$data['plans'] = $this -> plan_model -> getPlanList();
 
@@ -58,34 +58,34 @@ class User_controller extends CI_Controller {
 		$this -> session -> set_flashdata('success_msg', 'ส่งแผนแผนสำเร็จ');
 		redirect('user/plan');
 	}
-	
-		 function check_plan_exit($plan) {
-		 $sourceTable = $this -> input -> post('txtSourceTable');
-		 $destinationTable = $this -> input -> post('txtDestinationTable');
-		 $costOfPlan = $this -> input -> post('txtCostOfPlan');
 
-		 $result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan);
- 
-		 if ($result) {
-			 return TRUE;
-		 } else {
-			 $message = 'มีชื่อนี้แล้ว ';
-			 $this -> form_validation -> set_message('check_plan_exit', $message);
-			 return FALSE;
-		 }
-	 }
-	
-	function add_plan2() {
+	function check_plan_exit($plan) {
+		$sourceTable = $this -> input -> post('txtSourceTable');
+		$destinationTable = $this -> input -> post('txtDestinationTable');
+		$costOfPlan = $this -> input -> post('txtCostOfPlan');
+
+		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$message = 'มีชื่อนี้แล้ว ';
+			$this -> form_validation -> set_message('check_plan_exit', $message);
+			return FALSE;
+		}
+	}
+
+	function add_plan() {
 
 		$this -> load -> library('form_validation');
-		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit2');
+		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
 
 		if ($this -> form_validation -> run() == FALSE) {
 			$this -> session -> set_flashdata('sourceTable', $this -> input -> post('txtSourceTable'));
 			$this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
-			redirect('user/create2');
+			redirect('user/create');
 		} else {
 
 			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
@@ -94,35 +94,19 @@ class User_controller extends CI_Controller {
 		}
 	}
 
-	function create_plan2() {
-		
+	function create_plan() {
+
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
 		$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
-		
+
 		$this -> load -> helper('form');
 		$this -> load -> view('include/header');
-		$this -> load -> view('user/plan_create2', $data);
+		$this -> load -> view('user/plan_create', $data);
 		$this -> load -> view('include/footer');
 	}
-	
-	function check_plan_exit2($plan) {
-		$sourceTable = $this -> input -> post('txtSourceTable');
-		$destinationTable = $this -> input -> post('txtDestinationTable');
-		$costOfPlan = $this -> input -> post('txtCostOfPlan');
 
-		$result = $this -> plan_model -> addPlan2($plan, $sourceTable, $destinationTable, $costOfPlan);
-
-		if ($result) {
-			return TRUE;
-		} else {
-			$message = 'มีชื่อนี้แล้ว ';
-			$this -> form_validation -> set_message('check_plan_exit2', $message);
-			return FALSE;
-		}
-	}
-	
-		function plan_edit2($id) {
+	function plan_edit($id) {
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
@@ -132,7 +116,7 @@ class User_controller extends CI_Controller {
 
 		$this -> load -> helper('form');
 		$this -> load -> view('include/header');
-		$this -> load -> view('user/plan_edit2', $data);
+		$this -> load -> view('user/plan_edit', $data);
 		$this -> load -> view('include/footer');
 	}
 
@@ -146,12 +130,12 @@ class User_controller extends CI_Controller {
 			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
-			redirect('user/plan_edit2/' . $id);
+			redirect('user/plan_edit/' . $id);
 		} else {
 
 			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
 
-			redirect('user/plan_edit2/' . $id);
+			redirect('user/plan_edit/' . $id);
 		}
 	}
 

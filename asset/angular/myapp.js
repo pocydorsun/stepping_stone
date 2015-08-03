@@ -1,483 +1,511 @@
-angular.module('steppingStone', [])
-
-	.controller('miniSteppingStone', ['$scope', function($scope) {
-
-		$scope.sourceTable = [];
-		$scope.sources_backup = [];
-
-		$scope.destinationTable = [];
-		$scope.destinations_backup = [];
-		
-		$scope.err_plan = false;
-		$scope.new_costs = [];
-		
-		$scope.sort_costs = [];
-		$scope.backup_data = [];
-
-		$scope.initSources = function(sources) {
-
-				for(var n = 0, len1 = $scope.sourceTable.length; n < len1; n++) {
-					for(var i = 0, len2 = sources.length; i < len2; i++) {
-			        	if (sources[i].source_name === $scope.sourceTable[n].source_name) {
-			        		sources.splice(i,1);
-			        		break;
-			        	}
-		    		}
-				}
-
-				for(var n = 0, len1 = $scope.destinationTable.length; n < len1; n++) {
-					for(var i = 0, len2 = sources.length; i < len2; i++) {
-			        	if (sources[i].source_name === $scope.destinationTable[n].destination_name) {
-			        		sources.splice(i,1);
-			        		break;
-			        	}
-		    		}
-				}
-
-			return sources;
-		};
-
-		$scope.initDestination = function(destinations) {
-
-				for(var n = 0, len1 = $scope.sourceTable.length; n < len1; n++) {
-					for(var i = 0, len2 = destinations.length; i < len2; i++) {
-			        	if (destinations[i].destination_name === $scope.sourceTable[n].source_name) {
-			        		destinations.splice(i,1);
-			        		break;
-			        	}
-		    		}
-				}
-
-				for(var n = 0, len1 = $scope.destinationTable.length; n < len1; n++) {
-					for(var i = 0, len2 = destinations.length; i < len2; i++) {
-			        	if (destinations[i].destination_name === $scope.destinationTable[n].destination_name) {
-			        		destinations.splice(i,1);
-			        		break;
-			        	}
-		    		}
-				}
-
-			return destinations;
-		};
-
-		$scope.addSource = function() {
-			if (($scope.selectSource !== undefined) && ($scope.capacityOfSource !== undefined)) {
-				var str = $scope.selectSource;
-				var json = JSON.parse(str);
-
-				$scope.sourceTable.push({
-					id : json.id,
-					source_name : json.source_name,
-					capacity : $scope.capacityOfSource
-				});
-
-				for(var i = 0, len = $scope.sources.length; i < len; i++) {
-	      	if ($scope.sources[i].source_name === json.source_name) {
-
-						$scope.sources_backup.push({
-							id : $scope.sources[i].id,
-							source_name : $scope.sources[i].source_name
-						});
-
-	      		$scope.sources.splice(i,1);
-	      		break;
-	      	}
-				}
-
-				for(var i = 0, len = $scope.destinations.length; i < len; i++) {
-	      	if ($scope.destinations[i].destination_name === json.source_name) {
-
-						$scope.destinations_backup.push({
-							id : $scope.destinations[i].id,
-							destination_name : $scope.destinations[i].destination_name
-						});
-
-	      		$scope.destinations.splice(i,1);
-	      		break;
-	      	}
-				}
-
-				$scope.selectSource = undefined;
-				$scope.capacityOfSource = undefined;
-				$scope.selectDestination = undefined;
-				$scope.capacityOfDestination = undefined;
-			}
-		};
-
-		$scope.addDestination = function() {
-			if (($scope.selectDestination !== undefined) && ($scope.capacityOfDestination !== undefined)) {
-				var str = $scope.selectDestination;
-				var json = JSON.parse(str);
-
-				$scope.destinationTable.push({
-					id : json.id,
-					destination_name : json.destination_name,
-					capacity : $scope.capacityOfDestination
-				});
-
-				for(var i = 0, len = $scope.sources.length; i < len; i++) {
-	      	if ($scope.sources[i].source_name === json.destination_name) {
-
-						$scope.sources_backup.push({
-							id : $scope.sources[i].id,
-							source_name : $scope.sources[i].source_name
-						});
-
-	      		$scope.sources.splice(i,1);
-	      		break;
-	      	}
-				}
-
-				for(var i = 0, len = $scope.destinations.length; i < len; i++) {
-	      	if ($scope.destinations[i].destination_name === json.destination_name) {
-
-						$scope.destinations_backup.push({
-							id : $scope.destinations[i].id,
-							destination_name : $scope.destinations[i].destination_name
-						});
-
-	      		$scope.destinations.splice(i,1);
-	      		break;
-	      	}
-				}
-
-				$scope.selectSource = undefined;
-				$scope.capacityOfSource = undefined;
-				$scope.selectDestination = undefined;
-				$scope.capacityOfDestination = undefined;
-			}
-		};
-
-		$scope.deleteSource = function(idx, id, name) {
-			$scope.sourceTable.splice(idx, 1);
-
-			$scope.sources.push({
-				id : id,
-				source_name : name
-			});
-			for(var i = 0, len = $scope.destinations_backup.length; i < len; i++) {
-				if ($scope.destinations_backup[i].destination_name === name) {
-					$scope.destinations.push({
-						id : $scope.destinations_backup[i].id,
-						destination_name : $scope.destinations_backup[i].destination_name
-					});
-
-					$scope.destinations_backup.splice(i,1);
-					break;
-				}
-			}
+angular.module('steppingStone', []).controller('miniSteppingStone', function($scope) {
 	
-			for(var i=0, len = $scope.new_costs.length; i < len; i++) {
-				for(var n=0, len2 = $scope.new_costs.length; n < len2; n++) {
-					var id2 = $scope.new_costs[n].source_id;
-					console.log(n);
-					if(id === id2) {
-						console.log($scope.new_costs[n]);
-						$scope.new_costs.splice(n,1);
-						break;
-					}	
-				}
+	// 1. สิ่งที่จำเป็นต้องใช้ใน Step1
+	$scope.source_data = [];
+	// 1.1 เพิ่มต้นทาง
+	$scope.addSource = function() {
+		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {	// เช็ค selectSource ว่าไม่ใช่ค่าว่าง 
+			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) { // เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
+				$scope.source_capacity = 0;
 			}
-		};
-
-		$scope.deleteDestination = function(idx, id, name) {
-			$scope.destinationTable.splice(idx, 1);
-
-			$scope.destinations.push({
-				id : id,
-				destination_name : name
+			// ใส่ข้อมูลลงไป
+			$scope.source_data.push({
+				id : $scope.selectSource.id,
+				source_name : $scope.selectSource.source_name,
+				capacity : $scope.source_capacity
 			});
 
-			for(var i = 0, len = $scope.sources_backup.length; i < len; i++) {
-
-				if ($scope.sources_backup[i].source_name === name) {
-					$scope.sources.push({
-						id : $scope.sources_backup[i].id,
-						source_name : $scope.sources_backup[i].source_name
-					});
-
-					$scope.sources_backup.splice(i,1);
-					break;
+			// ลบลิสที่ถูกเลือกแล้ว
+			var oldSourceList = $scope.source_lists;
+			$scope.source_lists = [];
+			angular.forEach(oldSourceList, function(list) {
+				if (list.source_name !== $scope.selectSource.source_name) {
+					$scope.source_lists.push(list);
 				}
-			}
-			
-			for(var i=0, len = $scope.new_costs.length; i < len; i++) {
-				for(var n=0, len2 = $scope.new_costs.length; n < len2; n++) {
-					var id2 = $scope.new_costs[n].destination_id;
-					if(id === id2) {
-						$scope.new_costs.splice(n,1);
-						break;
-					}	
-				}
-			}
+			});
+
+			// ตั้งค่า selectSource ใหม่
+			$scope.selectSource = '';
+			$scope.source_capacity = '';
 		};
-
-		$scope.checkCost = function(id1, id2) {
-			
-			myCost = 0;
-			
-			for(var n = 0, len = $scope.costs.length; n < len; n++) {
-				cost = $scope.costs[n];
-				str = id1 + ":" + id2;
-				str2 = cost.source_id + ":" + cost.destination_id;
-
-				if(str === str2) {
-						myCost = cost.cost;
-						break;
-				}
+	};
+	// 1.2 แก้ไขต้นทาง
+	$scope.editSource = function(id, name, newCapacity) {
+		var oldData = $scope.source_data;
+		$scope.source_data = [];
+		angular.forEach(oldData, function(list) {
+			if (list.id !== id) {
+				$scope.source_data.push(list);
+			} else {
+				$scope.source_data.push({
+					id : id,
+					source_name : name,
+					capacity : newCapacity
+				});
+			};
+		});
+	};
+	// 1.3 ลบต้นทาง
+	$scope.removeSource = function(id) {
+		var oldData = $scope.source_data;
+		$scope.source_data = [];
+		angular.forEach(oldData, function(list) {
+			if (list.id !== id) {
+				$scope.source_data.push(list);
+			} else {
+				$scope.source_lists.push({
+					id : list.id,
+					source_name : list.source_name
+				});
 			}
-			
-			for(var n = 0, len = $scope.new_costs.length; n < len; n++) {
-				new_cost = $scope.new_costs[n];
-				str = id1 + ":" + id2;
-				str2 = new_cost.source_id + ":" + new_cost.destination_id;
+		});
 
-				if(str === str2) {
-						myCost = new_cost.cost;
-						break;
+		if ($scope.new_costs.length) {
+			var new_costs_backup = $scope.new_costs;
+			$scope.new_costs = [];
+			angular.forEach(new_costs_backup, function(list) {
+				if (list.source_id !== id) {
+					$scope.new_costs.push(list);
 				}
+			});
+			new_costs_backup = [];
+		}
+	};
+	
+	// 1.4 เช็คข้อมูลตอนเปิดหน้าจอแก้ไข
+	$scope.checkSourceEdit = function() {
+
+		var oldsource = $scope.source_lists;
+		$scope.source_lists = [];
+		angular.forEach(oldsource, function(list) {
+			if ($scope.checkSourceData(list.id)) {//ส่ง source_lists.id ไป เช็คที่ checkSourceData
+				$scope.source_lists.push(list);
+				// ถ้า  true ให้ใส่ใน source_lists
 			}
-			$scope.addCost(id1, id2, myCost);
-			return parseInt(myCost);
+		});
+	};
+
+	$scope.checkSourceData = function(id) {
+		var x = true;
+		angular.forEach($scope.source_data, function(list) {
+			if (list.id === id) {// เช็ค source_data.id === source_lists.id
+				x = false;
+				//ถ้าไอดีตรงกัน ให้ส่งค่า false กลับไป ถ้าไม่ตรงให้ส่งค่า true
+			}
+		});
+		return x;
+	};
+
+	$scope.destination_data = [];
+
+	$scope.addDestination = function() {
+		if ($scope.selectDestination !== undefined && $scope.selectDestination !== '') {
+			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '' || $scope.destination_capacity === null) {
+				$scope.destination_capacity = 0;
+			}
+			$scope.destination_data.push({
+				id : $scope.selectDestination.id,
+				destination_name : $scope.selectDestination.destination_name,
+				capacity : $scope.destination_capacity
+			});
+			// ลบลิสที่ถูกเลือกแล้ว
+			var oldDestinationList = $scope.destination_lists;
+			$scope.destination_lists = [];
+			angular.forEach(oldDestinationList, function(list) {
+				if (list.destination_name !== $scope.selectDestination.destination_name) {
+					$scope.destination_lists.push(list);
+				}
+			});
+			// ตั้งค่า selectDestination ใหม่
+			$scope.selectDestination = '';
+			$scope.destination_capacity = '';
 		};
-		
-		$scope.addCost = function(id1, id2, c) {
-			
-			for(var n = 0, len = $scope.new_costs.length; n < len; n++) {
-				cost = $scope.new_costs[n];
-				str = id1 + ":" + id2;
-				str2 = cost.source_id + ":" + cost.destination_id;
-				
-				if(str === str2) {
-					$scope.new_costs.splice(n,1);
-					break;
-				}
+	};
+
+	$scope.editDestination = function(id, name, newCapacity) {
+		var oldData = $scope.destination_data;
+		$scope.destination_data = [];
+		angular.forEach(oldData, function(list) {
+			if (list.id !== id) {
+				$scope.destination_data.push(list);
+			} else {
+				$scope.destination_data.push({
+					id : id,
+					destination_name : name,
+					capacity : newCapacity
+				});
+			};
+		});
+	};
+
+	$scope.removeDestination = function(id) {
+		var oldData = $scope.destination_data;
+		$scope.destination_data = [];
+		angular.forEach(oldData, function(list) {
+			if (list.id !== id) {
+				$scope.destination_data.push(list);
+			} else {
+				$scope.destination_lists.push({
+					id : list.id,
+					destination_name : list.destination_name
+				});
 			}
-			
+		});
+
+		if ($scope.new_costs.length) {
+			var new_costs_backup = $scope.new_costs;
+			$scope.new_costs = [];
+			angular.forEach(new_costs_backup, function(list) {
+				if (list.destination_id !== id) {
+					$scope.new_costs.push(list);
+				}
+			});
+			new_costs_backup = [];
+		}
+	};
+
+	$scope.checkDestinationEdit = function() {
+		var olddestination = $scope.destination_lists;
+		$scope.destination_lists = [];
+
+		angular.forEach(olddestination, function(list) {
+			//ส่ง
+			if ($scope.checkDestinationData(list.id)) {
+				$scope.destination_lists.push(list);
+			}
+		});
+	};
+
+	$scope.checkDestinationData = function(id) {
+		var x = true;
+		angular.forEach($scope.destination_data, function(list) {
+			if (list.id === id) {
+				x = false;
+			}
+		});
+		return x;
+	};
+	
+	// 2. สิ่งที่จำเป็นต้องใช้ใน Step2
+	$scope.new_costs = [];
+	// 2.1 เช็ค cost
+	$scope.checkCost = function(SourceId, DestinationId) {
+
+		var myCost = 0;
+		// 2.2 ตรวจสอบ  cost โดย  SourceId, DestinationId จาก  DB
+		var cost = $scope.costs;
+		angular.forEach(cost, function(list) {
+			if (SourceId === list.source_id && DestinationId === list.destination_id) {
+				myCost = list.cost;
+			}
+		});
+		// 2.3 ตรวจสอบ cost จากข้อมูลที่เลือกมาใน new_cost
+		var new_cost = $scope.new_costs;
+		angular.forEach(new_cost, function(list) {
+			if (SourceId === list.source_id && DestinationId === list.destination_id) {
+				myCost = list.cost;
+			}
+		});
+
+		myCost = parseInt(myCost);
+		$scope.addNewCost(SourceId, DestinationId, myCost);
+		return myCost;
+
+	};
+
+	$scope.addNewCost = function(SourceId, DestinationId, c) {
+		if ($scope.new_costs.length === 0) {
 			$scope.new_costs.push({
-				source_id : id1,
-				destination_id : id2,
+				source_id : SourceId,
+				destination_id : DestinationId,
 				cost : c
 			});
-		};
-		
-		$scope.changeStep = function(step){
-			$scope.myStep = step;
-			
-			if (step===2) {
-				len1 = $scope.sourceTable.length;
-				len2 = $scope.destinationTable.length;
-				
-				if (len1 < 3 || len2 < 3) {
-					$scope.myStep = 1;
-					$scope.err_plan = true;
+		} else {
+			var old_costs = $scope.new_costs;
+			// status 1 ยังไม่ได้ใส่ข้อมูล
+			var status = 1;
+			$scope.new_costs = [];
+			angular.forEach(old_costs, function(list) {
+				if (SourceId === list.source_id && DestinationId === list.destination_id) {
+					$scope.new_costs.push({
+						source_id : SourceId,
+						destination_id : DestinationId,
+						cost : c
+					});
+					status = 2;
+				} else {
+					$scope.new_costs.push(list);
 				}
-			}
-			
-			if (step===3) {
-				$scope.sort_costs = [];
-				$scope.sortNewCosts();
-				$scope.initCapacity = [];
-				$scope.setInitCapacity();
-				console.log($scope.initCapacity);
-			}
-		};
-		
-		$scope.sortNewCosts = function(){
-			
-			for (n = 0, len = $scope.new_costs.length; n < len; n++) {
-				
-				$scope.backup_data.push({
-					source_id : $scope.new_costs[n].source_id,
-					destination_id : $scope.new_costs[n].destination_id,
-					cost : $scope.new_costs[n].cost
+			});
+			if (status === 1) {
+				$scope.new_costs.push({
+					source_id : SourceId,
+					destination_id : DestinationId,
+					cost : c
 				});
 			}
+		}
+	};
 
-			for(var x = 0, len = $scope.backup_data.length; x < len-1; x++ ){
-				var minCost;
-				var index;
-				for(var i = 0, len2 = $scope.backup_data.length; i < len2; i++){
-						if (len2 === 2) {
-							if ($scope.backup_data[0].cost > $scope.backup_data[1].cost ) {
-								$scope.sort_costs.push($scope.backup_data[1]);
-								$scope.sort_costs.push($scope.backup_data[0]);
-								$scope.backup_data = [];
-								break;
-							} else {
-								$scope.sort_costs.push($scope.backup_data[0]);
-								$scope.sort_costs.push($scope.backup_data[1]);
-								$scope.backup_data = [];
-								break;
-							}
-						}
-					
-						if ((i === 0) && (len2 > 2)) {
-							minCost = $scope.backup_data[i];
-							index = i;
-							continue;
-						}
-						
-						if ((minCost.cost === $scope.backup_data[i].cost) && (len2 > 2)) {
-							var destinationId1 = $scope.backup_data[index].destination_id;
-							var sourceId1 = $scope.backup_data[index].source_id;
-							var destinationId2 = $scope.backup_data[i].destination_id;
-							var sourceId2 = $scope.backup_data[i].source_id;
-							
-							var minCapacity1;
-							var minCapacity2;
-							
-							if ($scope.findCapacityById("source", sourceId1) >= $scope.findCapacityById("destination", destinationId1)) {
-								minCapacity1 = $scope.findCapacityById("destination", destinationId1);
-							} else {
-								minCapacity1 = $scope.findCapacityById("source", sourceId1);
-							}
-							
-							if ($scope.findCapacityById("source", sourceId2) >= $scope.findCapacityById("destination", destinationId2)) {
-								minCapacity2 = $scope.findCapacityById("destination", destinationId2);
-							} else {
-								minCapacity2 = $scope.findCapacityById("source", sourceId2);
-							}
-							
-							if (minCapacity1 >= minCapacity2) {
-								continue;
-							} else {
-								minCost = $scope.backup_data[i];
-								index = i;
-								continue;
-							}
-						}
-						
-						if ((minCost.cost > $scope.backup_data[i].cost) && (len2 > 2)) {
-							minCost = $scope.backup_data[i];
-							index = i;
-						}
-				}
-				if ($scope.backup_data.length > 2) {
-					$scope.sort_costs.push(minCost);
-					$scope.backup_data.splice(index,1);
-				}
-			}
-		};
-		
-		$scope.findCapacityById = function(type, id){
-			var capacity = 0;
-			if (type === "destination") {
-				for (var i = 0, len = $scope.destinationTable.length; i < len; i++) {
-					if ($scope.destinationTable[i].id === id){
-						capacity = $scope.destinationTable[i].capacity;
-						break;
-					}
-				}
-			} else if (type === "source") {
-				for (var i = 0, len = $scope.sourceTable.length; i < len; i++) {
-					if ($scope.sourceTable[i].id === id){
-						capacity = $scope.sourceTable[i].capacity;
-						break;
-					}
-				}
-			}
-			
-			return capacity;
-		};
-		
-		$scope.initCapacity = [];
-		$scope.capacityBackup1 = [];
-		$scope.capacityBackup2 = [];
-		
-		$scope.findBackupCapacityById = function(type, id){
-			var capacity = 0;
-			if (type === "destination") {
-				for (var i = 0, len = $scope.capacityBackup2.length; i < len; i++) {
-					if ($scope.capacityBackup2[i].id === id){
-						capacity = $scope.capacityBackup2[i].capacity;
-						break;
-					}
-				}
-			} else if (type === "source") {
-				for (var i = 0, len = $scope.capacityBackup1.length; i < len; i++) {
-					if ($scope.capacityBackup1[i].id === id){
-						capacity = $scope.capacityBackup1[i].capacity;
-						break;
-					}
-				}
-			}
-			
-			return capacity;
-		};
+	// 3. สิ่งที่จำเป็นต้องใช้ใน Step3
+	// 3.1เรียง $scope.new_cost ใหม่จาก Cost น้อยไปหา Cost มาก
+	$scope.sortNewCosts = function() {
+		$scope.new_costs.sort(function(a, b) {
+			return a.cost - b.cost;
+		});
+	};
 
-		$scope.setInitCapacity = function() {
-			$scope.capacityBackup1 = [];
-			$scope.capacityBackup2 = [];
-			
-			for (var i = 0, len = $scope.sourceTable.length; i < len; i++) {
-				$scope.capacityBackup1.push(
-					{
-						id : $scope.sourceTable[i].id,
-						source_name : $scope.sourceTable[i].source_name,
-						capacity : $scope.sourceTable[i].capacity
-					}
-				);
+	// 3.2ตัวแปรที่ต้องใช้ในการเซ็ท Capacity เริ่มแรก
+	$scope.init_capacity = [];
+
+	// ไม่เกี่ยวกับการคำนวณ แต่เอามาใช้ปริ้นค่า Json ให้ดูง่ายเฉยๆ
+	printData = function(data) {
+		angular.forEach(data, function(list) {
+			console.log(list);
+		});
+	};
+
+	// 3.3 ตัวแปรที่จะต้องใช้ในการคำนวณ Capacity (จำเป็นต้อง Backup)
+	var source_data_backup = [];
+	var destination_data_backup = [];
+
+	// 3.4ฟังค์ชั่นตั้งค่า Capacity เริ่มต้น โดยการเลือกใส่ค่า Capacity จาก Cost น้อยไปหา Cost มาก
+	$scope.initCapacity = function() {
+		source_data_backup = [];
+		destination_data_backup = [];
+
+		// 3.4.1ทำการ Backup source_data
+		angular.forEach($scope.source_data, function(list) {
+			source_data_backup.push({
+				id : list.id,
+				source_name : list.source_name,
+				capacity : list.capacity
+			});
+		});
+
+		// 3.4.2ทำการ Backup destination_data
+		angular.forEach($scope.destination_data, function(list) {
+			destination_data_backup.push({
+				id : list.id,
+				destination_name : list.destination_name,
+				capacity : list.capacity
+			});
+		});
+
+		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
+		console.log("source_data:");
+		printData($scope.source_data);
+		console.log("destination_data:");
+		printData($scope.destination_data);
+		console.log("source_data_backup:");
+		printData(source_data_backup);
+		console.log("destination_data_backup:");
+		printData(destination_data_backup);
+		console.log("$scope.new_costs:");
+		printData($scope.new_costs);
+
+		//3.4.3ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
+		var similar_cost = [];
+
+		var current_cost = 0; // cost ปัจจุบัน
+
+		var next_similar_cost = false; // ทำต่อ  cost ที่เหมือนกัน
+
+		var current_list_point = 0;	// รายการปัจจุบัน
+
+		var last_list_point = $scope.new_costs.length; // รายการสุดม้าย
+
+		$scope.init_capacity = []; // ล้างค่า init_capacity ใหม่ทุกครั้ง
+
+		angular.forEach($scope.new_costs, function(list) {
+			current_list_point = current_list_point + 1;
+
+			if (current_list_point === 1) {	// กำหนดรายการแรกของปัจจุบัน
+				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
 			}
-			
-			for (var i = 0, len = $scope.destinationTable.length; i < len; i++) {
-				$scope.capacityBackup2.push(
-					{
-						id : $scope.destinationTable[i].id,
-						destination_name : $scope.destinationTable[i].destination_name,
-						capacity : $scope.destinationTable[i].capacity
-					}
-				);
+
+			if (list.cost === current_cost) {	// ถ้า list.cost เท่ากับ cost ปัจจุบัน
+				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
+			} else {
+				next_similar_cost = true;	// ทำต่อ cost ที่เหมือนกัน
 			}
-			
-			for (var i = 0, len = $scope.sort_costs.length; i < len; i++) {
-				cap1 = $scope.findBackupCapacityById("source", $scope.sort_costs[i].source_id);
-				cap2 = $scope.findBackupCapacityById("destination", $scope.sort_costs[i].destination_id);
-				if (cap1 > cap2) {
-					$scope.initCapacity.push({
-						source_id : $scope.sort_costs[i].source_id,
-						destination_id : $scope.sort_costs[i].destination_id,
-						capacity : cap2
-					});
-					sum = cap1 - cap2;
-					$scope.setCapacityBackup("2", $scope.sort_costs[i].destination_id, 0);
-					$scope.setCapacityBackup("1", $scope.sort_costs[i].source_id, sum);
-				} else if (cap1 < cap2){
-					$scope.initCapacity.push({
-						source_id : $scope.sort_costs[i].source_id,
-						destination_id : $scope.sort_costs[i].destination_id,
-						capacity : cap1
-					});
-					sum = cap2 - cap1;
-					$scope.setCapacityBackup("1", $scope.sort_costs[i].source_id, 0);
-					$scope.setCapacityBackup("2", $scope.sort_costs[i].destination_id, sum);
-				} else if (cap1 === cap2) {
-					$scope.initCapacity.push({
-						source_id : $scope.sort_costs[i].source_id,
-						destination_id : $scope.sort_costs[i].destination_id,
-						capacity : cap1
-					});
-					$scope.setCapacityBackup("1", $scope.sort_costs[i].source_id, 0);
-					$scope.setCapacityBackup("2", $scope.sort_costs[i].destination_id, 0);
+
+			if (next_similar_cost) {
+				console.log(" ");
+				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
+				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity 
+				next_similar_cost = false;
+				similar_cost = [];
+			}
+
+			if (list.cost !== current_cost) {	// ถ้า list.cost ไม่เท่ากับ cost ปัจจุบัน
+				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
+				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
+			}
+
+			if (current_list_point === last_list_point) {	// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
+				console.log(" ");
+				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
+				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity 
+				console.log(" ");
+				similar_cost = [];
+			}
+		});
+
+		angular.forEach($scope.new_costs, function(list) {
+			var pushList = true;
+
+			angular.forEach($scope.init_capacity, function(list2) {	// ตรวจสอบ new_costs กับ  init_capacity ถ้าไม่ตรงให้ทำ pushList 
+				if ((list.source_id === list2.source_id) && (list.destination_id === list2.destination_id)) {
+					pushList = false;
 				}
+			});
+			// ใส่ new_costs ไปใน  init_capacity 
+			if (pushList) {
+				$scope.init_capacity.push({
+					source_id : list.source_id,
+					destination_id : list.destination_id,
+					cost : list.cost,
+					capacity : 0
+				});
 			}
-		};
-		
-		$scope.setCapacityBackup = function(type, id, sumCap) {
-			if (type === "2") {
-				for (var i = 0, len = $scope.capacityBackup2.length; i < len; i++) {
-					if ($scope.capacityBackup2[i].id === id){
-						$scope.capacityBackup2[i].capacity = sumCap;
-						break;
-					}
-				}
-			} else if (type === "1") {
-				for (var i = 0, len = $scope.capacityBackup1.length; i < len; i++) {
-					if ($scope.capacityBackup1[i].id === id){
-						$scope.capacityBackup1[i].capacity = sumCap;
-						break;
-					}
-				}
+		});
+
+		// แสดงค่าต่างๆที่ต้องใช้ออกมาทาง Console
+		var total_result = 0;
+		angular.forEach($scope.init_capacity, function(list) {
+			console.log(list);
+			total_result = total_result + list.capacity;
+		});
+		console.log(total_result);
+		console.log($scope.new_costs.length === $scope.init_capacity.length);
+		console.log("[---END---]");
+	};
+
+	// 3.5. ฟังค์ชั่น setInitCapacity() ใช้ค้ำนวณกำหนดค่า Capacity ของแต่ละกลุ่มที่มี Cost เท่ากัน
+	function setInitCapacity(similar_cost) {
+
+		var total_capacity = 0;
+
+		do {
+			var x = calCapacity(similar_cost); // ส่่ง similar_cost ไปที่ calCapacity แล้วให้เท่ากับ x
+
+			if (x[0].capacity !== 0) {
+				$scope.init_capacity.push(x[0]);
+				reCapacity(x[0]); // ส่ง x ไป eCapacity 
 			}
-		};
-	}]);
+			total_capacity = 0;
+			
+			angular.forEach(x, function(list) {
+				total_capacity = total_capacity + list.capacity;
+			});
+    }
+    while (total_capacity !== 0);
+
+
+	}
+
+	// 3.6. ฟังค์ชั่น findCapacityOfSource() ใช้ค้นหา Capacity จาก source_id
+	function findCapacityOfSource(source_id) {
+		var result = 0;
+		angular.forEach(source_data_backup, function(list) {
+			if (source_id === list.id) { // ถ้า similar_cost.source_id เท่ากับ source_data_backup.id 
+				result = list.capacity;
+			}
+		});
+		return result;
+	}
+
+	// 3.7. ฟังค์ชั่น findCapacityOfDestination() ใช้ค้นหา Capacity จาก source_id
+	function findCapacityOfDestination(destination_id) {
+		var result = 0;
+		angular.forEach(destination_data_backup, function(list) {
+			if (destination_id === list.id) { // ถ้า similar_cost.destination_id เท่ากับ destination_data_backup.id 
+				result = list.capacity;
+			}
+		});
+		return result;
+	}
+
+	// 3.8. ฟังค์ชั่น calCapacity()
+	function calCapacity(similar_cost) {
+		var x = [];
+		angular.forEach(similar_cost, function(list) {
+			console.log(list);
+			var a = findCapacityOfSource(list.source_id); // ส่ง source_id ไปตรวจสอบที่ findCapacityOfSource 
+			var b = findCapacityOfDestination(list.destination_id); // ส่ง destination_id ไปตรวจสอบที่  findCapacityOfDestination 
+			var c = 0;
+			if (a < b) {
+				c = a;
+			} else {
+				c = b;
+			}
+			console.log(a + " " + b);
+
+			console.log(c);
+
+			x.push({
+				source_id : list.source_id,
+				destination_id : list.destination_id,
+				cost : list.cost,
+				capacity : c
+			});
+		});
+
+		x.sort(function(a, b) {
+			return b.capacity - a.capacity;
+		});
+
+		return x;
+	}
+
+	// 3.9 ฟังค์ชั่น reCapacity() แก้ไข  capacity ใน source_data_backup, destination_data_backup ใหม่เพื่อการคำนวณ
+	function reCapacity(obj) {
+		var source_point = 0;
+		angular.forEach(source_data_backup, function(list) {
+			if (obj.source_id == list.id) {
+				source_data_backup[source_point].capacity = source_data_backup[source_point].capacity - obj.capacity;
+			}
+			source_point = source_point + 1;
+		});
+
+		var destination_point = 0;
+		angular.forEach(destination_data_backup, function(list) {
+			if (obj.destination_id == list.id) {
+				destination_data_backup[destination_point].capacity = destination_data_backup[destination_point].capacity - obj.capacity;
+			}
+			destination_point = destination_point + 1;
+		});
+	}
+
+	// 4.การเปลี่ยนสเต็ปไปมา
+	// 4.1ตัวแปรนี้ใช้เก็บค่าสเตตัสของแผนว่า error หรือไม่ ถ้า error จะไป step 2 ไม่ได้
+	$scope.err_plan = false;
+
+	// 4.2 ฟังค์ชั่นการเปลี่ยน Step
+	$scope.changeStep = function(step) {
+		$scope.myStep = step;
+
+		// 4.2.1 เงื่อนไขการไปสเต็ปที่สอง ถ้าความไม่ใช่ ตาราง 3x3 ขึ้นไป ก็จะไม่สามารถข้ามไปยัง Step 2 ได้
+		if (step === 2) {
+			len1 = $scope.source_data.length;
+			len2 = $scope.destination_data.length;
+
+			if (len1 < 3 || len2 < 3) {
+				$scope.myStep = 1;
+				$scope.err_plan = true;
+			} else {
+				$scope.myStep = 2;
+				$scope.err_plan = false;
+			}
+		}
+
+		// 4.2.2 การไปสเต็ปที่สาม
+		if (step === 3) {
+			// 4.2.2.1 เรียกฟังค์ชั่นการจัดเรียง $scope.new_cost ใหม่ จาก cost น้อยไปหา cost มาก
+			$scope.sortNewCosts();
+			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการแสดงผลใน Step 3
+			$scope.initCapacity();
+		}
+	};
+});
