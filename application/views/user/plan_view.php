@@ -29,8 +29,8 @@
 						<tbody>
 							<tr>
 								<td>
-									<span class="glyphicon glyphicon-remove-circle" ng-show="plan.plan_status=='0'" style="color: red;">{{plan.plan_name}}</span>
-									<span class="glyphicon glyphicon-ok-circle" ng-show="plan.plan_status=='2'" style="color: green;">{{plan.plan_name}}</span>
+									<span class="glyphicon glyphicon-remove-circle" ng-show="plan.plan_status=='ยังไม่อนุมัติ'" style="color: red;">{{plan.plan_name}}</span>
+									<span class="glyphicon glyphicon-ok-circle" ng-show="plan.plan_status=='อนุมัติ'" style="color: green;">{{plan.plan_name}}</span>
 								</td>
 								<td>
 									<span class="pull-right">

@@ -63,8 +63,9 @@ class User_controller extends CI_Controller {
 		$sourceTable = $this -> input -> post('txtSourceTable');
 		$destinationTable = $this -> input -> post('txtDestinationTable');
 		$costOfPlan = $this -> input -> post('txtCostOfPlan');
-
-		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan);
+		$session_data = $this -> session -> userdata('logged_in');
+		$user_id = $session_data['id'];
+		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan, $user_id);
 
 		if ($result) {
 			return TRUE;
@@ -143,11 +144,12 @@ class User_controller extends CI_Controller {
 
 		$name1 = $plan;
 		$name2 = $this -> input -> post('txtOldNameOfPlan');
+
 		$sourceTable = $this -> input -> post('txtSourceTable');
 		$destinationTable = $this -> input -> post('txtDestinationTable');
 		$costOfPlan = $this -> input -> post('txtCostOfPlan');
 
-		if ($name1 == $name2) {
+		if ($name1 === $name2) {
 			$result = $this -> plan_model -> updatePlan($id, "", $sourceTable, $destinationTable, $costOfPlan);
 		} else {
 			$result = $this -> plan_model -> updatePlan($id, $plan, $sourceTable, $destinationTable, $costOfPlan);
