@@ -176,7 +176,7 @@ Class Plan_Model extends CI_Model {
 		// {"source_id":"1","destination_id":"2","cost":2},
 		// {"source_id":"2","destination_id":"2","cost":0}]]
 
-		$this -> db -> from('plan');
+		$this -> db -> from('transportation');
 		$this -> db -> where('plan_name', $planname);
 		$this -> db -> limit(1);
 
@@ -184,8 +184,7 @@ Class Plan_Model extends CI_Model {
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('plan_name' => $planname, 'plan_source' => $sourceTable, 'plan_destination' => $destinationTable, 'plan_cost' => $costOfPlan);
-			$query = $this -> db -> insert('plan', $data);
+
 
 			// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
 			$decode_sourceTable = json_decode($sourceTable, true);

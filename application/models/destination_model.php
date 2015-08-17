@@ -2,14 +2,15 @@
 Class Destination_Model extends CI_Model {
 
 	function getAll() {
-		$this -> db -> select('id, destination_name');
+		$this -> db -> select('*');
 		$this -> db -> from('destination');
+				$this -> db -> where('destination_status', 'ใช้งานอยู่');
 		$query = $this -> db -> get();
 
 		return $query -> result();
 	}
 
-  function addDestination($targetname) {
+	function addDestination($targetname) {
 
 		$this -> db -> from('destination');
 		$this -> db -> where('destination_name', $targetname);
@@ -19,7 +20,7 @@ Class Destination_Model extends CI_Model {
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('destination_name' => $targetname);
+			$data = array('destination_name' => $targetname, 'destination_status' => 'ใช้งานอยู่');
 			$query = $this -> db -> insert('destination', $data);
 			return TRUE;
 		} else {
@@ -27,7 +28,7 @@ Class Destination_Model extends CI_Model {
 		}
 	}
 
-  function editDestination($id, $target_name) {
+	function editDestination($id, $target_name) {
 
 		$this -> db -> from('destination');
 		$this -> db -> where('destination_name', $target_name);
@@ -47,15 +48,11 @@ Class Destination_Model extends CI_Model {
 
 	}
 
-  function removeDestination($id) {
-		$this -> db -> where('id', $id);
-		$query = $this -> db -> delete('destination');
+	function removeDestination($id) {
 
-		if ($query) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		$data = array('destination_status' => 'ยกเลิกการใช้งาน');
+		$this -> db -> where('id', $id);
+		$this -> db -> update('destination', $data);
 	}
 }
 ?>

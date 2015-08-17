@@ -305,7 +305,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		printData($scope.new_costs);
 
 		//3.4.3ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
-		var similar_cost = [];
+		var similar_cost = []; //cost ที่เหมือนกัน
 
 		var current_cost = 0; // cost ปัจจุบัน
 
@@ -360,7 +360,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 					pushList = false;
 				}
 			});
-			// ใส่ new_costs ไปใน  init_capacity 
+			// ใส่ new_costs ไปใน  init_capacity โดยกำหนด capacity เป็น 0 ให้หมดหลังคำนวน
 			if (pushList) {
 				$scope.init_capacity.push({
 					source_id : list.source_id,

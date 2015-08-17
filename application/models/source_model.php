@@ -2,8 +2,9 @@
 Class Source_Model extends CI_Model {
 
 	function getAll() {
-		$this -> db -> select('id, source_name');
+		$this -> db -> select('*');
 		$this -> db -> from('source');
+		$this -> db -> where('source_status', 'ใช้งานอยู่');
 		$query = $this -> db -> get();
 
 		return $query -> result();
@@ -19,7 +20,7 @@ Class Source_Model extends CI_Model {
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('source_name' => $targetname);
+			$data = array('source_name' => $targetname, 'source_status' => 'ใช้งานอยู่');
 			$query = $this -> db -> insert('source', $data);
 			return TRUE;
 		} else {
@@ -47,14 +48,10 @@ Class Source_Model extends CI_Model {
 	}
 
   function removeSource($id) {
+  	
+		$data = array('source_status' => 'ยกเลิกการใช้งาน');
 		$this -> db -> where('id', $id);
-		$query = $this -> db -> delete('source');
-
-		if ($query) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		$this -> db -> update('source', $data);
 	}
 }
 ?>

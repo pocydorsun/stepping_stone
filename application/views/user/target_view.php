@@ -69,7 +69,7 @@
 
 								<span class="pull-right">
 									<button data-toggle="modal"
-									data-title="แก้ไข"
+									data-title="แก้ไขข้อมูลต้นทาง"
 									data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{list.source_name}}'>"
 									data-button="บันทึก"
 									data-class="btn btn-success"
@@ -80,7 +80,7 @@
 									</button>
 									<button data-toggle="modal"
 									data-title="คำเตือน"
-									data-msg="ยืนยันการลบ"
+									data-msg="ยืนยันการลบข้อมูลต้นทาง"
 									data-button="ยืนยัน"
 									data-class="btn btn-danger"
 									data-id=<?php echo site_url("user/remove_source/"); ?>{{"/"+list.id}}
@@ -116,7 +116,7 @@
 
 								<span class="pull-right">
 									<button data-toggle="modal"
-									data-title="แก้ไข"
+									data-title="แก้ไขข้อมูลปลายทาง"
 									data-msg="<input type='text' class='form-control' name='txtTargetName' value='{{list.destination_name}}'>"
 									data-button="บันทึก"
 									data-class="btn btn-success"
@@ -127,7 +127,7 @@
 									</button>
 									<button data-toggle="modal"
 									data-title="คำเตือน"
-									data-msg="ยืนยันการลบ"
+									data-msg="ยืนยันการลบข้อมุลปลายทาง"
 									data-button="ยืนยัน"
 									data-class="btn btn-danger"
 									data-id=<?php echo site_url("user/remove_destination/"); ?>{{"/"+list.id}}

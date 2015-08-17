@@ -27,6 +27,7 @@ Class User_model extends CI_Model {
 	}
 
 	function addUser($username, $password, $firstname, $lastname) {
+		
 		$this -> db -> from('users');
 		$this -> db -> where('firstname', $firstname);
 		$this -> db -> where('lastname', $lastname);
@@ -38,7 +39,7 @@ Class User_model extends CI_Model {
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('firstname' => $firstname, 'lastname' => $lastname, 'username' => $username, 'password' => md5($password));
+			$data = array('firstname' => $firstname, 'lastname' => $lastname, 'username' => $username, 'password' => md5($password),'user_status' => 'ใช้งานอยู่' );
 			$query = $this -> db -> insert('users', $data);
 			return TRUE;
 		} else {
@@ -48,14 +49,10 @@ Class User_model extends CI_Model {
 	}
 
 	function removeUser($id) {
+		
+		$data = array('user_status' => 'ยกเลิกการใช้งาน');
 		$this -> db -> where('id', $id);
-		$query = $this -> db -> delete('users');
-
-		if ($query) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		$this -> db -> update('users', $data);
 	}
 
 	function updatePassword($username, $password) {

@@ -40,12 +40,12 @@
 			</thead>
 			<tbody <?php echo "ng-init='users = $users_json'" ?>>
 				<tr ng-repeat="user in filtered = (users | filter:searchText)">
-					<td> {{user.username}} </td>
-					<td> {{user.firstname}} </td>
-					<td> {{user.lastname}} </td>
-					<td>
+					<td ng-show="user.user_status=='ใช้งานอยู่'"> {{user.username}} </td>
+					<td ng-show="user.user_status=='ใช้งานอยู่'"> {{user.firstname}} </td>
+					<td ng-show="user.user_status=='ใช้งานอยู่'"> {{user.lastname}} </td>
+					<td ng-show="user.user_status=='ใช้งานอยู่'">
 					<button data-toggle="modal"
-					data-title="แก้ไขค่าขนส่ง"
+					data-title="แก้ไขข้อมูลผู้ใช้งาน"
 					data-msg="<input type='text' class='form-control' name='txtFirstname' value='{{user.firstname}}'><br><input type='text' class='form-control' name='txtLastname' value='{{user.lastname}}'><br><input type='password' class='form-control' name='txtpassword' placeholder='******'><br><input type='password' class='form-control' name='txtrepassword' placeholder='******'>"
 					data-button="บันทึก"
 					data-class="btn btn-success"
