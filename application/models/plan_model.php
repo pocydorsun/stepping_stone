@@ -51,7 +51,6 @@ Class Plan_Model extends CI_Model {
 			if ($value['target_type'] === "1") {
 				$string_planSource .= "{";
 				$string_planSource .= "\"id\":\"".$value['target_id']."\",";
-				$string_planSource .= "\"source_name\":\"".$value['target_name']."\",";
 				$string_planSource .= "\"capacity\":\"".$value['capacity']."\"";
 				if ($array_listPlan[$key+1]['target_type'] === "2") {
 					$string_planSource .= "}";
@@ -61,7 +60,6 @@ Class Plan_Model extends CI_Model {
 			} else {
 				$string_planDestination .= "{";
 				$string_planDestination .= "\"id\":\"".$value['target_id']."\",";
-				$string_planDestination .= "\"destination_name\":\"".$value['target_name']."\",";
 				$string_planDestination .= "\"capacity\":\"".$value['capacity']."\"";
 				if ($i === $num_listPlan) {
 					$string_planDestination .= "}";
@@ -210,7 +208,6 @@ Class Plan_Model extends CI_Model {
 					array(
 						'transportation_id' => $id_thisPlan,
 						'target_id' => $value['id'],
-						'target_name' => $value['source_name'],
 						'target_type' => 1,
 						'capacity' => $value['capacity'],
 						'sequence' => $x
@@ -224,7 +221,6 @@ Class Plan_Model extends CI_Model {
 					array(
 						'transportation_id' => $id_thisPlan,
 						'target_id' => $value['id'],
-						'target_name' => $value['destination_name'],
 						'target_type' => 2,
 						'capacity' => $value['capacity'],
 						'sequence' => $x
@@ -281,7 +277,6 @@ Class Plan_Model extends CI_Model {
 					array(
 						'transportation_id' => $id,
 						'target_id' => $value['id'],
-						'target_name' => $value['source_name'],
 						'target_type' => 1,
 						'capacity' => $value['capacity'],
 						'sequence' => $x
@@ -295,7 +290,6 @@ Class Plan_Model extends CI_Model {
 					array(
 						'transportation_id' => $id,
 						'target_id' => $value['id'],
-						'target_name' => $value['destination_name'],
 						'target_type' => 2,
 						'capacity' => $value['capacity'],
 						'sequence' => $x
@@ -355,7 +349,6 @@ Class Plan_Model extends CI_Model {
 						array(
 							'transportation_id' => $id,
 							'target_id' => $value['id'],
-							'target_name' => $value['source_name'],
 							'target_type' => 1,
 							'capacity' => $value['capacity'],
 							'sequence' => $x
@@ -369,7 +362,6 @@ Class Plan_Model extends CI_Model {
 						array(
 							'transportation_id' => $id,
 							'target_id' => $value['id'],
-							'target_name' => $value['destination_name'],
 							'target_type' => 2,
 							'capacity' => $value['capacity'],
 							'sequence' => $x

@@ -1,10 +1,10 @@
 angular.module('steppingStone', []).controller('miniSteppingStone', function($scope) {
-	
+
 	// 1. สิ่งที่จำเป็นต้องใช้ใน Step1
 	$scope.source_data = [];
 	// 1.1 เพิ่มต้นทาง
 	$scope.addSource = function() {
-		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {	// เช็ค selectSource ว่าไม่ใช่ค่าว่าง 
+		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {	// เช็ค selectSource ว่าไม่ใช่ค่าว่าง
 			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) { // เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
 				$scope.source_capacity = 0;
 			}
@@ -71,7 +71,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			new_costs_backup = [];
 		}
 	};
-	
+
 	// 1.4 เช็คข้อมูลตอนเปิดหน้าจอแก้ไข
 	$scope.checkSourceEdit = function() {
 
@@ -94,6 +94,23 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			}
 		});
 		return x;
+	};
+
+	//ใส่ชื่อ source_data ตามไอดี
+	$scope.modifySource = function(source_json) {
+		var set_source_data = [];
+		angular.forEach($scope.source_data, function(list) {
+			angular.forEach(source_json, function(list2) {
+				if(list.id === list2.id) {
+					set_source_data.push({
+						id: list.id,
+						source_name: list2.source_name,
+						capacity: list.capacity
+					});
+				}
+			});
+		});
+		$scope.source_data = set_source_data;
 	};
 
 	$scope.destination_data = [];
@@ -185,7 +202,24 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		});
 		return x;
 	};
-	
+
+	//ใส่ชื่อ destination_data ตามไอดี
+	$scope.modifyDestination = function(destination_json) {
+		var set_destination_data = [];
+		angular.forEach($scope.destination_data, function(list) {
+			angular.forEach(destination_json, function(list2) {
+				if(list.id === list2.id) {
+					set_destination_data.push({
+						id: list.id,
+						destination_name: list2.destination_name,
+						capacity: list.capacity
+					});
+				}
+			});
+		});
+		$scope.destination_data = set_destination_data;
+	};
+
 	// 2. สิ่งที่จำเป็นต้องใช้ใน Step2
 	$scope.new_costs = [];
 	// 2.1 เช็ค cost
@@ -333,7 +367,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if (next_similar_cost) {
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity 
+				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity
 				next_similar_cost = false;
 				similar_cost = [];
 			}
@@ -346,7 +380,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			if (current_list_point === last_list_point) {	// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity 
+				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity
 				console.log(" ");
 				similar_cost = [];
 			}
@@ -355,7 +389,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		angular.forEach($scope.new_costs, function(list) {
 			var pushList = true;
 
-			angular.forEach($scope.init_capacity, function(list2) {	// ตรวจสอบ new_costs กับ  init_capacity ถ้าไม่ตรงให้ทำ pushList 
+			angular.forEach($scope.init_capacity, function(list2) {	// ตรวจสอบ new_costs กับ  init_capacity ถ้าไม่ตรงให้ทำ pushList
 				if ((list.source_id === list2.source_id) && (list.destination_id === list2.destination_id)) {
 					pushList = false;
 				}
@@ -392,10 +426,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 			if (x[0].capacity !== 0) {
 				$scope.init_capacity.push(x[0]);
-				reCapacity(x[0]); // ส่ง x ไป eCapacity 
+				reCapacity(x[0]); // ส่ง x ไป eCapacity
 			}
 			total_capacity = 0;
-			
+
 			angular.forEach(x, function(list) {
 				total_capacity = total_capacity + list.capacity;
 			});
@@ -409,7 +443,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	function findCapacityOfSource(source_id) {
 		var result = 0;
 		angular.forEach(source_data_backup, function(list) {
-			if (source_id === list.id) { // ถ้า similar_cost.source_id เท่ากับ source_data_backup.id 
+			if (source_id === list.id) { // ถ้า similar_cost.source_id เท่ากับ source_data_backup.id
 				result = list.capacity;
 			}
 		});
@@ -420,7 +454,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	function findCapacityOfDestination(destination_id) {
 		var result = 0;
 		angular.forEach(destination_data_backup, function(list) {
-			if (destination_id === list.id) { // ถ้า similar_cost.destination_id เท่ากับ destination_data_backup.id 
+			if (destination_id === list.id) { // ถ้า similar_cost.destination_id เท่ากับ destination_data_backup.id
 				result = list.capacity;
 			}
 		});
@@ -432,8 +466,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var x = [];
 		angular.forEach(similar_cost, function(list) {
 			console.log(list);
-			var a = findCapacityOfSource(list.source_id); // ส่ง source_id ไปตรวจสอบที่ findCapacityOfSource 
-			var b = findCapacityOfDestination(list.destination_id); // ส่ง destination_id ไปตรวจสอบที่  findCapacityOfDestination 
+			var a = findCapacityOfSource(list.source_id); // ส่ง source_id ไปตรวจสอบที่ findCapacityOfSource
+			var b = findCapacityOfDestination(list.destination_id); // ส่ง destination_id ไปตรวจสอบที่  findCapacityOfDestination
 			var c = 0;
 			if (a < b) {
 				c = a;

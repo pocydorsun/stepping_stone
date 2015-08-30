@@ -1,7 +1,6 @@
 <?php $sources_json = json_encode($sources, JSON_UNESCAPED_UNICODE); ?>
 <?php $destinations_json = json_encode($destinations, JSON_UNESCAPED_UNICODE); ?>
 <?php $costs_json = json_encode($costs, JSON_UNESCAPED_UNICODE); ?>
-
 <div class="container">
 	<div class=" well well-white">
 		<div class="container">
@@ -55,6 +54,8 @@ $this->session->flashdata('costOfPlan')) :
 				<?php else : ?>
 				<div ng-init="myStep=1">
 					<?php endif ?>
+					<div <?php echo "ng-init='modifySource($sources_json)'"; ?> ></div>
+					<div <?php echo "ng-init='modifyDestination($destinations_json)'"; ?> ></div>
 					<div class="container col-sm-12">
 						<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs" ng-show="myStep===1">
 							<ul id="myTabs" class="nav nav-tabs" role="tablist">

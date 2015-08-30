@@ -37,7 +37,10 @@
 		<br>
 		<?php if ($this->session->flashdata('source_data') && $this->session->flashdata('destination_data') && $this->session->flashdata('myStep') && $this->session->flashdata('costOfPlan')) :
 		?>
-		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>; source_data=<?php echo $this -> session -> flashdata("source_data"); ?>; destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>; new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
+		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>;
+			source_data=<?php echo $this -> session -> flashdata("source_data"); ?>;
+			destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>;
+			new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
 			<?php else : ?>
 			<div ng-init="myStep=1">
 				<?php endif ?>
@@ -96,7 +99,7 @@
 										</table>
 
 										<div <?php echo "ng-init='source_lists = $sources_json'"; ?> >
-											<div ng-show="sources.length !== 0">
+											<div ng-show="sources.length !== 0" ng-init="checkSourceEdit()">
 												<form class="form-inline" ng-submit="addSource()">
 													<div class="form-group">
 														<select style="width:150px;"/ class="form-control" ng-model="selectSource" ng-options="list.source_name for list in source_lists | orderBy:'source_name'">
@@ -163,7 +166,7 @@
 										</table>
 
 										<div <?php echo "ng-init='destination_lists = $destinations_json'"; ?> >
-											<div ng-show="destinations.length !== 0">
+											<div ng-show="destinations.length !== 0" ng-init="checkDestinationEdit()">
 												<form class="form-inline" ng-submit="addDestination()">
 													<div class="form-group">
 														<select style="width:150px;"/ class="form-control" ng-model="selectDestination" ng-options="list.destination_name for list in destination_lists | orderBy:'destination_name'">

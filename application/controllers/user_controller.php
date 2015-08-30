@@ -82,9 +82,10 @@ class User_controller extends CI_Controller {
 		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_plan_exit');
 
 		if ($this -> form_validation -> run() == FALSE) {
-			$this -> session -> set_flashdata('sourceTable', $this -> input -> post('txtSourceTable'));
-			$this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
+			$this -> session -> set_flashdata('source_data', $this -> input -> post('txtSourceTable'));
+			$this -> session -> set_flashdata('destination_data', $this -> input -> post('txtDestinationTable'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
+			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
 			redirect('user/create');
 		} else {
@@ -126,8 +127,8 @@ class User_controller extends CI_Controller {
 		$this -> form_validation -> set_rules('txtPlan', 'เป้าหมาย', 'trim|required|callback_check_updateplan_exit[' . $id . ']');
 
 		if ($this -> form_validation -> run() == FALSE) {
-			$this -> session -> set_flashdata('sourceTable', $this -> input -> post('txtSourceTable'));
-			$this -> session -> set_flashdata('destinationTable', $this -> input -> post('txtDestinationTable'));
+			$this -> session -> set_flashdata('source_data', $this -> input -> post('txtSourceTable'));
+			$this -> session -> set_flashdata('destination_data', $this -> input -> post('txtDestinationTable'));
 			$this -> session -> set_flashdata('myStep', $this -> input -> post('txtMyStep'));
 			$this -> session -> set_flashdata('costOfPlan', $this -> input -> post('txtCostOfPlan'));
 			$this -> session -> set_flashdata('error_msg', validation_errors());
