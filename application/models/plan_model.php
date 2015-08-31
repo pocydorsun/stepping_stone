@@ -52,10 +52,14 @@ Class Plan_Model extends CI_Model {
 				$string_planSource .= "{";
 				$string_planSource .= "\"id\":\"".$value['target_id']."\",";
 				$string_planSource .= "\"capacity\":\"".$value['capacity']."\"";
-				if ($array_listPlan[$key+1]['target_type'] === "2") {
-					$string_planSource .= "}";
+				if($key+1 !== $num_listPlan) {
+					if ($array_listPlan[$key+1]['target_type'] === "2") {
+						$string_planSource .= "}";
+					} else {
+						$string_planSource .="},";
+					}
 				} else {
-					$string_planSource .="},";
+					$string_planSource .= "}";
 				}
 			} else {
 				$string_planDestination .= "{";
