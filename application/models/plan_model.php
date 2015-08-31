@@ -201,52 +201,56 @@ Class Plan_Model extends CI_Model {
 			$id_thisPlan = $data_thisPlan[0]['id'];
 
 			// นำ sourceTable และ destinationTable ที่ทำการ Decode แล้วมาประกอบใส่ $data_listPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง list_plan
-			$data_listPlan = array();
-			$x = 1;
-			foreach ($decode_sourceTable as $key => $value) {
-				array_push($data_listPlan,
-					array(
-						'transportation_id' => $id_thisPlan,
-						'target_id' => $value['id'],
-						'target_type' => 1,
-						'capacity' => $value['capacity'],
-						'sequence' => $x
-					)
-				);
-				$x = $x+1;
+			if ($decode_sourceTable || $decode_destinationTable) {
+				$data_listPlan = array();
+				$x = 1;
+				foreach ($decode_sourceTable as $key => $value) {
+					array_push($data_listPlan,
+						array(
+							'transportation_id' => $id_thisPlan,
+							'target_id' => $value['id'],
+							'target_type' => 1,
+							'capacity' => $value['capacity'],
+							'sequence' => $x
+						)
+					);
+					$x = $x+1;
+				}
+				$x = 1;
+
+				foreach ($decode_destinationTable as $key => $value) {
+					array_push($data_listPlan,
+						array(
+							'transportation_id' => $id_thisPlan,
+							'target_id' => $value['id'],
+							'target_type' => 2,
+							'capacity' => $value['capacity'],
+							'sequence' => $x
+						)
+					);
+					$x = $x+1;
+				}
+				$this -> db -> insert_batch('list_plan', $data_listPlan);
 			}
-			$x = 1;
-			foreach ($decode_destinationTable as $key => $value) {
-				array_push($data_listPlan,
-					array(
-						'transportation_id' => $id_thisPlan,
-						'target_id' => $value['id'],
-						'target_type' => 2,
-						'capacity' => $value['capacity'],
-						'sequence' => $x
-					)
-				);
-				$x = $x+1;
-			}
-			$this -> db -> insert_batch('list_plan', $data_listPlan);
 
 			// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
 			$decode_costOfPlan = json_decode($costOfPlan, true);
 
 			// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
-			$data_costOfPlan = array();
-			foreach ($decode_costOfPlan as $key => $value) {
-				array_push($data_costOfPlan,
-					array(
-						'transportation_id' => $id_thisPlan,
-						'source_id' => $value['source_id'],
-						'destination_id' => $value['destination_id'],
-						'cost' => $value['cost']
-					)
-				);
+			if ($data_costOfPlan) {
+				$data_costOfPlan = array();
+				foreach ($decode_costOfPlan as $key => $value) {
+					array_push($data_costOfPlan,
+						array(
+							'transportation_id' => $id_thisPlan,
+							'source_id' => $value['source_id'],
+							'destination_id' => $value['destination_id'],
+							'cost' => $value['cost']
+						)
+					);
+				}
+				$this -> db -> insert_batch('cost_of_plan', $data_costOfPlan);
 			}
-			$this -> db -> insert_batch('cost_of_plan', $data_costOfPlan);
-
 			return TRUE;
 		} else {
 			return FALSE;
@@ -270,78 +274,7 @@ Class Plan_Model extends CI_Model {
 			$decode_destinationTable = json_decode($destinationTable, true);
 
 			// นำ sourceTable และ destinationTable ที่ทำการ Decode แล้วมาประกอบใส่ $data_listPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง list_plan
-			$data_listPlan = array();
-			$x = 1;
-			foreach ($decode_sourceTable as $key => $value) {
-				array_push($data_listPlan,
-					array(
-						'transportation_id' => $id,
-						'target_id' => $value['id'],
-						'target_type' => 1,
-						'capacity' => $value['capacity'],
-						'sequence' => $x
-					)
-				);
-				$x = $x+1;
-			}
-			$x = 1;
-			foreach ($decode_destinationTable as $key => $value) {
-				array_push($data_listPlan,
-					array(
-						'transportation_id' => $id,
-						'target_id' => $value['id'],
-						'target_type' => 2,
-						'capacity' => $value['capacity'],
-						'sequence' => $x
-					)
-				);
-				$x = $x+1;
-			}
-			$this -> db -> insert_batch('list_plan', $data_listPlan);
-
-			// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
-			$decode_costOfPlan = json_decode($costOfPlan, true);
-
-			// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
-			$data_costOfPlan = array();
-			foreach ($decode_costOfPlan as $key => $value) {
-				array_push($data_costOfPlan,
-					array(
-						'transportation_id' => $id,
-						'source_id' => $value['source_id'],
-						'destination_id' => $value['destination_id'],
-						'cost' => $value['cost']
-					)
-				);
-			}
-			$this -> db -> insert_batch('cost_of_plan', $data_costOfPlan);
-			return TRUE;
-		} else {
-			$this -> db -> from('transportation');
-			$this -> db -> where('plan_name', "$planname");
-			$this -> db -> limit(1);
-
-			$query = $this -> db -> get();
-			$rows = $query -> num_rows();
-
-			if (!$rows) {
-				$data = array('plan_name' => $planname);
-				$this -> db -> where('id', $id);
-				$query = $this -> db -> update('transportation', $data);
-
-				// ลบข้อมูลในตาราง list_plan
-				$this-> db -> where('transportation_id', $id);
-				$this -> db -> delete('list_plan');
-
-				// ลบข้อมูลในตาราง cost_of_plan
-				$this-> db -> where('transportation_id', $id);
-				$this -> db -> delete('cost_of_plan');
-
-				// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
-				$decode_sourceTable = json_decode($sourceTable, true);
-				$decode_destinationTable = json_decode($destinationTable, true);
-
-				// นำ sourceTable และ destinationTable ที่ทำการ Decode แล้วมาประกอบใส่ $data_listPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง list_plan
+			if ($decode_sourceTable || $decode_destinationTable) {
 				$data_listPlan = array();
 				$x = 1;
 				foreach ($decode_sourceTable as $key => $value) {
@@ -370,11 +303,13 @@ Class Plan_Model extends CI_Model {
 					$x = $x+1;
 				}
 				$this -> db -> insert_batch('list_plan', $data_listPlan);
+			}
 
-				// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
-				$decode_costOfPlan = json_decode($costOfPlan, true);
+			// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
+			$decode_costOfPlan = json_decode($costOfPlan, true);
 
-				// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
+			// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
+			if($decode_costOfPlan) {
 				$data_costOfPlan = array();
 				foreach ($decode_costOfPlan as $key => $value) {
 					array_push($data_costOfPlan,
@@ -387,7 +322,83 @@ Class Plan_Model extends CI_Model {
 					);
 				}
 				$this -> db -> insert_batch('cost_of_plan', $data_costOfPlan);
+			}
+			return TRUE;
+		} else {
+			$this -> db -> from('transportation');
+			$this -> db -> where('plan_name', "$planname");
+			$this -> db -> limit(1);
 
+			$query = $this -> db -> get();
+			$rows = $query -> num_rows();
+
+			if (!$rows) {
+				$data = array('plan_name' => $planname);
+				$this -> db -> where('id', $id);
+				$query = $this -> db -> update('transportation', $data);
+
+				// ลบข้อมูลในตาราง list_plan
+				$this-> db -> where('transportation_id', $id);
+				$this -> db -> delete('list_plan');
+
+				// ลบข้อมูลในตาราง cost_of_plan
+				$this-> db -> where('transportation_id', $id);
+				$this -> db -> delete('cost_of_plan');
+
+				// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
+				$decode_sourceTable = json_decode($sourceTable, true);
+				$decode_destinationTable = json_decode($destinationTable, true);
+
+				// นำ sourceTable และ destinationTable ที่ทำการ Decode แล้วมาประกอบใส่ $data_listPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง list_plan
+				if ($decode_sourceTable || $decode_destinationTable) {
+					$data_listPlan = array();
+					$x = 1;
+					foreach ($decode_sourceTable as $key => $value) {
+						array_push($data_listPlan,
+							array(
+								'transportation_id' => $id,
+								'target_id' => $value['id'],
+								'target_type' => 1,
+								'capacity' => $value['capacity'],
+								'sequence' => $x
+							)
+						);
+						$x = $x+1;
+					}
+					$x = 1;
+					foreach ($decode_destinationTable as $key => $value) {
+						array_push($data_listPlan,
+							array(
+								'transportation_id' => $id,
+								'target_id' => $value['id'],
+								'target_type' => 2,
+								'capacity' => $value['capacity'],
+								'sequence' => $x
+							)
+						);
+						$x = $x+1;
+					}
+					$this -> db -> insert_batch('list_plan', $data_listPlan);
+				}
+
+				// ต้องแปลงค่า string ที่เขียนในรูปแบบ json มาเป็น array ในแบบของ php
+				$decode_costOfPlan = json_decode($costOfPlan, true);
+
+				// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
+				if (decode_costOfPlan) {
+					$data_costOfPlan = array();
+					foreach ($decode_costOfPlan as $key => $value) {
+						array_push($data_costOfPlan,
+							array(
+								'transportation_id' => $id,
+								'source_id' => $value['source_id'],
+								'destination_id' => $value['destination_id'],
+								'cost' => $value['cost']
+							)
+						);
+					}
+					$this -> db -> insert_batch('cost_of_plan', $data_costOfPlan);
+				}
 				return TRUE;
 			} else {
 				return FALSE;
