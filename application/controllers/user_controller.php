@@ -135,7 +135,7 @@ class User_controller extends CI_Controller {
 			redirect('user/plan_edit/' . $id);
 		} else {
 
-			$this -> session -> set_flashdata('success_msg', 'เพิ่มชื่อแผนสำเร็จ');
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขแผนสำเร็จ');
 
 			redirect('user/plan_edit/' . $id);
 		}
