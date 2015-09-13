@@ -145,6 +145,14 @@
 				<button type="button" class="close" ng-click="err_plan = false" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				ต้อง 3x3 เท่านั้น
+				ต้นทางและปลายทางจะต้องเป็น 3x3 เท่านั้น
+			</div>
+		</div>
+		<div class="container" ng-show="err_plan2">
+			<div class="alert alert-warning">
+				<button type="button" class="close" ng-click="err_plan = false" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				จำนวนต้นทางและปลายทางไม่เท่ากัน
 			</div>
 		</div>

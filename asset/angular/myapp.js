@@ -4,8 +4,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	$scope.source_data = [];
 	// 1.1 เพิ่มต้นทาง
 	$scope.addSource = function() {
-		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {	// เช็ค selectSource ว่าไม่ใช่ค่าว่าง
-			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) { // เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
+		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {// เช็ค selectSource ว่าไม่ใช่ค่าว่าง
+			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) {// เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
 				$scope.source_capacity = 0;
 			}
 			// ใส่ข้อมูลลงไป
@@ -101,11 +101,11 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var set_source_data = [];
 		angular.forEach($scope.source_data, function(list) {
 			angular.forEach(source_json, function(list2) {
-				if(list.id === list2.id) {
+				if (list.id === list2.id) {
 					set_source_data.push({
-						id: list.id,
-						source_name: list2.source_name,
-						capacity: list.capacity
+						id : list.id,
+						source_name : list2.source_name,
+						capacity : list.capacity
 					});
 				}
 			});
@@ -208,11 +208,11 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var set_destination_data = [];
 		angular.forEach($scope.destination_data, function(list) {
 			angular.forEach(destination_json, function(list2) {
-				if(list.id === list2.id) {
+				if (list.id === list2.id) {
 					set_destination_data.push({
-						id: list.id,
-						destination_name: list2.destination_name,
-						capacity: list.capacity
+						id : list.id,
+						destination_name : list2.destination_name,
+						capacity : list.capacity
 					});
 				}
 			});
@@ -339,48 +339,61 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		printData($scope.new_costs);
 
 		//3.4.3ทำการคำนวณและใส่เซ็ทค่า $scope.init_capacity
-		var similar_cost = []; //cost ที่เหมือนกัน
+		var similar_cost = [];
+		//cost ที่เหมือนกัน
 
-		var current_cost = 0; // cost ปัจจุบัน
+		var current_cost = 0;
+		// cost ปัจจุบัน
 
-		var next_similar_cost = false; // ทำต่อ  cost ที่เหมือนกัน
+		var next_similar_cost = false;
+		// ทำต่อ  cost ที่เหมือนกัน
 
-		var current_list_point = 0;	// รายการปัจจุบัน
+		var current_list_point = 0;
+		// รายการปัจจุบัน
 
-		var last_list_point = $scope.new_costs.length; // รายการสุดม้าย
+		var last_list_point = $scope.new_costs.length;
+		// รายการสุดม้าย
 
-		$scope.init_capacity = []; // ล้างค่า init_capacity ใหม่ทุกครั้ง
+		$scope.init_capacity = [];
+		// ล้างค่า init_capacity ใหม่ทุกครั้ง
 
 		angular.forEach($scope.new_costs, function(list) {
 			current_list_point = current_list_point + 1;
 
-			if (current_list_point === 1) {	// กำหนดรายการแรกของปัจจุบัน
-				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
+			if (current_list_point === 1) {// กำหนดรายการแรกของปัจจุบัน
+				current_cost = list.cost;
+				// ให้ cost ปัจจุบันเท่ากับ cost
 			}
 
-			if (list.cost === current_cost) {	// ถ้า list.cost เท่ากับ cost ปัจจุบัน
-				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
+			if (list.cost === current_cost) {// ถ้า list.cost เท่ากับ cost ปัจจุบัน
+				similar_cost.push(list);
+				// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
 			} else {
-				next_similar_cost = true;	// ทำต่อ cost ที่เหมือนกัน
+				next_similar_cost = true;
+				// ทำต่อ cost ที่เหมือนกัน
 			}
 
 			if (next_similar_cost) {
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity
+				setInitCapacity(similar_cost);
+				// ส่ง similar_cost ไปที่  setInitCapacity
 				next_similar_cost = false;
 				similar_cost = [];
 			}
 
-			if (list.cost !== current_cost) {	// ถ้า list.cost ไม่เท่ากับ cost ปัจจุบัน
-				current_cost = list.cost;	// ให้ cost ปัจจุบันเท่ากับ cost
-				similar_cost.push(list);	// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
+			if (list.cost !== current_cost) {// ถ้า list.cost ไม่เท่ากับ cost ปัจจุบัน
+				current_cost = list.cost;
+				// ให้ cost ปัจจุบันเท่ากับ cost
+				similar_cost.push(list);
+				// เก็บค่า cost ที่ระบุไว้ทั้งแอร์เรย์
 			}
 
-			if (current_list_point === last_list_point) {	// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
+			if (current_list_point === last_list_point) {// ถ้ารายการปัจจุบัน เท่ากับ รายการสุดม้าย
 				console.log(" ");
 				console.log("กลุ่มค่า Cost เท่ากับ " + current_cost + " :");
-				setInitCapacity(similar_cost); // ส่ง similar_cost ไปที่  setInitCapacity
+				setInitCapacity(similar_cost);
+				// ส่ง similar_cost ไปที่  setInitCapacity
 				console.log(" ");
 				similar_cost = [];
 			}
@@ -389,7 +402,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		angular.forEach($scope.new_costs, function(list) {
 			var pushList = true;
 
-			angular.forEach($scope.init_capacity, function(list2) {	// ตรวจสอบ new_costs กับ  init_capacity ถ้าไม่ตรงให้ทำ pushList
+			angular.forEach($scope.init_capacity, function(list2) {// ตรวจสอบ new_costs กับ  init_capacity ถ้าไม่ตรงให้ทำ pushList
 				if ((list.source_id === list2.source_id) && (list.destination_id === list2.destination_id)) {
 					pushList = false;
 				}
@@ -422,20 +435,20 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var total_capacity = 0;
 
 		do {
-			var x = calCapacity(similar_cost); // ส่่ง similar_cost ไปที่ calCapacity แล้วให้เท่ากับ x
+			var x = calCapacity(similar_cost);
+			// ส่่ง similar_cost ไปที่ calCapacity แล้วให้เท่ากับ x
 
 			if (x[0].capacity !== 0) {
 				$scope.init_capacity.push(x[0]);
-				reCapacity(x[0]); // ส่ง x ไป eCapacity
+				reCapacity(x[0]);
+				// ส่ง x ไป eCapacity
 			}
 			total_capacity = 0;
 
 			angular.forEach(x, function(list) {
 				total_capacity = total_capacity + list.capacity;
 			});
-    }
-    while (total_capacity !== 0);
-
+		} while (total_capacity !== 0);
 
 	}
 
@@ -443,7 +456,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	function findCapacityOfSource(source_id) {
 		var result = 0;
 		angular.forEach(source_data_backup, function(list) {
-			if (source_id === list.id) { // ถ้า similar_cost.source_id เท่ากับ source_data_backup.id
+			if (source_id === list.id) {// ถ้า similar_cost.source_id เท่ากับ source_data_backup.id
 				result = list.capacity;
 			}
 		});
@@ -454,7 +467,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	function findCapacityOfDestination(destination_id) {
 		var result = 0;
 		angular.forEach(destination_data_backup, function(list) {
-			if (destination_id === list.id) { // ถ้า similar_cost.destination_id เท่ากับ destination_data_backup.id
+			if (destination_id === list.id) {// ถ้า similar_cost.destination_id เท่ากับ destination_data_backup.id
 				result = list.capacity;
 			}
 		});
@@ -466,8 +479,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		var x = [];
 		angular.forEach(similar_cost, function(list) {
 			console.log(list);
-			var a = findCapacityOfSource(list.source_id); // ส่ง source_id ไปตรวจสอบที่ findCapacityOfSource
-			var b = findCapacityOfDestination(list.destination_id); // ส่ง destination_id ไปตรวจสอบที่  findCapacityOfDestination
+			var a = findCapacityOfSource(list.source_id);
+			// ส่ง source_id ไปตรวจสอบที่ findCapacityOfSource
+			var b = findCapacityOfDestination(list.destination_id);
+			// ส่ง destination_id ไปตรวจสอบที่  findCapacityOfDestination
 			var c = 0;
 			if (a < b) {
 				c = a;
@@ -516,10 +531,11 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	// 4.1ตัวแปรนี้ใช้เก็บค่าสเตตัสของแผนว่า error หรือไม่ ถ้า error จะไป step 2 ไม่ได้
 	$scope.err_plan = false;
 
+	$scope.err_plan2 = false;
+
 	// 4.2 ฟังค์ชั่นการเปลี่ยน Step
 	$scope.changeStep = function(step) {
 		$scope.myStep = step;
-
 		// 4.2.1 เงื่อนไขการไปสเต็ปที่สอง ถ้าความไม่ใช่ ตาราง 3x3 ขึ้นไป ก็จะไม่สามารถข้ามไปยัง Step 2 ได้
 		if (step === 2) {
 			len1 = $scope.source_data.length;
@@ -531,6 +547,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			} else {
 				$scope.myStep = 2;
 				$scope.err_plan = false;
+				CheckStep1();
 			}
 		}
 
@@ -541,5 +558,28 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการแสดงผลใน Step 3
 			$scope.initCapacity();
 		}
+
+		function CheckStep1() {
+			total_result1 = 0;
+			angular.forEach($scope.source_data, function(list) {
+				total_result1 = total_result1 + parseInt(list.capacity);
+			});
+			CheckStep2(total_result1);
+		}
+
+		function CheckStep2(total_result1) {
+			total_result2 = 0;
+			angular.forEach($scope.destination_data, function(list) {
+				total_result2 = total_result2 + parseInt(list.capacity);
+			});
+
+			if (total_result1 !== total_result2) {
+				$scope.err_plan2 = true;
+				$scope.myStep = 1;
+			} else {
+				$scope.err_plan2 = false;
+			}
+		}
+
 	};
 });

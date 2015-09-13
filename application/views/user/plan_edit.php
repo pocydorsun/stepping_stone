@@ -68,69 +68,69 @@ $this->session->flashdata('costOfPlan')) :
 							</ul>
 							<div id="myTabContent" class="tab-content">
 								<!-- ส่วนต้นทาง -->
-								<div role="tabpanel" class="tab-pane fade active in" id="source" aria-labelledby="source-tab" >
-									<div class="container" ng-show="myStep===1">
-										<br>
-										<div class="col-sm-7 well well-lg" >
-											<table  class="table table-striped">
-												<thead>
-													<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
-													<th></th>
-												</thead>
-												<br>
-												<tbody>
-													<tr ng-repeat='list in source_data'>
+								<div role="tabpanel" class="tab-pane fade active in" id="source" aria-labelledby="source-tab">
+								<div class="container" ng-show="myStep===1">
+									<br>
+									<div class="col-sm-7 well well-lg" >
+										<table  class="table table-striped">
+											<thead>
+												<th style="width:200px;"/> ชื่อ </th> <th> ความจุ </th>
+												<th></th>
+											</thead>
+											<br>
+											<tbody>
+												<tr ng-repeat='list in source_data'>
 
-														<td>{{list.source_name}}</td>
+													<td>{{list.source_name}}</td>
 
-														<td  ng-init='statusEdit=false; statusShow=true'><a = href=""
-														ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
-														ng-show="statusShow">
-														<center>
-															{{list.capacity}}
-														</center> </a>
-														<input type="number"
-														class="form-control"
-														style="width:100px;"/
-														ng-model ='newCapacity'
-														ng-show="statusEdit">
-														</td>
+													<td  ng-init='statusEdit=false; statusShow=true'><a = href=""
+													ng-click='statusEdit=true; statusShow=false; newCapacity=list.capacity'
+													ng-show="statusShow">
+													<center>
+														{{list.capacity}}
+													</center> </a>
+													<input type="number"
+													class="form-control"
+													style="width:100px;"/
+													ng-model ='newCapacity'
+													ng-show="statusEdit">
+													</td>
 
-														<td><a href=""
-														ng-click="editSource(list.id, list.source_name, newCapacity)"
-														ng-show="statusEdit"> ตกลง </a></td>
+													<td><a href=""
+													ng-click="editSource(list.id, list.source_name, newCapacity)"
+													ng-show="statusEdit"> ตกลง </a></td>
 
-														<td><a href=""
-														ng-click="statusEdit=false; statusShow=true; newName=''"
-														ng-show="statusEdit"> ยกเลิก </a></td>
+													<td><a href=""
+													ng-click="statusEdit=false; statusShow=true; newName=''"
+													ng-show="statusEdit"> ยกเลิก </a></td>
 
-														<td><a href="" ng-click="removeSource(list.id)"
-														ng-show="statusShow" > ลบ </a></td>
-													</tr>
-												</tbody>
-											</table>
+													<td><a href="" ng-click="removeSource(list.id)"
+													ng-show="statusShow" > ลบ </a></td>
+												</tr>
+											</tbody>
+										</table>
 
-											<div <?php echo "ng-init='source_lists = $sources_json'"; ?> >
-												<div ng-show="sources.length !== 0" ng-init="checkSourceEdit()">
-													<form class="form-inline" ng-submit="addSource()">
-														<div class="form-group">
-															<select style="width:150px;"/ class="form-control" ng-model="selectSource" ng-options="list.source_name for list in source_lists | orderBy:'source_name'">
-																<option value="">เลือก</option>
-															</select>
-														</div>
-														<div class="form-group">
-															<input type="number" class="form-control" ng-model="source_capacity" placeholder="ความจุ">
-														</div>
+										<div <?php echo "ng-init='source_lists = $sources_json'"; ?> >
+											<div ng-show="sources.length !== 0" ng-init="checkSourceEdit()">
+												<form class="form-inline" ng-submit="addSource()">
+													<div class="form-group">
+														<select style="width:150px;"/ class="form-control" ng-model="selectSource" ng-options="list.source_name for list in source_lists | orderBy:'source_name'">
+															<option value="">เลือก</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<input type="number" class="form-control" ng-model="source_capacity" placeholder="ความจุ">
+													</div>
 
-														<button type="submit" class="btn btn-default">
-															เพิ่ม
-														</button>
-													</form>
-												</div>
+													<button type="submit" class="btn btn-default">
+														เพิ่ม
+													</button>
+												</form>
 											</div>
 										</div>
 									</div>
 								</div>
+							</div>
 
 								<!-- ส่วนปลายทาง -->
 								<div role="tabpanel" class="tab-pane fade" id="destination" aria-labelledby="destination-tab">
