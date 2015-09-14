@@ -555,8 +555,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		if (step === 3) {
 			// 4.2.2.1 เรียกฟังค์ชั่นการจัดเรียง $scope.new_cost ใหม่ จาก cost น้อยไปหา cost มาก
 			$scope.sortNewCosts();
-			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการแสดงผลใน Step 3
+			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการตั้งค่า capacity เบื้องต้น
 			$scope.initCapacity();
+			// 4.2.2.3 เรียกฟังค์ชั่นการคำนวณหาคำตอบ $scope.calculation ไว้ใช้สำหรับการหาคำตอบและแสดงผลลัพธ์ใน step3
+			$scope.calculation();
 		}
 
 		function CheckStep1() {
@@ -581,5 +583,16 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			}
 		}
 
+	};
+
+	$scope.calculation = function() {
+		console.log("calculation!!");
+		var x = 0;
+		angular.forEach($scope.init_capacity, function(list) {
+			if (list.capacity === 0) {
+				x++;
+			}
+		});
+		console.log(x);
 	};
 });

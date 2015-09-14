@@ -51,7 +51,7 @@ Class Plan_Model extends CI_Model {
 			if ($value['target_type'] === "1") {
 				$string_planSource .= "{";
 				$string_planSource .= "\"id\":\"".$value['target_id']."\",";
-				$string_planSource .= "\"capacity\":\"".$value['capacity']."\"";
+				$string_planSource .= "\"capacity\":".$value['capacity'];
 				if($key+1 !== $num_listPlan) {
 					if ($array_listPlan[$key+1]['target_type'] === "2") {
 						$string_planSource .= "}";
@@ -64,7 +64,7 @@ Class Plan_Model extends CI_Model {
 			} else {
 				$string_planDestination .= "{";
 				$string_planDestination .= "\"id\":\"".$value['target_id']."\",";
-				$string_planDestination .= "\"capacity\":\"".$value['capacity']."\"";
+				$string_planDestination .= "\"capacity\":".$value['capacity'];
 				if ($i === $num_listPlan) {
 					$string_planDestination .= "}";
 				} else {
