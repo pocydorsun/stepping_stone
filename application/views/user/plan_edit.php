@@ -248,7 +248,7 @@ $this->session->flashdata('costOfPlan')) :
 										<input ng-model="search.source_id" ng-init="search.source_id = source.id" ng-hide="true">
 										<input ng-model="search.destination_id" ng-init="search.destination_id = destination.id" ng-hide="true">
 										<div ng-repeat="cap in init_capacity | filter:search">
-											{{cap.capacity}}
+											{{cap.capacity}} ({{cap.source_id}},{{cap.destination_id}})
 										</div></td>
 										<th>{{source.capacity}}</th>
 									</tr>

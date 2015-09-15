@@ -585,14 +585,41 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	};
 
+	var cal_array = [];
+	var cal_status = true;
+	var cal_start = {};
+
 	$scope.calculation = function() {
 		console.log("calculation!!");
-		var x = 0;
 		angular.forEach($scope.init_capacity, function(list) {
 			if (list.capacity === 0) {
-				x++;
+				console.log(list);
+				y(list);
+				console.log("\n")
 			}
 		});
-		console.log(x);
 	};
+
+	var y = function(list) {
+		if (cal_status) {
+			angular.forEach($scope.init_capacity, function(list2) {
+				if (list.destination_id === list2.destination_id && list.source_id !== list2.source_id && list2.capacity !== 0) {
+					console.log(list2);
+					x(list2);
+				}
+			});
+		}
+	};
+
+	var x = function(list2) {
+		if (cal_status) {
+			angular.forEach($scope.init_capacity, function(list3) {
+				if (list2.source_id === list3.source_id && list2.destination_id !== list3.destination_id && list3.capacity !== 0) {
+					console.log(list3);
+					y(list3);
+				}
+			});
+		}
+	};
+
 });
