@@ -587,18 +587,20 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	// ส่วนคำนวณ
 	var cal_array = [];
-	var cal_status = true;
-	var cal_start = {};
 
 	$scope.calculation = function() {
+		// หาจุดเริ่มต้น หรือ จุดที่มีค่า capacity เท่ากับ 0 ทั้งหมด
+		// เก็บเป็น array แยกเป็นกลุ่มๆ array ไว้ตัวแปรที่ชื่อ cal_array
 		var pt = 0;
 		angular.forEach($scope.init_capacity, function(list) {
 			if (list.capacity === 0) {
+				// เร่ิมจาก cal_array[0] จนไปถึง cal_array[สุดท้าย]
 				cal_array[pt] = [];
 				cal_array[pt].push(list);
 				pt++;
 			}
 		});
 		console.log(cal_array);
+
 	};
 });
