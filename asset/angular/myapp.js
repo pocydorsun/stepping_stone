@@ -585,41 +585,20 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	};
 
+	// ส่วนคำนวณ
 	var cal_array = [];
 	var cal_status = true;
 	var cal_start = {};
 
 	$scope.calculation = function() {
-		console.log("calculation!!");
+		var pt = 0;
 		angular.forEach($scope.init_capacity, function(list) {
 			if (list.capacity === 0) {
-				console.log(list);
-				y(list);
-				console.log("\n")
+				cal_array[pt] = [];
+				cal_array[pt].push(list);
+				pt++;
 			}
 		});
+		console.log(cal_array);
 	};
-
-	var y = function(list) {
-		if (cal_status) {
-			angular.forEach($scope.init_capacity, function(list2) {
-				if (list.destination_id === list2.destination_id && list.source_id !== list2.source_id && list2.capacity !== 0) {
-					console.log(list2);
-					x(list2);
-				}
-			});
-		}
-	};
-
-	var x = function(list2) {
-		if (cal_status) {
-			angular.forEach($scope.init_capacity, function(list3) {
-				if (list2.source_id === list3.source_id && list2.destination_id !== list3.destination_id && list3.capacity !== 0) {
-					console.log(list3);
-					y(list3);
-				}
-			});
-		}
-	};
-
 });
