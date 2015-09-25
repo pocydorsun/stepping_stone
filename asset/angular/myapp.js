@@ -586,13 +586,29 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	};
 
 	// ส่วนคำนวณ
-	var cal_array = [];
-
 	$scope.calculation = function() {
+
+		// ตัวแปร cal_array ไว้ใช้เก็บค่าที่ใช้สำหรับการคำนวณ
+		var cal_array = [];
+
+		// ตัวแปร re_init_capacity มีไว้ใช้เก็บข้อมูลจาก init_capacity ที่ได้ทำการจัดเรียงใหม่ ให้อยู่ในรูปแบบตามตาราง
+		var re_init_capacity = [];
+
+		// ทำการจัดเรียง init_capacity ใหม่ ให้อยู่ในรูปแบบเดียวกันกับตาราง
+		angular.forEach($scope.source_data, function(list) {
+			angular.forEach($scope.destination_data, function(list2) {
+				angular.forEach($scope.init_capacity, function(list3) {
+					if (list.id === list3.source_id && list2.id === list3.destination_id) {
+						re_init_capacity.push(list3);
+					}
+				});
+			});
+		});
+
 		// หาจุดเริ่มต้น หรือ จุดที่มีค่า capacity เท่ากับ 0 ทั้งหมด
 		// เก็บเป็น array แยกเป็นกลุ่มๆ array ไว้ตัวแปรที่ชื่อ cal_array
 		var pt = 0;
-		angular.forEach($scope.init_capacity, function(list) {
+		angular.forEach(re_init_capacity, function(list) {
 			if (list.capacity === 0) {
 				// เร่ิมจาก cal_array[0] จนไปถึง cal_array[สุดท้าย]
 				cal_array[pt] = [];
@@ -602,5 +618,12 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		});
 		console.log(cal_array);
 
+		// pt = 0;
+		// angular.forEach(cal_array, function(list) {
+		// 	angular.forEach($scope.init_capacity, function(list2) {
+		//
+		// 	});
+		// 	pt++;
+		// });
 	};
 });
