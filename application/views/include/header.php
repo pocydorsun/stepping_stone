@@ -156,3 +156,11 @@
 				จำนวนต้นทางและปลายทางไม่เท่ากัน
 			</div>
 		</div>
+		<div class="container" ng-show="err_plan3">
+			<div class="alert alert-warning">
+				<button type="button" class="close" ng-click="err_plan = false" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				จำนวนต้นทางและปลายทางจะต้องไม่เป็นค่าว่างหรือเท่ากับ 0
+			</div>
+		</div>

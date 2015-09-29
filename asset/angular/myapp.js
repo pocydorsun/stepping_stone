@@ -5,24 +5,25 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	// 1.1 เพิ่มต้นทาง
 	$scope.addSource = function() {
 		if ($scope.selectSource !== undefined && $scope.selectSource !== '') {// เช็ค selectSource ว่าไม่ใช่ค่าว่าง
-			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null) {// เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
-				$scope.source_capacity = 0;
-			}
-			// ใส่ข้อมูลลงไป
-			$scope.source_data.push({
-				id : $scope.selectSource.id,
-				source_name : $scope.selectSource.source_name,
-				capacity : $scope.source_capacity
-			});
+			if ($scope.source_capacity === undefined || $scope.source_capacity === '' || $scope.source_capacity === null || $scope.source_capacity <= 0) {// เช็ค capacity ถ้าเป็นค่าว่างให้ capacity = 0
+				$scope.err_plan3 = true;
+			} else {
+				$scope.err_plan3 = false;
+				$scope.source_data.push({
+					id : $scope.selectSource.id,
+					source_name : $scope.selectSource.source_name,
+					capacity : $scope.source_capacity
+				});
 
-			// ลบลิสที่ถูกเลือกแล้ว
-			var oldSourceList = $scope.source_lists;
-			$scope.source_lists = [];
-			angular.forEach(oldSourceList, function(list) {
-				if (list.source_name !== $scope.selectSource.source_name) {
-					$scope.source_lists.push(list);
-				}
-			});
+				// ลบลิสที่ถูกเลือกแล้ว
+				var oldSourceList = $scope.source_lists;
+				$scope.source_lists = [];
+				angular.forEach(oldSourceList, function(list) {
+					if (list.source_name !== $scope.selectSource.source_name) {
+						$scope.source_lists.push(list);
+					}
+				});
+			}
 
 			// ตั้งค่า selectSource ใหม่
 			$scope.selectSource = '';
@@ -117,22 +118,25 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 	$scope.addDestination = function() {
 		if ($scope.selectDestination !== undefined && $scope.selectDestination !== '') {
-			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '' || $scope.destination_capacity === null) {
-				$scope.destination_capacity = 0;
+			if ($scope.destination_capacity === undefined || $scope.destination_capacity === '' || $scope.destination_capacity === null || $scope.destination_capacity <= 0) {
+				$scope.err_plan3 = true;
+			} else {
+				$scope.err_plan3 = false;
+				$scope.destination_data.push({
+					id : $scope.selectDestination.id,
+					destination_name : $scope.selectDestination.destination_name,
+					capacity : $scope.destination_capacity
+				});
+
+				// ลบลิสที่ถูกเลือกแล้ว
+				var oldDestinationList = $scope.destination_lists;
+				$scope.destination_lists = [];
+				angular.forEach(oldDestinationList, function(list) {
+					if (list.destination_name !== $scope.selectDestination.destination_name) {
+						$scope.destination_lists.push(list);
+					}
+				});
 			}
-			$scope.destination_data.push({
-				id : $scope.selectDestination.id,
-				destination_name : $scope.selectDestination.destination_name,
-				capacity : $scope.destination_capacity
-			});
-			// ลบลิสที่ถูกเลือกแล้ว
-			var oldDestinationList = $scope.destination_lists;
-			$scope.destination_lists = [];
-			angular.forEach(oldDestinationList, function(list) {
-				if (list.destination_name !== $scope.selectDestination.destination_name) {
-					$scope.destination_lists.push(list);
-				}
-			});
 			// ตั้งค่า selectDestination ใหม่
 			$scope.selectDestination = '';
 			$scope.destination_capacity = '';
@@ -532,6 +536,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	$scope.err_plan = false;
 
 	$scope.err_plan2 = false;
+
+	$scope.err_plan3 = false;
 
 	// 4.2 ฟังค์ชั่นการเปลี่ยน Step
 	$scope.changeStep = function(step) {
