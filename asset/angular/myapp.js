@@ -594,9 +594,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 	// ส่วนคำนวณ
 	$scope.calculation = function() {
 
-		// ตัวแปร cal_array ไว้ใช้เก็บค่าที่ใช้สำหรับการคำนวณ
-		var cal_array = [];
-
 		// ตัวแปร re_init_capacity มีไว้ใช้เก็บข้อมูลจาก init_capacity ที่ได้ทำการจัดเรียงใหม่ ให้อยู่ในรูปแบบตามตาราง
 		var re_init_capacity = [];
 
@@ -611,25 +608,36 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			});
 		});
 
-		// หาจุดเริ่มต้น หรือ จุดที่มีค่า capacity เท่ากับ 0 ทั้งหมด
-		// เก็บเป็น array แยกเป็นกลุ่มๆ array ไว้ตัวแปรที่ชื่อ cal_array
-		var pt = 0;
+		// ตัวแปร re_init_capacity_2d เก็บค่าจาก re_init_capacity ในแบบ Array 2 มิติ
+		var re_init_capacity_2d = [];
+
+		// เก็บค่าจำนวนนับ source_data, destination_data ว่ามีกี่ตัวเพื่อใช้ในการคำนวณหาระยะของ Array 2 มิติ
+		var source_length = $scope.source_data.length;
+		var destination_length = $scope.destination_data.length;
+
+		// ดำเนินการแปลงการเก็บค่าของ re_init_capacity จาก array 1 มิติ ให้เป็นแบบ 2 มิติ โดยเก็บไว้ที่ตัวแปร re_init_capacity_2d
+		var count = 0;
+		var pt = 1;
+		var last_pt = re_init_capacity.length;
+		var backup_array = [];
 		angular.forEach(re_init_capacity, function(list) {
-			if (list.capacity === 0) {
-				// เร่ิมจาก cal_array[0] จนไปถึง cal_array[สุดท้าย]
-				cal_array[pt] = [];
-				cal_array[pt].push(list);
-				pt++;
+			pt++;
+			if (count < destination_length) {
+				backup_array.push(list);
+				count++;
+			} else {
+				re_init_capacity_2d.push(backup_array);
+				backup_array = [];
+				backup_array.push(list);
+				count = 0;
+				count++;
+			}
+
+			if (pt === last_pt) {
+				re_init_capacity_2d.push(backup_array);
 			}
 		});
-		console.log(cal_array);
-
-		// pt = 0;
-		// angular.forEach(cal_array, function(list) {
-		// 	angular.forEach($scope.init_capacity, function(list2) {
-		//
-		// 	});
-		// 	pt++;
-		// });
+		console.log(re_init_capacity_2d);
 	};
+
 });
