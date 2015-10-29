@@ -637,7 +637,80 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				re_init_capacity_2d.push(backup_array);
 			}
 		});
-		console.log(re_init_capacity_2d);
+
+		// แสดง re_init_capacity_2d
+		console.log("\n\n[calculation function] -> re_init_capacity_2d : ");
+		angular.forEach(re_init_capacity_2d, function(list) {
+			console.log(list);
+		});
+
+		// หาจุดเริ่มต้นที่มีค่า capacity เท่ากับ 0
+		var zero_points = [];
+		console.log("\n\n");
+		for (i = 0; i < source_length; i++) {
+			for (j = 0; j < destination_length; j++) {
+					if (re_init_capacity_2d[i][j].capacity === 0) {
+						zero_points.push([i,j]);
+					}
+			}
+		}
+		console.log("จุดเริ่มต้นทั้งหมด :");
+		console.log(zero_points);
+		console.log("\n");
+
+		// เริ่มดำเนินการกล้ิงหินได้!!! (TT~TT)/
+		angular.forEach(zero_points, function(zero_point) {
+			// เรียกฟังค์ชั่น rollingStone()
+			rollingStone(re_init_capacity_2d, zero_point, source_length, destination_length);
+		});
 	};
 
+	// ฟังค์ชั่น rollingStone() หรือ ฟังค์ชั่นการกล้ิงหิน
+	// ตัวแปรที่เกี่ยวข้องคือ re_init_capacity_2d, zero_point, source_length, destination_length
+	var rollingStone = function(re_init_capacity_2d, zero_point, source_length, destination_length) {
+		console.log("\n------ จุดเริ่มต้น : "+ zero_point +" ------\n");
+		// เส้นทางล่าง
+		if (zero_point[0] < source_length-1) {
+			for (i = zero_point[0]+1; i < source_length; i++) {
+				var j = zero_point[1];
+				var capacity = re_init_capacity_2d[i][j].capacity;
+				if (capacity !== 0) {
+					console.log("ล่าง :" + i + "," + j + " -> " + capacity);
+				}
+			}
+		}
+		//เส้นทางขวา
+		if (zero_point[1] < destination_length-1) {
+			for (j = zero_point[1]+1; j < destination_length; j++) {
+				var i = zero_point[0];
+				var capacity = re_init_capacity_2d[i][j].capacity;
+				if (capacity !== 0) {
+					console.log("ขวา :" + i + "," + j + " -> " + capacity);
+				}
+			}
+		}
+		//เส้นทางบน
+		if (zero_point[0] !== 0) {
+			for (i = zero_point[0]-1; i >= 0; i--) {
+				var j = zero_point[1];
+				var capacity = re_init_capacity_2d[i][j].capacity;
+				if (capacity !== 0) {
+					console.log("บน :" + i + "," + j + " -> " + capacity);
+				}
+			}
+		}
+		// เส้นทางซ้าย
+		if (zero_point[1] !== 0) {
+			for (j = zero_point[1]-1; j >= 0; j--) {
+				var i = zero_point[0];
+				var capacity = re_init_capacity_2d[i][j].capacity;
+				if (capacity !== 0) {
+					console.log("ซ้าย :" + i + "," + j + " -> " + capacity);
+				}
+			}
+		}
+
+		console.log("---------------------------\n\n");
+
+	};
 });
