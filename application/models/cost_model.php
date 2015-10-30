@@ -5,6 +5,7 @@ Class Cost_Model extends CI_Model {
 
 		$this->db->select('*');
 		$this->db->from('cost');
+		$this -> db -> where('cost_status', 'ใช้งานอยู่');
 		$this->db->join('source', 'cost.source_id = source.id', 'left');
 		$this->db->join('destination', 'cost.destination_id = destination.id', 'left');
 
@@ -33,7 +34,7 @@ Class Cost_Model extends CI_Model {
 		$rows = $query -> num_rows();
 
 		if (!$rows) {
-			$data = array('source_id' => $id1, 'destination_id' => $id2, 'cost' => $cost);
+			$data = array('source_id' => $id1, 'destination_id' => $id2, 'cost' => $cost,'cost_status' => 'ใช้งานอยู่' );
 			$query = $this -> db -> insert('cost', $data);
 			return TRUE;
 		} else {
@@ -50,14 +51,9 @@ Class Cost_Model extends CI_Model {
 
 
 	function removeCost($id) {
+		$data = array('cost_status' => 'ยกเลิกการใช้งาน' );
 		$this -> db -> where('cost_id', $id);
-		$query = $this -> db -> delete('cost');
-
-		if ($query) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		$this -> db -> update('cost', $data);
 	}
 
 }
