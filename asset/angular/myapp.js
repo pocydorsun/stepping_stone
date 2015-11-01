@@ -656,7 +656,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		}
 		console.log("จุดเริ่มต้นทั้งหมด :");
 		console.log(zero_points);
-		console.log("\n");
+		console.log("\n\n");
+		console.log("เส้นทางทั้งหมด : \n");
 
 		// เริ่มดำเนินการกล้ิงหินได้!!! (TT~TT)/
 		angular.forEach(zero_points, function(zero_point) {
@@ -665,8 +666,26 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			var direction = "none";
 			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
 		});
+
 		angular.forEach(step_complete, function(list) {
 			console.log(list);
+			var sign = "+";
+			var total_cost = 0;
+			angular.forEach(list, function(list2) {
+				var i = list2[0];
+				var j = list2[1];
+				var cost = parseInt(sign + re_init_capacity_2d[i][j].cost);
+				total_cost = total_cost + cost;
+				if (sign === "+") {
+					sign = "-";
+				} else if (sign === "-") {
+					sign = "+";
+				}
+				console.log("[" + i + ", " + j + "] -> capacity : " + re_init_capacity_2d[i][j].capacity);
+				console.log("cost : " + cost);
+			});
+			var x = -1;
+			console.log("------------------------\ntotal_cost : " + total_cost + "\n========================\n\n");
 		});
 	};
 
@@ -681,7 +700,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			step_backup.push(zero_point);
 		}
 
-		console.log("\n------ จุดเริ่มต้น : "+ start_point +" ------\n");
 		// เส้นทางล่าง
 		if (start_point[0] < source_length-1 && direction !== "bottom" && direction !== "top" && direction !== "right") {
 			var wrong_way = false;
@@ -690,14 +708,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				var capacity = re_init_capacity_2d[i][j].capacity;
 				var check_point = [i,j];
 				if (check_point+"" === zero_point+"") {
-					console.log("yeah!!");
-					console.log(zero_point);
-					console.log("------");
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
 				} else if (capacity !== 0) {
-					console.log("ล่าง :" + i + "," + j + " -> " + capacity);
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "bottom", source_length, destination_length);
 					wrong_way = false;
@@ -716,14 +730,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				var capacity = re_init_capacity_2d[i][j].capacity;
 				var check_point = [i,j];
 				if (check_point+"" === zero_point+"") {
-					console.log("yeah!!");
-					console.log(zero_point);
 					step_complete.push(step_backup);
 					step_backup = [];
-					console.log("------");
 					return 0;
 				} else if (capacity !== 0) {
-					console.log("ขวา :" + i + "," + j + " -> " + capacity);
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "right", source_length, destination_length);
 				} else {
@@ -741,14 +751,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				var capacity = re_init_capacity_2d[i][j].capacity;
 				var check_point = [i,j];
 				if (check_point+"" === zero_point+"") {
-					console.log("yeah!!");
-					console.log(zero_point);
 					step_complete.push(step_backup);
 					step_backup = [];
-					console.log("------");
 					return 0;
 				} else if (capacity !== 0) {
-					console.log("บน :" + i + "," + j + " -> " + capacity);
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "top", source_length, destination_length);
 				} else {
@@ -766,14 +772,10 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				var capacity = re_init_capacity_2d[i][j].capacity;
 				var check_point = [i,j];
 				if (check_point+"" === zero_point+"") {
-					console.log("yeah!!");
-					console.log(zero_point);
 					step_complete.push(step_backup);
 					step_backup = [];
-					console.log("------");
 					return 0;
 				} else if (capacity !== 0) {
-					console.log("ซ้าย :" + i + "," + j + " -> " + capacity);
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "left", source_length, destination_length);
 				} else {
