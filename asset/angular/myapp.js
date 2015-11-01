@@ -674,15 +674,16 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			angular.forEach(list, function(list2) {
 				var i = list2[0];
 				var j = list2[1];
-				var cost = parseInt(sign + re_init_capacity_2d[i][j].cost);
+				var my_value = re_init_capacity_2d[i][j];
+				var cost = parseInt(sign + my_value.cost);
 				total_cost = total_cost + cost;
 				if (sign === "+") {
 					sign = "-";
 				} else if (sign === "-") {
 					sign = "+";
 				}
-				console.log("[" + i + ", " + j + "] -> capacity : " + re_init_capacity_2d[i][j].capacity);
-				console.log("cost : " + cost);
+				console.log("[" + i + ", " + j + "] -> " + "(" + my_value.source_id + "," + my_value.destination_id + ")");
+				console.log("capacity : " + my_value.capacity + ", cost : " + cost);
 			});
 			var x = -1;
 			console.log("------------------------\ntotal_cost : " + total_cost + "\n========================\n\n");
