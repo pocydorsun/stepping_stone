@@ -661,56 +661,128 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		// เริ่มดำเนินการกล้ิงหินได้!!! (TT~TT)/
 		angular.forEach(zero_points, function(zero_point) {
 			// เรียกฟังค์ชั่น rollingStone()
-			rollingStone(re_init_capacity_2d, zero_point, source_length, destination_length);
+			var start_point = [];
+			var direction = "none";
+			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
+		});
+		angular.forEach(step_complete, function(list) {
+			console.log(list);
 		});
 	};
 
 	// ฟังค์ชั่น rollingStone() หรือ ฟังค์ชั่นการกล้ิงหิน
-	// ตัวแปรที่เกี่ยวข้องคือ re_init_capacity_2d, zero_point, source_length, destination_length
-	var rollingStone = function(re_init_capacity_2d, zero_point, source_length, destination_length) {
-		console.log("\n------ จุดเริ่มต้น : "+ zero_point +" ------\n");
+	// ตัวแปรที่เกี่ยวข้องคือ re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length
+	var step_complete = [];
+	var step_backup = [];
+	var rollingStone = function(re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length) {
+		if (start_point.length === 0) {
+			start_point = zero_point;
+			step_backup = [];
+			step_backup.push(zero_point);
+		}
+
+		console.log("\n------ จุดเริ่มต้น : "+ start_point +" ------\n");
 		// เส้นทางล่าง
-		if (zero_point[0] < source_length-1) {
-			for (i = zero_point[0]+1; i < source_length; i++) {
-				var j = zero_point[1];
+		if (start_point[0] < source_length-1 && direction !== "bottom" && direction !== "top" && direction !== "right") {
+			var wrong_way = false;
+			for (i = start_point[0]+1; i < source_length; i++) {
+				var j = start_point[1];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				if (capacity !== 0) {
+				var check_point = [i,j];
+				if (check_point+"" === zero_point+"") {
+					console.log("yeah!!");
+					console.log(zero_point);
+					console.log("------");
+					step_complete.push(step_backup);
+					step_backup = [];
+					return 0;
+				} else if (capacity !== 0) {
 					console.log("ล่าง :" + i + "," + j + " -> " + capacity);
+					step_backup.push(check_point);
+					rollingStone(re_init_capacity_2d, zero_point, [i,j], "bottom", source_length, destination_length);
+					wrong_way = false;
+				} else {
+					wrong_way = true;
 				}
+			}
+			if (wrong_way && step_backup.length > 1) {
+				step_backup.pop();
 			}
 		}
 		//เส้นทางขวา
-		if (zero_point[1] < destination_length-1) {
-			for (j = zero_point[1]+1; j < destination_length; j++) {
-				var i = zero_point[0];
+		if (start_point[1] < destination_length-1 && direction !== "left" && direction !== "right" && direction !== "top") {
+			for (j = start_point[1]+1; j < destination_length; j++) {
+				var i = start_point[0];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				if (capacity !== 0) {
+				var check_point = [i,j];
+				if (check_point+"" === zero_point+"") {
+					console.log("yeah!!");
+					console.log(zero_point);
+					step_complete.push(step_backup);
+					step_backup = [];
+					console.log("------");
+					return 0;
+				} else if (capacity !== 0) {
 					console.log("ขวา :" + i + "," + j + " -> " + capacity);
+					step_backup.push(check_point);
+					rollingStone(re_init_capacity_2d, zero_point, [i,j], "right", source_length, destination_length);
+				} else {
+					wrong_way = true;
 				}
+			}
+			if (wrong_way && step_backup.length > 1) {
+				step_backup.pop();
 			}
 		}
 		//เส้นทางบน
-		if (zero_point[0] !== 0) {
-			for (i = zero_point[0]-1; i >= 0; i--) {
-				var j = zero_point[1];
+		if (start_point[0] !== 0 && direction !== "bottom" && direction !== "top" && direction !== "left") {
+			for (i = start_point[0]-1; i >= 0; i--) {
+				var j = start_point[1];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				if (capacity !== 0) {
+				var check_point = [i,j];
+				if (check_point+"" === zero_point+"") {
+					console.log("yeah!!");
+					console.log(zero_point);
+					step_complete.push(step_backup);
+					step_backup = [];
+					console.log("------");
+					return 0;
+				} else if (capacity !== 0) {
 					console.log("บน :" + i + "," + j + " -> " + capacity);
+					step_backup.push(check_point);
+					rollingStone(re_init_capacity_2d, zero_point, [i,j], "top", source_length, destination_length);
+				} else {
+					wrong_way = true;
 				}
+			}
+			if (wrong_way && step_backup.length > 1) {
+				step_backup.pop();
 			}
 		}
 		// เส้นทางซ้าย
-		if (zero_point[1] !== 0) {
-			for (j = zero_point[1]-1; j >= 0; j--) {
-				var i = zero_point[0];
+		if (start_point[1] !== 0 && direction !== "left" && direction !== "right" && direction !== "bottom") {
+			for (j = start_point[1]-1; j >= 0; j--) {
+				var i = start_point[0];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				if (capacity !== 0) {
+				var check_point = [i,j];
+				if (check_point+"" === zero_point+"") {
+					console.log("yeah!!");
+					console.log(zero_point);
+					step_complete.push(step_backup);
+					step_backup = [];
+					console.log("------");
+					return 0;
+				} else if (capacity !== 0) {
 					console.log("ซ้าย :" + i + "," + j + " -> " + capacity);
+					step_backup.push(check_point);
+					rollingStone(re_init_capacity_2d, zero_point, [i,j], "left", source_length, destination_length);
+				} else {
+					wrong_way = true;
 				}
 			}
+			if (wrong_way && step_backup.length > 1) {
+				step_backup.pop();
+			}
 		}
-
-		console.log("---------------------------\n\n");
-
 	};
 });
