@@ -644,6 +644,15 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			console.log(list);
 		});
 
+		// สำคัญมาก ********
+		// ดำเนินการหาเส้นทาง และโยกย้าย capacity
+		var unfinish = true;
+		while (unfinish) {
+				unfinish = run_rollingStone(re_init_capacity_2d, source_length, destination_length);
+		}
+	};
+
+	var run_rollingStone = function(re_init_capacity_2d, source_length, destination_length) {
 		// หาจุดเริ่มต้นที่มีค่า capacity เท่ากับ 0
 		var zero_points = [];
 		console.log("\n\n");
@@ -667,6 +676,8 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
 		});
 
+		var most_cheap_way = [];
+		var current_most_cheap_cost = 0;
 		angular.forEach(step_complete, function(list) {
 			console.log(list);
 			var sign = "+";
@@ -685,10 +696,83 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				console.log("[" + i + ", " + j + "] -> " + "(" + my_value.source_id + "," + my_value.destination_id + ")");
 				console.log("capacity : " + my_value.capacity + ", cost : " + cost);
 			});
-			var x = -1;
 			console.log("------------------------\ntotal_cost : " + total_cost + "\n========================\n\n");
+			if (total_cost < 0) {
+				if (total_cost < current_most_cheap_cost) {
+					current_most_cheap_cost = total_cost;
+					most_cheap_way = list;
+				}
+			}
 		});
-	};
+		console.log("most cheap ways : ");
+		console.log(most_cheap_way);
+		console.log("cheap cost : " + current_most_cheap_cost);
+
+		if (current_most_cheap_cost < 0) {
+			var capacity_move = 0;
+			var most_cheap_start_point = [];
+			angular.forEach(most_cheap_way, function(list) {
+				if (most_cheap_start_point.length === 0) {
+					most_cheap_start_point = list;
+				} else if (most_cheap_start_point[1] === list[1]) {
+					var i = list[0];
+					var j = list[1];
+					var my_value = re_init_capacity_2d[i][j];
+					capacity_move = my_value.capacity;
+				}	else if (most_cheap_start_point[0] === list[0]) {
+					var i = list[0];
+					var j = list[1];
+					var my_value = re_init_capacity_2d[i][j];
+					if (my_value.capacity < capacity_move) {
+						capacity_move = my_value.capacity;
+					}
+				}
+			});
+			console.log("capacity move : " + capacity_move);
+
+			var sign = "+";
+			angular.forEach(most_cheap_way, function(list) {
+				var i = list[0];
+				var j = list[1];
+				var move_capacity = parseInt(sign + capacity_move);
+				re_init_capacity_2d[i][j].capacity = re_init_capacity_2d[i][j].capacity + move_capacity;
+				if (sign === "+") {
+					sign = "-";
+				} else if (sign === "-") {
+					sign = "+";
+				}
+				console.log("(" + re_init_capacity_2d[i][j].source_id + "," + re_init_capacity_2d[i][j].destination_id + ") -> "+ re_init_capacity_2d[i][j].capacity);
+			});
+		}
+
+		//ตรวจสอบทั้งหมดอีกรอบ
+		zero_points = [];
+		console.log("\n\n");
+		for (i = 0; i < source_length; i++) {
+			for (j = 0; j < destination_length; j++) {
+					if (re_init_capacity_2d[i][j].capacity === 0) {
+						zero_points.push([i,j]);
+					}
+			}
+		}
+		console.log("จุดเริ่มต้นทั้งหมด :");
+		console.log(zero_points);
+		console.log("\n\n");
+		console.log("เส้นทางทั้งหมด : \n");
+
+		// เริ่มดำเนินการกล้ิงหินได้!!! (TT~TT)/
+		step_complete = [];
+		angular.forEach(zero_points, function(zero_point) {
+			// เรียกฟังค์ชั่น rollingStone()
+			var start_point = [];
+			var direction = "none";
+			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
+		});
+
+		console.log(step_complete);
+
+		return checking_result(re_init_capacity_2d);
+	}
 
 	// ฟังค์ชั่น rollingStone() หรือ ฟังค์ชั่นการกล้ิงหิน
 	// ตัวแปรที่เกี่ยวข้องคือ re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length
@@ -715,7 +799,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				} else if (capacity !== 0) {
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "bottom", source_length, destination_length);
-					wrong_way = false;
 				} else {
 					wrong_way = true;
 				}
@@ -745,6 +828,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				step_backup.pop();
 			}
 		}
+
 		//เส้นทางบน
 		if (start_point[0] !== 0 && direction !== "bottom" && direction !== "top" && direction !== "left") {
 			for (i = start_point[0]-1; i >= 0; i--) {
@@ -787,5 +871,34 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				step_backup.pop();
 			}
 		}
+	};
+
+	//ตรวจสอบผลลัพธ์
+	var checking_result = function(re_init_capacity_2d) {
+		var unfinish = false;
+		angular.forEach(step_complete, function(list) {
+			console.log(list);
+			var sign = "+";
+			var total_cost = 0;
+			angular.forEach(list, function(list2) {
+				var i = list2[0];
+				var j = list2[1];
+				var my_value = re_init_capacity_2d[i][j];
+				var cost = parseInt(sign + my_value.cost);
+				total_cost = total_cost + cost;
+				if (sign === "+") {
+					sign = "-";
+				} else if (sign === "-") {
+					sign = "+";
+				}
+				console.log("[" + i + ", " + j + "] -> " + "(" + my_value.source_id + "," + my_value.destination_id + ")");
+				console.log("capacity : " + my_value.capacity + ", cost : " + cost);
+			});
+			console.log("------------------------\ntotal_cost : " + total_cost + "\n========================\n\n");
+			if (total_cost < 0) {
+				unfinish = true;
+			}
+		});
+		return unfinish;
 	};
 });
