@@ -708,26 +708,20 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		console.log(most_cheap_way);
 		console.log("cheap cost : " + current_most_cheap_cost);
 
+		// เคลื่อนย้าย capacity
 		if (current_most_cheap_cost < 0) {
 			var capacity_move = 0;
-			var most_cheap_start_point = [];
-			angular.forEach(most_cheap_way, function(list) {
-				if (most_cheap_start_point.length === 0) {
-					most_cheap_start_point = list;
-				} else if (most_cheap_start_point[1] === list[1]) {
-					var i = list[0];
-					var j = list[1];
-					var my_value = re_init_capacity_2d[i][j];
-					capacity_move = my_value.capacity;
-				}	else if (most_cheap_start_point[0] === list[0]) {
-					var i = list[0];
-					var j = list[1];
-					var my_value = re_init_capacity_2d[i][j];
-					if (my_value.capacity < capacity_move) {
-						capacity_move = my_value.capacity;
-					}
-				}
-			});
+			var a = most_cheap_way[1][0];
+			var b = most_cheap_way[1][1];
+			var capacity1 = re_init_capacity_2d[a][b].capacity;
+			a = most_cheap_way[3][0];
+			b = most_cheap_way[3][1];
+			var capacity2 = re_init_capacity_2d[a][b].capacity;
+			if (capacity1 < capacity2) {
+				capacity_move = capacity1;
+			} else {
+				capacity_move = capacity2;
+			}
 			console.log("capacity move : " + capacity_move);
 
 			var sign = "+";
@@ -796,7 +790,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
-				} else if (capacity !== 0) {
+				} else if (capacity > 0) {
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "bottom", source_length, destination_length);
 				} else {
@@ -817,7 +811,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
-				} else if (capacity !== 0) {
+				} else if (capacity > 0) {
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "right", source_length, destination_length);
 				} else {
@@ -839,7 +833,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
-				} else if (capacity !== 0) {
+				} else if (capacity > 0) {
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "top", source_length, destination_length);
 				} else {
@@ -860,7 +854,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
-				} else if (capacity !== 0) {
+				} else if (capacity > 0) {
 					step_backup.push(check_point);
 					rollingStone(re_init_capacity_2d, zero_point, [i,j], "left", source_length, destination_length);
 				} else {
