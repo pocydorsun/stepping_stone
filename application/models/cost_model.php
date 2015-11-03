@@ -28,6 +28,7 @@ Class Cost_Model extends CI_Model {
 		$this -> db -> from('cost');
 		$this -> db -> where('source_id', $id1);
 		$this -> db -> where('destination_id', $id2);
+		$this -> db -> where('cost_status', 'ใช้งานอยู่');
 		$this -> db -> limit(1);
 
 		$query = $this -> db -> get();

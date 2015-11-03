@@ -14,6 +14,7 @@ Class Source_Model extends CI_Model {
 
 		$this -> db -> from('source');
 		$this -> db -> where('source_name', $targetname);
+		$this -> db -> where('source_status', 'ใช้งานอยู่');
 		$this -> db -> limit(1);
 
 		$query = $this -> db -> get();

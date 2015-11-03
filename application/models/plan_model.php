@@ -32,14 +32,6 @@ Class Plan_Model extends CI_Model {
 
 		$data_listPlan = $this -> db -> get();
 
-		// เอาไว้ดูผลลัพธ์ที่ได้จากการดึงข้อมูลจากฐานข้อมูล
-		// print_r($data_transportation -> result_array());
-		// echo "<br/><br/>";
-		// print_r($data_listPlan -> result_array());
-		// echo "<br/><br/>";
-		// print_r($data_costOfPlan -> result_array());
-		// exit();
-
 		// $array_listPlan แปลงจาก array เป็น string ในรูปแบบ Json
 		$array_listPlan = $data_listPlan -> result_array();
 
@@ -111,44 +103,7 @@ Class Plan_Model extends CI_Model {
 			'plan_date' => $array_transportation[0]['create_date']
 		);
 
-		// echo "<br/><br/>";
-		// print_r($data);
-		// exit();
-
-		// ตัวอย่างผลลัพธ์ที่ต้องการ
-		// Array ( [0] =>
-		// 	Array (
-		// 		[id] => 14
-		// 		[plan_name] => ลอง
-		// 		[plan_source] => [
-		// 			{"id":"1","source_name":"โรงงาน A","capacity":30},
-		// 			{"id":"2","source_name":"โรงงาน B","capacity":60},
-		// 			{"id":"3","source_name":"โรงงาน C","capacity":30}
-		// 		]
-		// 		[plan_destination] => [
-		// 			{"id":"1","destination_name":"โกดัง A","capacity":20},
-		// 			{"id":"2","destination_name":"โกดัง B","capacity":25},
-		// 			{"id":"3","destination_name":"โกดัง C","capacity":55},
-		// 			{"id":"4","destination_name":"โกดัง D","capacity":20}
-		// 		]
-		// 		[plan_cost] => [
-		// 			{"source_id":"3","destination_id":"4","cost":3},
-		// 			{"source_id":"1","destination_id":"4","cost":7},
-		// 			{"source_id":"3","destination_id":"3","cost":5},
-		// 			{"source_id":"1","destination_id":"1","cost":8},
-		// 			{"source_id":"2","destination_id":"4","cost":9},
-		// 			{"source_id":"3","destination_id":"2","cost":9},
-		// 			{"source_id":"1","destination_id":"2","cost":8},
-		// 			{"source_id":"2","destination_id":"1","cost":9},
-		// 			{"source_id":"1","destination_id":"3","cost":4},
-		// 			{"source_id":"2","destination_id":"3","cost":6},
-		// 			{"source_id":"2","destination_id":"2","cost":2},
-		// 			{"source_id":"3","destination_id":"1","cost":7}
-		// 		]
-		// 		[plan_status] => ยังไม่อนุมัติ
-		// 		[plan_date] => 2015-07-16 12:12:37
-		// 	)
-		// )
+		
 		return $data;
 	}
 
@@ -163,20 +118,7 @@ Class Plan_Model extends CI_Model {
 
 
 	function addPlan($planname, $sourceTable, $destinationTable, $costOfPlan, $user_id) {
-		// $planname =
-		// โอเค
 
-		// $sourceTable =
-		// [{"id":"1","source_name":"โรงงาน A","capacity":2},{"id":"2","source_name":"โรงงาน B","capacity":2}]
-
-		// $destinationTable =
-		// [{"id":"1","destination_name":"โกดัง A","capacity":2},{"id":"2","destination_name":"โกดัง B","capacity":2}]
-
-		// $costOfPlan =
-		// [{"source_id":"1","destination_id":"1","cost":1},
-		// {"source_id":"2","destination_id":"1","cost":3},
-		// {"source_id":"1","destination_id":"2","cost":2},
-		// {"source_id":"2","destination_id":"2","cost":0}]]
 
 		$this -> db -> from('transportation');
 		$this -> db -> where('plan_name', $planname);
@@ -241,8 +183,8 @@ Class Plan_Model extends CI_Model {
 			$decode_costOfPlan = json_decode($costOfPlan, true);
 
 			// นำ $costOfPlan ที่ทำการ Decode แล้วมาประกอบใส่ $data_costOfPlan เพื่อทำการบันทึกลงฐานข้อมูล ตาราง cost_of_plan
-			if ($data_costOfPlan) {
-				$data_costOfPlan = array();
+			if (decode_costOfPlan) {
+					$data_costOfPlan = array();
 				foreach ($decode_costOfPlan as $key => $value) {
 					array_push($data_costOfPlan,
 						array(

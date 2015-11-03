@@ -14,6 +14,7 @@ Class Destination_Model extends CI_Model {
 
 		$this -> db -> from('destination');
 		$this -> db -> where('destination_name', $targetname);
+		$this -> db -> where('destination_status', 'ใช้งานอยู่');
 		$this -> db -> limit(1);
 
 		$query = $this -> db -> get();
