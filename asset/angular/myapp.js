@@ -557,16 +557,6 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			}
 		}
 
-		// 4.2.2 การไปสเต็ปที่สาม
-		if (step === 3) {
-			// 4.2.2.1 เรียกฟังค์ชั่นการจัดเรียง $scope.new_cost ใหม่ จาก cost น้อยไปหา cost มาก
-			$scope.sortNewCosts();
-			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการตั้งค่า capacity เบื้องต้น
-			$scope.initCapacity();
-			// 4.2.2.3 เรียกฟังค์ชั่นการคำนวณหาคำตอบ $scope.calculation ไว้ใช้สำหรับการหาคำตอบและแสดงผลลัพธ์ใน step3
-			$scope.calculation();
-		}
-
 		function CheckStep1() {
 			total_result1 = 0;
 			angular.forEach($scope.source_data, function(list) {
@@ -589,6 +579,15 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			}
 		}
 
+		// 4.2.2 การไปสเต็ปที่สาม
+		if (step === 3) {
+			// 4.2.2.1 เรียกฟังค์ชั่นการจัดเรียง $scope.new_cost ใหม่ จาก cost น้อยไปหา cost มาก
+			$scope.sortNewCosts();
+			// 4.2.2.2 เรียกฟังค์ชั่นการตั้งค่า $scope.init_capacity ไว้ใช้สำหรับการตั้งค่า capacity เบื้องต้น
+			$scope.initCapacity();
+			// 4.2.2.3 เรียกฟังค์ชั่นการคำนวณหาคำตอบ $scope.calculation ไว้ใช้สำหรับการหาคำตอบและแสดงผลลัพธ์ใน step3
+			$scope.calculation();
+		}
 	};
 
 	// ส่วนคำนวณ
@@ -648,7 +647,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		// ดำเนินการหาเส้นทาง และโยกย้าย capacity
 		var unfinish = true;
 		while (unfinish) {
-				unfinish = run_rollingStone(re_init_capacity_2d, source_length, destination_length);
+			unfinish = run_rollingStone(re_init_capacity_2d, source_length, destination_length);
 		}
 	};
 
@@ -656,11 +655,11 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		// หาจุดเริ่มต้นที่มีค่า capacity เท่ากับ 0
 		var zero_points = [];
 		console.log("\n\n");
-		for (i = 0; i < source_length; i++) {
-			for (j = 0; j < destination_length; j++) {
-					if (re_init_capacity_2d[i][j].capacity === 0) {
-						zero_points.push([i,j]);
-					}
+		for ( i = 0; i < source_length; i++) {
+			for ( j = 0; j < destination_length; j++) {
+				if (re_init_capacity_2d[i][j].capacity === 0) {
+					zero_points.push([i, j]);
+				}
 			}
 		}
 		console.log("จุดเริ่มต้นทั้งหมด :");
@@ -673,7 +672,7 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			// เรียกฟังค์ชั่น rollingStone()
 			var start_point = [];
 			var direction = "none";
-			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
+			rollingStone(re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length);
 		});
 
 		var most_cheap_way = [];
@@ -735,18 +734,18 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 				} else if (sign === "-") {
 					sign = "+";
 				}
-				console.log("(" + re_init_capacity_2d[i][j].source_id + "," + re_init_capacity_2d[i][j].destination_id + ") -> "+ re_init_capacity_2d[i][j].capacity);
+				console.log("(" + re_init_capacity_2d[i][j].source_id + "," + re_init_capacity_2d[i][j].destination_id + ") -> " + re_init_capacity_2d[i][j].capacity);
 			});
 		}
 
 		//ตรวจสอบทั้งหมดอีกรอบ
 		zero_points = [];
 		console.log("\n\n");
-		for (i = 0; i < source_length; i++) {
-			for (j = 0; j < destination_length; j++) {
-					if (re_init_capacity_2d[i][j].capacity === 0) {
-						zero_points.push([i,j]);
-					}
+		for ( i = 0; i < source_length; i++) {
+			for ( j = 0; j < destination_length; j++) {
+				if (re_init_capacity_2d[i][j].capacity === 0) {
+					zero_points.push([i, j]);
+				}
 			}
 		}
 		console.log("จุดเริ่มต้นทั้งหมด :");
@@ -760,13 +759,13 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			// เรียกฟังค์ชั่น rollingStone()
 			var start_point = [];
 			var direction = "none";
-			rollingStone(re_init_capacity_2d, zero_point,start_point, direction, source_length, destination_length);
+			rollingStone(re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length);
 		});
 
 		console.log(step_complete);
 
 		return checking_result(re_init_capacity_2d);
-	}
+	};
 
 	// ฟังค์ชั่น rollingStone() หรือ ฟังค์ชั่นการกล้ิงหิน
 	// ตัวแปรที่เกี่ยวข้องคือ re_init_capacity_2d, zero_point, start_point, direction, source_length, destination_length
@@ -780,19 +779,19 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		}
 
 		// เส้นทางล่าง
-		if (start_point[0] < source_length-1 && direction !== "bottom" && direction !== "top" && direction !== "right") {
+		if (start_point[0] < source_length - 1 && direction !== "bottom" && direction !== "top" && direction !== "right") {
 			var wrong_way = false;
-			for (i = start_point[0]+1; i < source_length; i++) {
+			for ( i = start_point[0] + 1; i < source_length; i++) {
 				var j = start_point[1];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				var check_point = [i,j];
-				if (check_point+"" === zero_point+"") {
+				var check_point = [i, j];
+				if (check_point + "" === zero_point + "") {
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
 				} else if (capacity > 0) {
 					step_backup.push(check_point);
-					rollingStone(re_init_capacity_2d, zero_point, [i,j], "bottom", source_length, destination_length);
+					rollingStone(re_init_capacity_2d, zero_point, [i, j], "bottom", source_length, destination_length);
 				} else {
 					wrong_way = true;
 				}
@@ -802,18 +801,18 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 			}
 		}
 		//เส้นทางขวา
-		if (start_point[1] < destination_length-1 && direction !== "left" && direction !== "right" && direction !== "top") {
-			for (j = start_point[1]+1; j < destination_length; j++) {
+		if (start_point[1] < destination_length - 1 && direction !== "left" && direction !== "right" && direction !== "top") {
+			for ( j = start_point[1] + 1; j < destination_length; j++) {
 				var i = start_point[0];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				var check_point = [i,j];
-				if (check_point+"" === zero_point+"") {
+				var check_point = [i, j];
+				if (check_point + "" === zero_point + "") {
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
 				} else if (capacity > 0) {
 					step_backup.push(check_point);
-					rollingStone(re_init_capacity_2d, zero_point, [i,j], "right", source_length, destination_length);
+					rollingStone(re_init_capacity_2d, zero_point, [i, j], "right", source_length, destination_length);
 				} else {
 					wrong_way = true;
 				}
@@ -825,17 +824,17 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 
 		//เส้นทางบน
 		if (start_point[0] !== 0 && direction !== "bottom" && direction !== "top" && direction !== "left") {
-			for (i = start_point[0]-1; i >= 0; i--) {
+			for ( i = start_point[0] - 1; i >= 0; i--) {
 				var j = start_point[1];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				var check_point = [i,j];
-				if (check_point+"" === zero_point+"") {
+				var check_point = [i, j];
+				if (check_point + "" === zero_point + "") {
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
 				} else if (capacity > 0) {
 					step_backup.push(check_point);
-					rollingStone(re_init_capacity_2d, zero_point, [i,j], "top", source_length, destination_length);
+					rollingStone(re_init_capacity_2d, zero_point, [i, j], "top", source_length, destination_length);
 				} else {
 					wrong_way = true;
 				}
@@ -846,17 +845,17 @@ angular.module('steppingStone', []).controller('miniSteppingStone', function($sc
 		}
 		// เส้นทางซ้าย
 		if (start_point[1] !== 0 && direction !== "left" && direction !== "right" && direction !== "bottom") {
-			for (j = start_point[1]-1; j >= 0; j--) {
+			for ( j = start_point[1] - 1; j >= 0; j--) {
 				var i = start_point[0];
 				var capacity = re_init_capacity_2d[i][j].capacity;
-				var check_point = [i,j];
-				if (check_point+"" === zero_point+"") {
+				var check_point = [i, j];
+				if (check_point + "" === zero_point + "") {
 					step_complete.push(step_backup);
 					step_backup = [];
 					return 0;
 				} else if (capacity > 0) {
 					step_backup.push(check_point);
-					rollingStone(re_init_capacity_2d, zero_point, [i,j], "left", source_length, destination_length);
+					rollingStone(re_init_capacity_2d, zero_point, [i, j], "left", source_length, destination_length);
 				} else {
 					wrong_way = true;
 				}

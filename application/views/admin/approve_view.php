@@ -27,7 +27,7 @@
 
 						<span class="pull-right">
 							
-							<a class="btn btn-default btn-xs" href=<?php echo site_url("admin/plan_view"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+							<a class="btn btn-default btn-xs" href=<?php echo site_url("admin/Aplan_view"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
 							
 							<button data-toggle="modal"
 							data-title="คำเตือน"

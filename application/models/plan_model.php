@@ -111,7 +111,7 @@ Class Plan_Model extends CI_Model {
 
 		$data = array('plan_status' => 'รออนุมัติ');
 		$this -> db -> where('id', $id);
-		$this -> db -> update('plan', $data);
+		$this -> db -> update('transportation', $data);
 
 	}
 
@@ -374,8 +374,8 @@ Class Plan_Model extends CI_Model {
 
 	function getAllPlanSend() {
 		$this -> db -> select('*');
-		$this -> db -> from('plan');
-		$this -> db -> where('plan_status', 1);
+		$this -> db -> from('transportation');
+		$this -> db -> where('plan_status', 'รออนุมัติ');
 		$query = $this -> db -> get();
 
 		return $query -> result();
@@ -393,13 +393,13 @@ Class Plan_Model extends CI_Model {
 
 		$data = array('plan_status' => 'อนุมัติ');
 		$this -> db -> where('id', $id);
-		$this -> db -> update('plan', $data);
+		$this -> db -> update('transportation', $data);
 
 	}
 
 	function getPlanList() {
 		$this -> db -> select('*');
-		$this -> db -> from('plan');
+		$this -> db -> from('transportation');
 		$this -> db -> where('plan_status', 'อนุมัติ');
 		$query = $this -> db -> get();
 

@@ -13,21 +13,21 @@
 				?>
 				<div class="col-sm-6">
 					<div class="form-group">
-						<input type="text" class="form-control" name="txtPlan" id="txtPlan" placeholder="กรอกชื่อแผน">
+						<input type="text" class="form-control" name="txtPlan" id="txtPlan" placeholder="กรอกชื่อแผน" ng-show="myStep!==1">
 					</div>
-					<div class="form-group" ng-hide="false">
+					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtSourceTable" id="txtSourceTable" value="{{source_data}}">
 					</div>
-					<div class="form-group" ng-hide="false">
+					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtDestinationTable" id="txtDestinationTable" value="{{destination_data}}">
 					</div>
-					<div class="form-group" ng-hide="flase">
+					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtCostOfPlan" id="txtCostOfPlan" value="{{new_costs}}">
 					</div>
-					<div class="form-group" ng-hide="flase">
+					<div class="form-group" ng-hide="true">
 						<input type="text" class="form-control" name="txtMyStep" id="txtMyStep" value="{{myStep}}">
 					</div>
-					<button type="submit" class="btn btn-success">
+					<button type="submit" class="btn btn-success" ng-show="myStep!==1">
 						สร้างแผน
 					</button>
 				</div>
@@ -38,9 +38,9 @@
 		<?php if ($this->session->flashdata('source_data') && $this->session->flashdata('destination_data') && $this->session->flashdata('myStep') && $this->session->flashdata('costOfPlan')) :
 		?>
 		<div ng-init='myStep=<?php echo $this -> session -> flashdata("myStep"); ?>;
-			source_data=<?php echo $this -> session -> flashdata("source_data"); ?>;
-			destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>;
-			new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
+		source_data=<?php echo $this -> session -> flashdata("source_data"); ?>;
+		destination_data=<?php echo $this -> session -> flashdata("destination_data"); ?>;
+		new_costs=<?php echo $this -> session -> flashdata("costOfPlan"); ?>;'>
 			<?php else : ?>
 			<div ng-init="myStep=1">
 				<?php endif ?>

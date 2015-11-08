@@ -220,7 +220,7 @@ class Admin_controller extends CI_Controller {
 		}
 	}
 
-	function plan_view($id) {
+	function Aplan_view($id) {
 
 		$user_session = $this -> session -> userdata('logged_in');
 
@@ -232,7 +232,7 @@ class Admin_controller extends CI_Controller {
 				
 				$this -> load -> helper('form');
 				$this -> load -> view('include/header');
-				$this -> load -> view('admin/plan_view');
+				$this -> load -> view('admin/Aplan_view');
 				$this -> load -> view('include/footer');
 				break;
 			default :
