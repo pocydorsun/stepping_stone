@@ -36,7 +36,7 @@
 	<div class=" well well-white">
 		<div class="container">
 			<center>
-				<font color="#0000FF" size="6">แก้ไขชื่อผู้มใช้</font>
+				<font color="#0000FF" size="6">แก้ไขชื่อผู้ใช้</font>
 			</center>
 			<?php
 			$firstname = $name[0]['firstname'];

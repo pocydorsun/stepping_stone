@@ -263,7 +263,7 @@
 						</button>
 
 						<button class="btn btn-success" ng-click="changeStep(3)">
-							ต่อไป
+							จัดแผนการขนส่ง
 						</button>
 					</div>
 

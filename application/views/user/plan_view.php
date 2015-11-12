@@ -33,8 +33,9 @@
 									<span ng-show="plan.plan_status=='อนุมัติ'" style="color: green;">{{plan.plan_name}}</span>
 								</td>
 								<td>
-									<span class="pull-right">
+									<span class="pull-right" >
 									<button data-toggle="modal"
+									ng-show="plan.plan_status=='ยังไม่อนุมัติ'"
 									data-title="คำเตือน"
 									data-msg="ยืนยันการส่งแผน"
 									data-button="ยืนยัน"
@@ -43,7 +44,7 @@
 									class="open-ConfirmDialog btn btn-xs btn-default"
 									data-target=".my-modal">
 										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-									</button> <a class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+									</button> <a ng-show="plan.plan_status=='ยังไม่อนุมัติ'" class="btn btn-default btn-xs" href=<?php echo site_url("user/plan_edit"); ?>{{"/"+plan.id}}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
 									<button data-toggle="modal"
 									data-title="คำเตือน"
 									data-msg="ยืนยันการลบ"

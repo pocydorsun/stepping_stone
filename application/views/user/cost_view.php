@@ -2,7 +2,7 @@
 	<div class=" well well-white">
 		<div class="container">
 
-				<font color="#0000FF" size="6">กำหนดค่าขนส่ง</font>
+			<font color="#0000FF" size="6">กำหนดค่าขนส่ง</font>
 
 		</div>
 		<br>
@@ -62,39 +62,42 @@
 				</tr>
 			</thead>
 			<tbody <?php echo "ng-init='costs = $costs_json'" ?>>
-				<tr ng-repeat="cost in filtered = (costs | filter:searchText)">
-					<td> {{cost.source_name}} </td>
-					<td> {{cost.destination_name}} </td>
-					<td> {{cost.cost}} </td>
-					<td>
-					<button data-toggle="modal"
-					data-title="แก้ไขค่าขนส่ง"
-					data-msg="<input type='text' class='form-control' name='txtCost' value='{{cost.cost}}'>"
-					data-button="บันทึก"
-					data-class="btn btn-success"
-					data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.cost_id}}
-					class="open-ConfirmDialog btn btn-xs btn-default"
-					data-target=".my-modal">
+				<div <?php echo "ng-init='source_lists = $sources_json'"; ?>>
+					<tr ng-repeat="cost in filtered = (costs | filter:searchText)">
+						<td> {{cost.source_name}} </td>
+						<td> {{cost.destination_name}} </td>
+						<td> {{cost.cost}} </td>
+						<td>
+						<button data-toggle="modal"
+						data-title="แก้ไขค่าขนส่ง"
+						data-msg="<select  class='form-control' ng-model='selectSource' ng-options='list.source_name for list in source_lists'>
+						<option value=''>{{cost.source_name}}</option>
+						</select><br><label>ปลายทาง</label><select class='form-control' id='selectDestination' name='selectDestination'><option ng-repeat='destination in destinations' value='{{destination.id}}:::{{destination.destination_name}}'> {{cost.destination_name}} </option></select><br><br><input type='text' class='form-control' name='txtCost' value='{{cost.cost}}'>"
+						data-button="บันทึก"
+						data-class="btn btn-success"
+						data-id=<?php echo site_url("user/edit_cost/"); ?>{{"/"+cost.cost_id}}
+						class="open-ConfirmDialog btn btn-xs btn-default"
+						data-target=".my-modal">
+							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+						</button>
+						<button data-toggle="modal"
+						data-title="คำเตือน"
+						data-msg="ยืนยันการลบ"
+						data-button="ยืนยัน"
+						data-class="btn btn-danger"
+						data-id=<?php echo site_url("user/remove_cost/"); ?>{{"/"+cost.cost_id}}
+						class="open-ConfirmDialog btn btn-xs btn-default"
+						data-target=".my-modal">
 
-						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					</button>
-					<button data-toggle="modal"
-					data-title="คำเตือน"
-					data-msg="ยืนยันการลบ"
-					data-button="ยืนยัน"
-					data-class="btn btn-danger"
-					data-id=<?php echo site_url("user/remove_cost/"); ?>{{"/"+cost.cost_id}}
-					class="open-ConfirmDialog btn btn-xs btn-default"
-					data-target=".my-modal">
-
-						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					</button></td>
-				</tr>
-				<tr ng-show="filtered == 0">
-					<td> ไม่พบข้อมูล </td>
-					<td> ไม่พบข้อมูล </td>
-					<td> ไม่พบข้อมูล </td>
-				</tr>
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						</button></td>
+					</tr>
+					<tr ng-show="filtered == 0">
+						<td> ไม่พบข้อมูล </td>
+						<td> ไม่พบข้อมูล </td>
+						<td> ไม่พบข้อมูล </td>
+					</tr>
+				</div>
 			</tbody>
 		</table>
 	</div>

@@ -30,10 +30,7 @@ Class User_model extends CI_Model {
 	function addUser($username, $password, $firstname, $lastname) {
 		
 		$this -> db -> from('users');
-		$this -> db -> where('firstname', $firstname);
-		$this -> db -> where('lastname', $lastname);
 		$this -> db -> where('username', $username);
-		$this -> db -> where('password', $password);
 		$this -> db -> limit(1);
 
 		$query = $this -> db -> get();

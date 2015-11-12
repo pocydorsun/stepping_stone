@@ -391,7 +391,7 @@ class User_controller extends CI_Controller {
 			redirect('user/cost');
 		} else {
 
-			$this -> session -> set_flashdata('success_msg', 'แก้ไขเป้าหมายสำเร็จ');
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขเค่าขนส่งสำเร็จ');
 
 			redirect('user/cost');
 		}

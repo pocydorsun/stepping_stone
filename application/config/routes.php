@@ -58,6 +58,7 @@ $route['admin/plan_approve/(:num)'] = "admin_controller/plan_approve/$1"; // app
 $route['admin/plan_not_approve/(:num)'] = "admin_controller/plan_not_approve/$1"; // not approve
 $route['admin/edit_user/(:num)'] = "admin_controller/edit_user/$1"; // Edit User
 $route['admin/Aplan_view/(:num)'] = "admin_controller/Aplan_view/$1"; // plan view
+$route['admin/approve_sent/(:num)'] = "admin_controller/approve_sent/$1"; // plan view
 
 
 /* USER ROUTE */

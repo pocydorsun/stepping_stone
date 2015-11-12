@@ -1,4 +1,4 @@
-<?php print_r($this->session->all_userdata()); ?>
+<?php print_r($this -> session -> all_userdata()); ?>
 
 <!-- MODAL -->
 <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -19,7 +19,7 @@
 
 				<!-- footer of modal -->
 				<div class="modal-footer">
-										<button type="submit" class="btn btn-success" id="buttonSubmit">
+					<button type="submit" class="btn btn-success" id="buttonSubmit">
 
 					</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -31,6 +31,8 @@
 		</div>
 	</div>
 </div>
+
+
 
 <script>
 	$(document).on("click", ".open-ConfirmDialog", function() {
@@ -44,7 +46,7 @@
 		$(".modal-title").html(bodyTitle);
 		$(".modal-footer #buttonSubmit").attr("class", buttonClass);
 		$(".modal-footer #buttonSubmit").html(button);
-	});
+	}); 
 </script>
 </body>
 </html>
