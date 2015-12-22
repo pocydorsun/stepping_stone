@@ -75,18 +75,22 @@ $route['user/edit_destination/(:num)'] = "user_controller/edit_destination/$1"; 
 $route['user/remove_destination/(:num)'] = "user_controller/remove_destination/$1"; //REMOVE destination
 
 $route['user/cost'] = "user_controller/cost_manager"; // HOME COST
-$route['user/save_cost'] = "user_controller/save_cost"; // HOME COST
+$route['user/save_cost'] = "user_controller/save_cost"; // save cost
 $route['user/edit_cost/(:num)'] = "user_controller/edit_cost/$1"; //EDIT cost
 $route['user/remove_cost/(:num)'] = "user_controller/remove_cost/$1"; //REMOVE cost
+$route['user/edit_cost/(:num)'] = "user_controller/edit_cost/$1"; //cost edit
 
 $route['user/plan'] = "user_controller/plan_manager"; // HOME plan
-$route['user/plan_send/(:num)'] = "user_controller/plan_send/$1"; //REMOVE send plan
+$route['user/plan_send/(:num)'] = "user_controller/plan_send/$1"; //send plan
 $route['user/create'] = "user_controller/create_plan"; // create plan
 $route['user/add_plan'] = "user_controller/add_plan"; //ADD plan
-$route['user/remove_plan/(:num)'] = "user_controller/remove_plan/$1"; //REMOVE target
+$route['user/remove_plan/(:num)'] = "user_controller/remove_plan/$1"; //REMOVE plan
 $route['user/plan_edit/(:num)'] = "user_controller/plan_edit/$1"; // edit plan
 $route['user/update_plan/(:num)'] = "user_controller/update_plan/$1"; // update plan
 $route['user/plan_list'] = "user_controller/plan_list"; // HOME plan
+$route['user/Uapprove_view/(:num)'] = "user_controller/Uapprove_view/$1"; // edit plan
+
+$route['user/report/(:num)'] = "report_controller/pdf/$1"; // report
 
 
 

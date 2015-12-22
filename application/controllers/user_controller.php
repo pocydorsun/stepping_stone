@@ -32,21 +32,28 @@ class User_controller extends CI_Controller {
 
 	// PLAN
 	function plan_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['plans'] = $this -> plan_model -> getAllplan();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/plan_view', $data);
 		$this -> load -> view('include/footer');
 	}
 
 	function plan_list() {
+		$user_session = $this -> session -> userdata('logged_in');
 
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 		$data['plans'] = $this -> plan_model -> getPlanList();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/plan_list', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -65,7 +72,9 @@ class User_controller extends CI_Controller {
 		$costOfPlan = $this -> input -> post('txtCostOfPlan');
 		$session_data = $this -> session -> userdata('logged_in');
 		$user_id = $session_data['id'];
-		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan, $user_id);
+		$total_cost = $this -> input -> post('txtTotalCost');
+		$cargo = $this -> input -> post('txtCargo');
+		$result = $this -> plan_model -> addPlan($plan, $sourceTable, $destinationTable, $costOfPlan, $user_id, $cargo, $total_cost);
 
 		if ($result) {
 			return TRUE;
@@ -97,18 +106,24 @@ class User_controller extends CI_Controller {
 	}
 
 	function create_plan() {
+		$user_session = $this -> session -> userdata('logged_in');
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
 		$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/plan_create', $data);
 		$this -> load -> view('include/footer');
 	}
 
 	function plan_edit($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
@@ -117,8 +132,26 @@ class User_controller extends CI_Controller {
 		$data["plan"] = $this -> plan_model -> getPlan($id);
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/plan_edit', $data);
+		$this -> load -> view('include/footer');
+	}
+
+	function cost_edit($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
+
+		$data['sources'] = $this -> source_model -> getAll();
+		$data['destinations'] = $this -> destination_model -> getAll();
+		$data['costs'] = $this -> cost_model -> getAllCost();
+
+		$data["cost"] = $this -> cost_model -> getCost($id);
+
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header', $data);
+		$this -> load -> view('user/cost_edit', $data);
 		$this -> load -> view('include/footer');
 	}
 
@@ -149,11 +182,13 @@ class User_controller extends CI_Controller {
 		$sourceTable = $this -> input -> post('txtSourceTable');
 		$destinationTable = $this -> input -> post('txtDestinationTable');
 		$costOfPlan = $this -> input -> post('txtCostOfPlan');
+		$total_cost = $this -> input -> post('txtTotalCost');
+		$cargo = $this -> input -> post('txtCargo');
 
 		if ($name1 === $name2) {
-			$result = $this -> plan_model -> updatePlan($id, "", $sourceTable, $destinationTable, $costOfPlan);
+			$result = $this -> plan_model -> updatePlan($id, "", $sourceTable, $destinationTable, $costOfPlan, $cargo, $total_cost);
 		} else {
-			$result = $this -> plan_model -> updatePlan($id, $plan, $sourceTable, $destinationTable, $costOfPlan);
+			$result = $this -> plan_model -> updatePlan($id, $plan, $sourceTable, $destinationTable, $costOfPlan, $cargo, $total_cost);
 		}
 
 		if ($result) {
@@ -175,12 +210,16 @@ class User_controller extends CI_Controller {
 
 	// TARGET
 	function target_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/target_view', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -331,13 +370,17 @@ class User_controller extends CI_Controller {
 
 	// COST
 	function cost_manager() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
 		$data['costs'] = $this -> cost_model -> getAllCost();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/cost_view', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -384,22 +427,30 @@ class User_controller extends CI_Controller {
 	function edit_cost($id) {
 
 		$this -> load -> library('form_validation');
-		$this -> form_validation -> set_rules('txtCost', 'ค่าขนส่ง', 'trim|required|numeric|callback_update_cost[' . $id . ']');
+		$this -> form_validation -> set_rules('inputCost', 'ค่าขนส่ง', 'trim|required|numeric|callback_update_cost[' . $id . ']');
 
 		if ($this -> form_validation -> run() == FALSE) {
 			$this -> session -> set_flashdata('error_msg', validation_errors());
 			redirect('user/cost');
 		} else {
 
-			$this -> session -> set_flashdata('success_msg', 'แก้ไขเค่าขนส่งสำเร็จ');
+			$this -> session -> set_flashdata('success_msg', 'แก้ไขค่าขนส่งสำเร็จ');
 
 			redirect('user/cost');
 		}
 	}
 
-	function update_cost($cost, $id) {
-		$this -> cost_model -> editCost($id, $cost);
-		return TRUE;
+	function update_cost($inputCost, $id) {
+
+		$result = $this -> cost_model -> editCost($id, $inputCost);
+
+		if ($result) {
+			return TRUE;
+		} else {
+			$this -> form_validation -> set_message('update_cost', 'แก้ไขค่าขนส่งไม่สำเร็จ');
+			return FALSE;
+		}
+
 	}
 
 	function remove_cost($id) {
@@ -420,7 +471,7 @@ class User_controller extends CI_Controller {
 		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('user/user_profile_view', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -506,6 +557,23 @@ class User_controller extends CI_Controller {
 			$this -> form_validation -> set_message('check_update_name', 'ระบบทำการบันทึกล้มเหลว กรุณาลองใหม่อีกครั้ง');
 			return FALSE;
 		}
+	}
+
+	function Uapprove_view($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
+
+		$data['sources'] = $this -> source_model -> getAll();
+		$data['destinations'] = $this -> destination_model -> getAll();
+		$data['costs'] = $this -> cost_model -> getAllCostOfPlan($id);
+		$data['plan'] = $this -> plan_model -> getPlan($id);
+
+		$this -> load -> helper('form');
+		$this -> load -> view('include/header', $data);
+		$this -> load -> view('user/Uapprove_view', $data);
+		$this -> load -> view('include/footer');
 	}
 
 }

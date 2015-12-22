@@ -26,11 +26,15 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function index() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['users'] = $this -> user_model -> getAllUser();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('admin/home_view', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -55,9 +59,13 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function add_user() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('admin/add_user');
 		$this -> load -> view('include/footer');
 	}
@@ -106,9 +114,13 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function change_password() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('admin/change_password_view');
 		$this -> load -> view('include/footer');
 
@@ -153,7 +165,7 @@ class Admin_controller extends CI_Controller {
 
 		$password = $this -> input -> post('txtPassword');
 		$new_password = $this -> input -> post('txtNewPassword');
-		
+
 		if ($re_new_password == $new_password) {
 			if ($new_password == $password) {
 				$this -> form_validation -> set_message('check_new_password', 'รหัสผ่านใหม่ต้องไม่ตรงกับรหัสผ่านเดิม');
@@ -168,25 +180,33 @@ class Admin_controller extends CI_Controller {
 	}
 
 	function approve() {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['plans'] = $this -> plan_model -> getAllPlanSend();
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('admin/approve_view', $data);
 		$this -> load -> view('include/footer');
 
 	}
 
 	function Aplan_view($id) {
+		$user_session = $this -> session -> userdata('logged_in');
+
+		$user_id = $user_session['id'];
+		$data['name'] = $this -> user_model -> getName($user_id);
 
 		$data['sources'] = $this -> source_model -> getAll();
 		$data['destinations'] = $this -> destination_model -> getAll();
-		$data['costs'] = $this -> cost_model -> getAllCostWithOutName();
+		$data['costs'] = $this -> cost_model -> getAllCostOfPlan($id);
 		$data["plan"] = $this -> plan_model -> getPlan($id);
 
 		$this -> load -> helper('form');
-		$this -> load -> view('include/header');
+		$this -> load -> view('include/header', $data);
 		$this -> load -> view('admin/Aplan_view', $data);
 		$this -> load -> view('include/footer');
 	}
@@ -233,7 +253,7 @@ class Admin_controller extends CI_Controller {
 		$firstname = $this -> input -> post('txtFirstname');
 		$password = $this -> input -> post('txtpassword');
 		$repassword = $this -> input -> post('txtrepassword');
-		
+
 		if ($password == $repassword) {
 
 			$result = $this -> user_model -> updateName($id, $firstname, $lastname, $password);
